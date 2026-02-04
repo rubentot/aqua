@@ -122,5 +122,21 @@
       "priority": "MEDIUM"
     },
     "customers_notified": 1
+  },
+  {
+    "source_id": "fiskeridir-akvakultur",
+    "source_name": "Fiskeridirektoratet - Akvakultur",
+    "url": "https://www.fiskeridir.no/Akvakultur",
+    "detected_at": "2026-02-04T22:55:48.084479",
+    "summary": {
+      "title": "Ingen endringer registrert på Fiskeridirektoratets akvakulturside",
+      "title_en": "No changes detected on the Norwegian Fisheries Directorate's aquaculture page",
+      "summary_no": "Sammenligningen av tidligere og nytt innhold viser ingen forskjeller i strukturen eller informasjonen på Fiskeridirektoratets hovedside for akvakultur. Alle menypunkter, lenker og innhold er identiske.",
+      "summary_en": "The comparison between previous and new content shows no differences in structure or information on the Norwegian Fisheries Directorate's main aquaculture page. All menu items, links and content remain identical.",
+      "who_affected": [],
+      "action_items": [],
+      "priority": "LAV"
+    },
+    "customers_notified": 1
   }
 ]
