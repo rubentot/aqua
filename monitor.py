@@ -227,73 +227,108 @@ Svar KUN med JSON, ingen annen tekst."""
 
 def send_alert(source: dict, summary: dict):
     """Send email alert about the change."""
-    api_key = os.getenv("SENDGRID_API_KEY")
     to_email = os.getenv("ALERT_EMAIL")
 
-    if not api_key or not to_email:
-        log.warning("No SENDGRID_API_KEY or ALERT_EMAIL - printing alert instead")
-        print("\n" + "="*60)
-        print(f"ALERT: {summary.get('title', 'Change detected')}")
-        print("="*60)
-        print(f"Source: {source['name']}")
-        print(f"URL: {source['url']}")
-        print(f"Priority: {summary.get('priority', 'MEDIUM')}")
-        print(f"\nSummary (NO): {summary.get('summary_no', 'N/A')}")
-        print(f"\nSummary (EN): {summary.get('summary_en', 'N/A')}")
-        if summary.get('action_items'):
-            print("\nAction Items:")
-            for item in summary['action_items']:
-                print(f"  - {item.get('action')} (Deadline: {item.get('deadline')})")
-        print("="*60 + "\n")
+    if not to_email:
+        log.warning("No ALERT_EMAIL set - printing alert instead")
+        print_alert(source, summary)
         return
 
-    try:
-        from sendgrid import SendGridAPIClient
-        from sendgrid.helpers.mail import Mail, Email, To, Content
-
-        subject = f"[{summary.get('priority', 'ALERT')}] {summary.get('title', 'Regulatory Change')}"
-
-        html_content = f"""
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <div style="background: #0066FF; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
-                <h1 style="margin: 0; font-size: 20px;">AquaRegWatch Alert</h1>
-            </div>
-            <div style="padding: 24px; border: 1px solid #ddd; border-top: none;">
-                <span style="background: {'#ef4444' if summary.get('priority') == 'KRITISK' else '#f59e0b' if summary.get('priority') == 'HØY' else '#eab308'};
-                       color: white; padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: bold;">
-                    {summary.get('priority', 'MEDIUM')}
-                </span>
-                <h2 style="margin: 16px 0 8px;">{summary.get('title', 'Change Detected')}</h2>
-                <p style="color: #666; margin: 0;">{source['name']} | {datetime.now().strftime('%d.%m.%Y %H:%M')}</p>
-
-                <div style="background: #f5f5f5; padding: 16px; border-radius: 8px; margin: 20px 0;">
-                    <h4 style="margin: 0 0 8px;">Norsk</h4>
-                    <p style="margin: 0;">{summary.get('summary_no', 'N/A')}</p>
-                </div>
-
-                <div style="background: #f5f5f5; padding: 16px; border-radius: 8px; margin: 20px 0;">
-                    <h4 style="margin: 0 0 8px;">English</h4>
-                    <p style="margin: 0;">{summary.get('summary_en', 'N/A')}</p>
-                </div>
-
-                <p><a href="{source['url']}" style="color: #0066FF;">View source</a></p>
-            </div>
+    # Build HTML content
+    html_content = f"""
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <div style="background: #0066FF; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+            <h1 style="margin: 0; font-size: 20px;">AquaRegWatch Alert</h1>
         </div>
-        """
+        <div style="padding: 24px; border: 1px solid #ddd; border-top: none;">
+            <span style="background: {'#ef4444' if summary.get('priority') == 'KRITISK' else '#f59e0b' if summary.get('priority') == 'HØY' else '#eab308'};
+                   color: white; padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: bold;">
+                {summary.get('priority', 'MEDIUM')}
+            </span>
+            <h2 style="margin: 16px 0 8px;">{summary.get('title', 'Change Detected')}</h2>
+            <p style="color: #666; margin: 0;">{source['name']} | {datetime.now().strftime('%d.%m.%Y %H:%M')}</p>
 
-        message = Mail(
-            from_email=Email(os.getenv("EMAIL_FROM_ADDRESS", "alerts@aquaregwatch.no")),
-            to_emails=To(to_email),
-            subject=subject,
-            html_content=Content("text/html", html_content)
-        )
+            <div style="background: #f5f5f5; padding: 16px; border-radius: 8px; margin: 20px 0;">
+                <h4 style="margin: 0 0 8px;">Norsk</h4>
+                <p style="margin: 0;">{summary.get('summary_no', 'N/A')}</p>
+            </div>
 
-        sg = SendGridAPIClient(api_key)
-        response = sg.send(message)
-        log.info(f"Alert sent to {to_email} (status: {response.status_code})")
+            <div style="background: #f5f5f5; padding: 16px; border-radius: 8px; margin: 20px 0;">
+                <h4 style="margin: 0 0 8px;">English</h4>
+                <p style="margin: 0;">{summary.get('summary_en', 'N/A')}</p>
+            </div>
 
-    except Exception as e:
-        log.error(f"Failed to send email: {e}")
+            <p><a href="{source['url']}" style="color: #0066FF;">View source</a></p>
+        </div>
+    </div>
+    """
+
+    subject = f"[{summary.get('priority', 'ALERT')}] {summary.get('title', 'Regulatory Change')}"
+
+    # Try SendGrid first
+    if os.getenv("SENDGRID_API_KEY"):
+        try:
+            from sendgrid import SendGridAPIClient
+            from sendgrid.helpers.mail import Mail, Email, To, Content
+
+            message = Mail(
+                from_email=Email(os.getenv("EMAIL_FROM_ADDRESS", "alerts@tefiaqua.no")),
+                to_emails=To(to_email),
+                subject=subject,
+                html_content=Content("text/html", html_content)
+            )
+            sg = SendGridAPIClient(os.getenv("SENDGRID_API_KEY"))
+            response = sg.send(message)
+            log.info(f"Alert sent via SendGrid to {to_email} (status: {response.status_code})")
+            return
+        except Exception as e:
+            log.error(f"SendGrid failed: {e}")
+
+    # Try Gmail
+    if os.getenv("GMAIL_ADDRESS") and os.getenv("GMAIL_APP_PASSWORD"):
+        try:
+            import smtplib
+            from email.mime.text import MIMEText
+            from email.mime.multipart import MIMEMultipart
+
+            gmail_user = os.getenv("GMAIL_ADDRESS")
+            gmail_pass = os.getenv("GMAIL_APP_PASSWORD")
+
+            msg = MIMEMultipart('alternative')
+            msg['Subject'] = subject
+            msg['From'] = gmail_user
+            msg['To'] = to_email
+            msg.attach(MIMEText(html_content, 'html'))
+
+            with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+                server.login(gmail_user, gmail_pass)
+                server.sendmail(gmail_user, to_email, msg.as_string())
+
+            log.info(f"Alert sent via Gmail to {to_email}")
+            return
+        except Exception as e:
+            log.error(f"Gmail failed: {e}")
+
+    # Fallback: print
+    log.warning("No email provider configured - printing alert")
+    print_alert(source, summary)
+
+
+def print_alert(source: dict, summary: dict):
+    """Print alert to console."""
+    print("\n" + "="*60)
+    print(f"ALERT: {summary.get('title', 'Change detected')}")
+    print("="*60)
+    print(f"Source: {source['name']}")
+    print(f"URL: {source['url']}")
+    print(f"Priority: {summary.get('priority', 'MEDIUM')}")
+    print(f"\nSummary (NO): {summary.get('summary_no', 'N/A')}")
+    print(f"\nSummary (EN): {summary.get('summary_en', 'N/A')}")
+    if summary.get('action_items'):
+        print("\nAction Items:")
+        for item in summary['action_items']:
+            print(f"  - {item.get('action')} (Deadline: {item.get('deadline')})")
+    print("="*60 + "\n")
 
 
 def run_monitor():
