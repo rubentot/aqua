@@ -3,30 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AquaRegWatch | Reguleringsovervåking for Norsk Akvakultur</title>
-    <meta name="description" content="AI-drevet overvåking av norske akvakulturreguleringer. Få varsel innen timer når Mattilsynet, Fiskeridirektoratet eller andre myndigheter endrer reglene.">
+    <title>AquaRegWatch | Regulatorisk overvåking for havbruk</title>
+    <meta name="description" content="Profesjonell overvåking av regulatoriske endringer for norsk havbruksnæring. Automatiske varsler når Mattilsynet, Fiskeridirektoratet eller andre myndigheter oppdaterer regelverket.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #0066FF;
-            --primary-light: #3385FF;
-            --primary-dark: #0052CC;
-            --accent: #00D4AA;
-            --accent-light: #00FFD0;
-            --dark: #0A0F1C;
-            --dark-light: #151B2E;
-            --gray-900: #1A1F36;
-            --gray-800: #2D3348;
-            --gray-600: #5E6478;
-            --gray-400: #9CA3B4;
-            --gray-200: #E2E5EB;
-            --gray-100: #F4F5F7;
-            --white: #FFFFFF;
-            --danger: #FF4757;
-            --warning: #FFA502;
-            --success: #2ED573;
+            --primary: #1e3a5f;
+            --primary-light: #2d5a8a;
+            --primary-dark: #0f2744;
+            --accent: #0ea5e9;
+            --accent-dark: #0284c7;
+            --navy: #0f172a;
+            --navy-light: #1e293b;
+            --slate-900: #0f172a;
+            --slate-800: #1e293b;
+            --slate-700: #334155;
+            --slate-600: #475569;
+            --slate-500: #64748b;
+            --slate-400: #94a3b8;
+            --slate-300: #cbd5e1;
+            --slate-200: #e2e8f0;
+            --slate-100: #f1f5f9;
+            --slate-50: #f8fafc;
+            --white: #ffffff;
+            --red-600: #dc2626;
+            --red-100: #fee2e2;
+            --amber-600: #d97706;
+            --amber-100: #fef3c7;
+            --emerald-600: #059669;
+            --emerald-100: #d1fae5;
         }
 
         * {
@@ -40,15 +47,15 @@
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            line-height: 1.7;
-            color: var(--gray-900);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--slate-800);
             background: var(--white);
-            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1140px;
             margin: 0 auto;
             padding: 0 24px;
         }
@@ -60,77 +67,76 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            padding: 20px 0;
-            transition: all 0.3s ease;
-        }
-
-        header.scrolled {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
-            padding: 12px 0;
+            background: var(--white);
+            border-bottom: 1px solid var(--slate-200);
+            padding: 0;
         }
 
         header .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            height: 72px;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             text-decoration: none;
-            color: var(--white);
-            transition: color 0.3s;
+            color: var(--navy);
         }
 
-        header.scrolled .logo {
-            color: var(--dark);
-        }
-
-        .logo-icon {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 12px;
+        .logo-mark {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
+        }
+
+        .logo-mark svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
         }
 
         .logo-text {
-            font-size: 22px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: var(--navy);
+        }
+
+        .logo-text span {
+            color: var(--slate-500);
+            font-weight: 500;
         }
 
         nav {
             display: flex;
             align-items: center;
-            gap: 40px;
+            gap: 32px;
         }
 
         nav a {
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--slate-600);
             text-decoration: none;
             font-weight: 500;
-            font-size: 15px;
+            font-size: 14px;
             transition: color 0.2s;
         }
 
-        header.scrolled nav a {
-            color: var(--gray-600);
-        }
-
         nav a:hover {
-            color: var(--white);
+            color: var(--navy);
         }
 
-        header.scrolled nav a:hover {
-            color: var(--primary);
+        .nav-cta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .btn {
@@ -138,401 +144,194 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 14px 28px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 15px;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 14px;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.15s ease;
             cursor: pointer;
             border: none;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--slate-600);
+        }
+
+        .btn-ghost:hover {
+            background: var(--slate-100);
+            color: var(--navy);
         }
 
         .btn-primary {
             background: var(--primary);
             color: var(--white);
-            box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);
         }
 
         .btn-primary:hover {
             background: var(--primary-light);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 102, 255, 0.4);
-        }
-
-        .btn-white {
-            background: var(--white);
-            color: var(--dark);
-        }
-
-        .btn-white:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
         .btn-outline {
             background: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: var(--white);
+            border: 1px solid var(--slate-300);
+            color: var(--slate-700);
         }
 
         .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-
-        .btn-dark {
-            background: var(--dark);
-            color: var(--white);
-        }
-
-        .btn-dark:hover {
-            background: var(--gray-800);
-            transform: translateY(-2px);
+            background: var(--slate-50);
+            border-color: var(--slate-400);
         }
 
         .btn-lg {
-            padding: 18px 36px;
-            font-size: 17px;
-            border-radius: 14px;
+            padding: 14px 28px;
+            font-size: 15px;
         }
 
         /* ===== HERO ===== */
         .hero {
-            min-height: 100vh;
-            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 50%, #1a2744 100%);
-            position: relative;
-            display: flex;
-            align-items: center;
-            padding: 120px 0 80px;
-            overflow: hidden;
+            padding: 140px 0 100px;
+            background: linear-gradient(180deg, var(--slate-50) 0%, var(--white) 100%);
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 102, 255, 0.3), transparent),
-                radial-gradient(ellipse 60% 40% at 80% 60%, rgba(0, 212, 170, 0.15), transparent);
-            pointer-events: none;
-        }
-
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
-            position: relative;
-            z-index: 1;
+        .hero-content {
+            max-width: 720px;
+            margin: 0 auto;
+            text-align: center;
         }
 
         .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(0, 212, 170, 0.15);
-            border: 1px solid rgba(0, 212, 170, 0.3);
-            color: var(--accent);
-            padding: 8px 16px;
+            background: var(--emerald-100);
+            color: var(--emerald-600);
+            padding: 6px 14px;
             border-radius: 100px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             margin-bottom: 24px;
         }
 
-        .hero-badge::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
         .hero h1 {
-            font-size: 60px;
-            font-weight: 800;
-            line-height: 1.1;
-            color: var(--white);
-            margin-bottom: 24px;
-            letter-spacing: -2px;
-        }
-
-        .hero h1 span {
-            background: linear-gradient(135deg, var(--accent-light), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 52px;
+            font-weight: 700;
+            line-height: 1.15;
+            color: var(--navy);
+            margin-bottom: 20px;
+            letter-spacing: -1.5px;
         }
 
         .hero-description {
-            font-size: 20px;
-            color: var(--gray-400);
-            margin-bottom: 40px;
-            max-width: 500px;
+            font-size: 19px;
+            color: var(--slate-600);
+            margin-bottom: 36px;
+            line-height: 1.7;
         }
 
         .hero-cta {
             display: flex;
-            gap: 16px;
+            justify-content: center;
+            gap: 12px;
             margin-bottom: 48px;
         }
 
-        .hero-trust {
+        .hero-stats {
             display: flex;
-            align-items: center;
-            gap: 16px;
-            color: var(--gray-400);
-            font-size: 14px;
-        }
-
-        .hero-trust-avatars {
-            display: flex;
-        }
-
-        .hero-trust-avatars span {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--gray-600), var(--gray-800));
-            border: 2px solid var(--dark);
-            margin-right: -10px;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 14px;
+            gap: 48px;
+            padding-top: 48px;
+            border-top: 1px solid var(--slate-200);
         }
 
-        .hero-visual {
-            position: relative;
-        }
-
-        .hero-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 32px;
-            position: relative;
-        }
-
-        .hero-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 24px;
-        }
-
-        .alert-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            border-radius: 100px;
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .alert-badge.critical {
-            background: rgba(255, 71, 87, 0.2);
-            color: #FF6B7A;
-        }
-
-        .alert-badge.high {
-            background: rgba(255, 165, 2, 0.2);
-            color: #FFB84D;
-        }
-
-        .hero-card h3 {
-            color: var(--white);
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .hero-card-meta {
-            color: var(--gray-400);
-            font-size: 13px;
-        }
-
-        .hero-card-content {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .hero-card-content p {
-            color: var(--gray-200);
-            font-size: 14px;
-            line-height: 1.7;
-        }
-
-        .hero-card-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .action-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            background: rgba(0, 212, 170, 0.1);
-            border-radius: 10px;
-            font-size: 14px;
-            color: var(--gray-200);
-        }
-
-        .action-item .icon {
-            width: 24px;
-            height: 24px;
-            background: var(--accent);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-        }
-
-        .floating-card {
-            position: absolute;
-            background: var(--white);
-            border-radius: 16px;
-            padding: 16px 20px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .floating-card.card-1 {
-            top: -20px;
-            right: -30px;
-            animation-delay: 0s;
-        }
-
-        .floating-card.card-2 {
-            bottom: 40px;
-            left: -40px;
-            animation-delay: 2s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .floating-card .stat {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--primary);
-        }
-
-        .floating-card .label {
-            font-size: 13px;
-            color: var(--gray-600);
-        }
-
-        /* ===== LOGOS ===== */
-        .logos {
-            padding: 60px 0;
-            background: var(--gray-100);
-            border-bottom: 1px solid var(--gray-200);
-        }
-
-        .logos-title {
+        .hero-stat {
             text-align: center;
-            color: var(--gray-600);
+        }
+
+        .hero-stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: -1px;
+        }
+
+        .hero-stat-label {
             font-size: 14px;
+            color: var(--slate-500);
+            margin-top: 4px;
+        }
+
+        /* ===== TRUSTED BY ===== */
+        .trusted {
+            padding: 60px 0;
+            border-bottom: 1px solid var(--slate-200);
+        }
+
+        .trusted-label {
+            text-align: center;
+            color: var(--slate-500);
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 28px;
+        }
+
+        .trusted-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 56px;
+            flex-wrap: wrap;
+        }
+
+        .trusted-logo {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--slate-400);
+            letter-spacing: -0.3px;
+        }
+
+        /* ===== SECTION STYLES ===== */
+        .section {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            max-width: 600px;
+            margin: 0 auto 64px;
+            text-align: center;
+        }
+
+        .section-label {
+            display: inline-block;
+            color: var(--accent-dark);
+            font-size: 13px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 32px;
+            margin-bottom: 12px;
         }
 
-        .logos-grid {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 60px;
-            flex-wrap: wrap;
-            opacity: 0.6;
-        }
-
-        .logos-grid img {
-            height: 32px;
-            filter: grayscale(100%);
-            transition: all 0.3s;
-        }
-
-        .logos-grid img:hover {
-            filter: grayscale(0%);
-            opacity: 1;
-        }
-
-        .logo-placeholder {
-            font-size: 18px;
+        .section-title {
+            font-size: 36px;
             font-weight: 700;
-            color: var(--gray-600);
+            color: var(--navy);
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+            line-height: 1.25;
+        }
+
+        .section-description {
+            font-size: 17px;
+            color: var(--slate-600);
+            line-height: 1.7;
         }
 
         /* ===== PROBLEM ===== */
         .problem {
-            padding: 120px 0;
             background: var(--white);
-        }
-
-        .section-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--primary);
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 16px;
-        }
-
-        .section-label::before {
-            content: '';
-            width: 24px;
-            height: 2px;
-            background: var(--primary);
-        }
-
-        .section-title {
-            font-size: 48px;
-            font-weight: 800;
-            color: var(--dark);
-            margin-bottom: 20px;
-            letter-spacing: -1px;
-            line-height: 1.2;
-        }
-
-        .section-description {
-            font-size: 18px;
-            color: var(--gray-600);
-            max-width: 600px;
-        }
-
-        .problem-header {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 80px;
-        }
-
-        .problem-header .section-description {
-            margin: 0 auto;
         }
 
         .problem-grid {
@@ -542,94 +341,49 @@
         }
 
         .problem-card {
-            background: var(--gray-100);
-            border-radius: 24px;
-            padding: 40px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .problem-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--danger), var(--warning));
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .problem-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-        }
-
-        .problem-card:hover::before {
-            opacity: 1;
+            padding: 32px;
+            background: var(--slate-50);
+            border: 1px solid var(--slate-200);
+            border-radius: 12px;
         }
 
         .problem-icon {
-            width: 64px;
-            height: 64px;
-            background: var(--white);
-            border-radius: 16px;
+            width: 48px;
+            height: 48px;
+            background: var(--red-100);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .problem-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--red-600);
         }
 
         .problem-card h3 {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 10px;
         }
 
         .problem-card p {
-            color: var(--gray-600);
-            font-size: 16px;
-        }
-
-        .problem-stat {
-            margin-top: 24px;
-            padding-top: 24px;
-            border-top: 1px solid var(--gray-200);
-        }
-
-        .problem-stat .number {
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--danger);
-        }
-
-        .problem-stat .label {
-            font-size: 14px;
-            color: var(--gray-600);
+            font-size: 15px;
+            color: var(--slate-600);
+            line-height: 1.6;
         }
 
         /* ===== HOW IT WORKS ===== */
         .how-it-works {
-            padding: 120px 0;
-            background: var(--dark);
-            position: relative;
-            overflow: hidden;
+            background: var(--navy);
         }
 
-        .how-it-works::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(ellipse 80% 50% at 20% 80%, rgba(0, 102, 255, 0.15), transparent);
-            pointer-events: none;
+        .how-it-works .section-label {
+            color: var(--accent);
         }
 
         .how-it-works .section-title {
@@ -637,23 +391,13 @@
         }
 
         .how-it-works .section-description {
-            color: var(--gray-400);
+            color: var(--slate-400);
         }
 
-        .how-header {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 80px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .steps {
+        .steps-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 32px;
-            position: relative;
-            z-index: 1;
+            gap: 24px;
         }
 
         .step {
@@ -662,356 +406,497 @@
         }
 
         .step-number {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 24px;
+            width: 56px;
+            height: 56px;
+            background: var(--slate-800);
+            border: 2px solid var(--slate-700);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--white);
-            margin: 0 auto 24px;
-            position: relative;
-        }
-
-        .step:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            top: 40px;
-            left: calc(50% + 50px);
-            width: calc(100% - 100px);
-            height: 2px;
-            background: linear-gradient(90deg, var(--primary), transparent);
+            margin: 0 auto 20px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
         }
 
         .step h3 {
+            font-size: 16px;
+            font-weight: 600;
             color: var(--white);
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
         .step p {
-            color: var(--gray-400);
-            font-size: 15px;
+            font-size: 14px;
+            color: var(--slate-400);
+            line-height: 1.6;
         }
 
-        /* ===== SOURCES ===== */
-        .sources {
-            padding: 120px 0;
-            background: var(--gray-100);
+        /* ===== LIVE DEMO ===== */
+        .live-demo {
+            background: var(--slate-900);
+            padding: 100px 0;
         }
 
-        .sources-header {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 60px;
+        .live-demo .section-label {
+            color: var(--accent);
         }
 
-        .sources-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 20px;
+        .live-demo .section-title {
+            color: var(--white);
         }
 
-        .source-card {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 28px;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid var(--gray-200);
+        .live-demo .section-description {
+            color: var(--slate-400);
         }
 
-        .source-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-            border-color: var(--primary);
-        }
-
-        .source-icon {
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin: 0 auto 16px;
-        }
-
-        .source-card h4 {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 4px;
-        }
-
-        .source-card p {
-            font-size: 13px;
-            color: var(--gray-600);
-        }
-
-        /* ===== DEMO ===== */
-        .demo {
-            padding: 120px 0;
-            background: var(--white);
-        }
-
-        .demo-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
-        }
-
-        .demo-content {
-            max-width: 500px;
-        }
-
-        .demo-features {
-            margin-top: 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .demo-feature {
-            display: flex;
-            gap: 16px;
-        }
-
-        .demo-feature-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--gray-100);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            flex-shrink: 0;
-        }
-
-        .demo-feature h4 {
-            font-size: 17px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 4px;
-        }
-
-        .demo-feature p {
-            font-size: 15px;
-            color: var(--gray-600);
-        }
-
-        .demo-visual {
-            background: var(--dark);
-            border-radius: 24px;
-            padding: 32px;
-            position: relative;
-        }
-
-        .demo-browser {
-            background: var(--gray-900);
+        .demo-container {
+            max-width: 880px;
+            margin: 0 auto;
+            background: var(--slate-800);
+            border: 1px solid var(--slate-700);
             border-radius: 12px;
             overflow: hidden;
         }
 
-        .browser-header {
-            background: var(--gray-800);
+        .demo-header {
+            background: var(--slate-900);
             padding: 12px 16px;
             display: flex;
             align-items: center;
             gap: 8px;
+            border-bottom: 1px solid var(--slate-700);
         }
 
-        .browser-dot {
+        .demo-dot {
             width: 12px;
             height: 12px;
             border-radius: 50%;
+            background: var(--slate-600);
         }
 
-        .browser-dot.red { background: #FF5F57; }
-        .browser-dot.yellow { background: #FEBC2E; }
-        .browser-dot.green { background: #28C840; }
+        .demo-content {
+            padding: 32px;
+        }
 
-        .browser-content {
+        .demo-stage {
+            display: none;
+        }
+
+        .demo-stage.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .stage-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--slate-300);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .sources-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .source-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            background: var(--slate-900);
+            border: 1px solid var(--slate-700);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .source-item.scanning {
+            border-color: var(--accent);
+        }
+
+        .source-item.ok {
+            border-color: var(--emerald-600);
+        }
+
+        .source-item.changed {
+            border-color: var(--amber-600);
+            background: rgba(217, 119, 6, 0.1);
+        }
+
+        .source-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--slate-800);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .source-info h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--slate-200);
+        }
+
+        .source-info p {
+            font-size: 11px;
+            color: var(--slate-500);
+        }
+
+        .source-status {
+            margin-left: auto;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: var(--slate-700);
+            color: var(--slate-400);
+        }
+
+        .source-status.scanning {
+            background: rgba(14, 165, 233, 0.2);
+            color: var(--accent);
+        }
+
+        .source-status.ok {
+            background: var(--emerald-100);
+            color: var(--emerald-600);
+        }
+
+        .source-status.changed {
+            background: var(--amber-100);
+            color: var(--amber-600);
+        }
+
+        /* AI Analysis */
+        .ai-box {
+            background: var(--slate-900);
+            border: 1px solid var(--slate-700);
+            border-radius: 8px;
             padding: 24px;
         }
 
-        .alert-preview {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-left: 4px solid var(--danger);
-            border-radius: 12px;
-            padding: 20px;
+        .ai-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 16px;
         }
 
-        .alert-preview.high {
-            border-left-color: var(--warning);
-        }
-
-        .alert-preview h4 {
-            color: var(--white);
-            font-size: 16px;
-            margin-bottom: 8px;
-        }
-
-        .alert-preview p {
-            color: var(--gray-400);
-            font-size: 13px;
-        }
-
-        .alert-preview .meta {
-            display: flex;
-            gap: 16px;
-            margin-top: 12px;
-        }
-
-        .alert-preview .meta span {
+        .ai-badge {
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
             font-size: 12px;
-            color: var(--gray-400);
+            font-weight: 600;
+        }
+
+        .ai-target {
+            font-size: 13px;
+            color: var(--slate-500);
+        }
+
+        .ai-text {
+            font-size: 14px;
+            color: var(--slate-300);
+            line-height: 1.8;
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+
+        .ai-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: var(--accent);
+            animation: blink 1s infinite;
+            vertical-align: middle;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Email Preview */
+        .email-box {
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .email-header {
+            background: var(--slate-100);
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--slate-200);
+        }
+
+        .email-meta {
+            font-size: 13px;
+            color: var(--slate-600);
+            margin-bottom: 6px;
+        }
+
+        .email-subject {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .email-body {
+            padding: 20px;
+        }
+
+        .email-body p {
+            font-size: 14px;
+            color: var(--slate-700);
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .alert-box {
+            background: var(--red-100);
+            border-left: 3px solid var(--red-600);
+            padding: 14px 16px;
+            border-radius: 0 6px 6px 0;
+            margin: 16px 0;
+        }
+
+        .alert-box h5 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--red-600);
+            margin-bottom: 6px;
+        }
+
+        .alert-box p {
+            font-size: 13px;
+            color: var(--slate-700);
+            margin: 0;
+        }
+
+        .action-list {
+            margin-top: 20px;
+        }
+
+        .action-list h5 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--slate-700);
+            margin-bottom: 10px;
+        }
+
+        .action-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: var(--slate-50);
+            border-radius: 6px;
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: var(--slate-700);
+        }
+
+        .action-tag {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 6px;
+            border-radius: 3px;
+            text-transform: uppercase;
+        }
+
+        .action-tag.high {
+            background: var(--red-100);
+            color: var(--red-600);
+        }
+
+        .action-tag.medium {
+            background: var(--amber-100);
+            color: var(--amber-600);
+        }
+
+        .demo-controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .demo-controls .btn {
+            background: var(--slate-700);
+            color: var(--slate-300);
+            border: 1px solid var(--slate-600);
+        }
+
+        .demo-controls .btn:hover {
+            background: var(--slate-600);
+        }
+
+        .demo-controls .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .demo-controls .btn-primary:hover {
+            background: var(--accent-dark);
+        }
+
+        /* ===== SOURCES ===== */
+        .sources {
+            background: var(--slate-50);
+        }
+
+        .sources-list {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+
+        .source-card {
+            background: var(--white);
+            border: 1px solid var(--slate-200);
+            border-radius: 8px;
+            padding: 24px 20px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .source-card:hover {
+            border-color: var(--slate-300);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .source-card-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--slate-100);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+            font-size: 20px;
+        }
+
+        .source-card h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+
+        .source-card p {
+            font-size: 12px;
+            color: var(--slate-500);
         }
 
         /* ===== PRICING ===== */
         .pricing {
-            padding: 120px 0;
-            background: linear-gradient(180deg, var(--gray-100) 0%, var(--white) 100%);
-        }
-
-        .pricing-header {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 60px;
-        }
-
-        .pricing-toggle {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-top: 24px;
-        }
-
-        .pricing-toggle span {
-            font-size: 15px;
-            color: var(--gray-600);
-        }
-
-        .pricing-toggle .active {
-            color: var(--dark);
-            font-weight: 600;
+            background: var(--white);
         }
 
         .pricing-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
-            max-width: 1100px;
+            gap: 24px;
+            max-width: 960px;
             margin: 0 auto;
         }
 
         .pricing-card {
             background: var(--white);
-            border-radius: 24px;
-            padding: 40px;
-            border: 2px solid var(--gray-200);
-            transition: all 0.3s ease;
+            border: 1px solid var(--slate-200);
+            border-radius: 12px;
+            padding: 32px;
             position: relative;
-        }
-
-        .pricing-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
         }
 
         .pricing-card.featured {
             border-color: var(--primary);
-            transform: scale(1.05);
-        }
-
-        .pricing-card.featured:hover {
-            transform: scale(1.05) translateY(-8px);
+            box-shadow: 0 8px 24px rgba(30, 58, 95, 0.12);
         }
 
         .pricing-badge {
             position: absolute;
-            top: -14px;
+            top: -12px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: var(--white);
-            padding: 6px 20px;
+            background: var(--primary);
+            color: white;
+            padding: 4px 14px;
             border-radius: 100px;
-            font-size: 13px;
-            font-weight: 700;
+            font-size: 12px;
+            font-weight: 600;
         }
 
         .pricing-card h3 {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 4px;
         }
 
         .pricing-card .description {
-            font-size: 15px;
-            color: var(--gray-600);
-            margin-bottom: 24px;
+            font-size: 14px;
+            color: var(--slate-500);
+            margin-bottom: 20px;
         }
 
         .pricing-price {
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
 
         .pricing-price .amount {
-            font-size: 56px;
-            font-weight: 800;
-            color: var(--dark);
-            line-height: 1;
+            font-size: 40px;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: -1px;
         }
 
         .pricing-price .currency {
-            font-size: 24px;
-            font-weight: 700;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--slate-500);
         }
 
         .pricing-price .period {
-            font-size: 16px;
-            color: var(--gray-600);
+            font-size: 14px;
+            color: var(--slate-500);
         }
 
         .pricing-features {
             list-style: none;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
 
         .pricing-features li {
             display: flex;
             align-items: flex-start;
-            gap: 12px;
-            padding: 10px 0;
-            font-size: 15px;
-            color: var(--gray-800);
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 14px;
+            color: var(--slate-700);
         }
 
         .pricing-features li::before {
             content: '✓';
-            width: 24px;
-            height: 24px;
-            background: rgba(0, 212, 170, 0.15);
-            color: var(--accent);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
+            color: var(--emerald-600);
             font-weight: 700;
-            flex-shrink: 0;
+            font-size: 13px;
         }
 
         .pricing-card .btn {
@@ -1020,273 +905,145 @@
 
         /* ===== TESTIMONIALS ===== */
         .testimonials {
-            padding: 120px 0;
-            background: var(--dark);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .testimonials::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(ellipse 60% 40% at 70% 30%, rgba(0, 212, 170, 0.1), transparent);
-            pointer-events: none;
-        }
-
-        .testimonials-header {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 60px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .testimonials .section-title {
-            color: var(--white);
-        }
-
-        .testimonials .section-description {
-            color: var(--gray-400);
+            background: var(--slate-50);
         }
 
         .testimonials-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
-            position: relative;
-            z-index: 1;
+            gap: 24px;
         }
 
         .testimonial-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 32px;
+            background: var(--white);
+            border: 1px solid var(--slate-200);
+            border-radius: 12px;
+            padding: 28px;
         }
 
         .testimonial-card p {
-            color: var(--gray-200);
-            font-size: 16px;
-            line-height: 1.8;
-            margin-bottom: 24px;
+            font-size: 15px;
+            color: var(--slate-700);
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-style: italic;
         }
 
         .testimonial-author {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
         }
 
         .testimonial-avatar {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+            width: 44px;
+            height: 44px;
+            background: var(--slate-200);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--white);
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--slate-600);
         }
 
         .testimonial-info h4 {
-            color: var(--white);
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
         }
 
         .testimonial-info span {
-            color: var(--gray-400);
-            font-size: 14px;
-        }
-
-        /* ===== FAQ ===== */
-        .faq {
-            padding: 120px 0;
-            background: var(--white);
-        }
-
-        .faq-header {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 60px;
-        }
-
-        .faq-grid {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .faq-item {
-            border-bottom: 1px solid var(--gray-200);
-            padding: 24px 0;
-        }
-
-        .faq-question {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            width: 100%;
-            background: none;
-            border: none;
-            text-align: left;
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--dark);
-            font-family: inherit;
-        }
-
-        .faq-question::after {
-            content: '+';
-            font-size: 24px;
-            color: var(--primary);
-            transition: transform 0.3s;
-        }
-
-        .faq-item.open .faq-question::after {
-            transform: rotate(45deg);
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .faq-item.open .faq-answer {
-            max-height: 200px;
-        }
-
-        .faq-answer p {
-            padding-top: 16px;
-            color: var(--gray-600);
-            font-size: 16px;
-            line-height: 1.7;
+            font-size: 13px;
+            color: var(--slate-500);
         }
 
         /* ===== CTA ===== */
         .cta {
-            padding: 120px 0;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                radial-gradient(ellipse 50% 80% at 20% 100%, rgba(0, 212, 170, 0.3), transparent),
-                radial-gradient(ellipse 50% 80% at 80% 0%, rgba(255, 255, 255, 0.1), transparent);
-            pointer-events: none;
+            padding: 100px 0;
+            background: var(--primary);
         }
 
         .cta-content {
-            text-align: center;
-            position: relative;
-            z-index: 1;
-            max-width: 700px;
+            max-width: 600px;
             margin: 0 auto;
+            text-align: center;
         }
 
         .cta h2 {
-            font-size: 48px;
-            font-weight: 800;
+            font-size: 32px;
+            font-weight: 700;
             color: var(--white);
-            margin-bottom: 20px;
-            letter-spacing: -1px;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
         }
 
         .cta p {
-            font-size: 20px;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 40px;
+            font-size: 17px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 32px;
         }
 
         .cta-buttons {
             display: flex;
             justify-content: center;
-            gap: 16px;
+            gap: 12px;
         }
 
-        .cta-note {
-            margin-top: 24px;
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
+        .cta .btn-white {
+            background: var(--white);
+            color: var(--primary);
+        }
+
+        .cta .btn-white:hover {
+            background: var(--slate-100);
+        }
+
+        .cta .btn-outline {
+            border-color: rgba(255,255,255,0.4);
+            color: var(--white);
+        }
+
+        .cta .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.6);
         }
 
         /* ===== FOOTER ===== */
         footer {
-            background: var(--dark);
-            color: var(--gray-400);
-            padding: 80px 0 40px;
+            background: var(--navy);
+            color: var(--slate-400);
+            padding: 64px 0 32px;
         }
 
         .footer-grid {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 60px;
-            margin-bottom: 60px;
-        }
-
-        .footer-brand .logo {
-            color: var(--white);
-            margin-bottom: 20px;
+            gap: 48px;
+            margin-bottom: 48px;
         }
 
         .footer-brand p {
-            font-size: 15px;
+            font-size: 14px;
             line-height: 1.7;
-            margin-bottom: 24px;
-        }
-
-        .footer-social {
-            display: flex;
-            gap: 12px;
-        }
-
-        .footer-social a {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gray-400);
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .footer-social a:hover {
-            background: var(--primary);
-            color: var(--white);
+            margin-top: 16px;
+            color: var(--slate-500);
         }
 
         .footer-links h4 {
             color: var(--white);
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
         }
 
         .footer-links a {
             display: block;
-            color: var(--gray-400);
+            color: var(--slate-500);
             text-decoration: none;
-            font-size: 15px;
-            padding: 8px 0;
+            font-size: 14px;
+            padding: 6px 0;
             transition: color 0.2s;
         }
 
@@ -1295,15 +1052,12 @@
         }
 
         .footer-bottom {
-            padding-top: 40px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 32px;
+            border-top: 1px solid var(--slate-800);
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .footer-bottom p {
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .footer-legal {
@@ -1312,338 +1066,23 @@
         }
 
         .footer-legal a {
-            color: var(--gray-400);
+            color: var(--slate-500);
             text-decoration: none;
-            font-size: 14px;
-            transition: color 0.2s;
         }
 
         .footer-legal a:hover {
             color: var(--white);
         }
 
-        /* ===== LIVE DEMO ===== */
-        .live-demo {
-            padding: 120px 0;
-            background: linear-gradient(135deg, #0a1628 0%, #1a365d 100%);
-        }
-
-        .live-demo-header {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 60px;
-        }
-
-        .live-demo .section-title {
-            color: var(--white);
-        }
-
-        .live-demo .section-description {
-            color: var(--gray-400);
-        }
-
-        .demo-animation-container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 24px;
-            padding: 40px;
-        }
-
-        .demo-stage {
-            display: none;
-            animation: fadeInUp 0.5s ease-out;
-        }
-
-        .demo-stage.active {
-            display: block;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .stage-title {
-            color: var(--white);
-            font-size: 1.5rem;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .monitoring-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-        }
-
-        .monitor-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            transition: all 0.3s;
-        }
-
-        .monitor-card.scanning {
-            border-color: #60a5fa;
-            box-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
-        }
-
-        .monitor-card.checked {
-            border-color: #34d399;
-        }
-
-        .monitor-card.changed {
-            border-color: #f59e0b;
-            box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
-            animation: cardPulse 1s infinite;
-        }
-
-        @keyframes cardPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-
-        .monitor-icon {
-            font-size: 2rem;
-        }
-
-        .monitor-info h4 {
-            color: var(--white);
-            font-size: 0.95rem;
-            margin-bottom: 4px;
-        }
-
-        .monitor-info p {
-            color: var(--gray-400);
-            font-size: 0.8rem;
-        }
-
-        .monitor-status {
-            font-size: 0.85rem;
-            padding: 6px 12px;
-            border-radius: 20px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .monitor-status.waiting {
-            background: rgba(255,255,255,0.1);
-            color: var(--gray-400);
-        }
-
-        .monitor-status.scanning {
-            background: rgba(96, 165, 250, 0.2);
-            color: #60a5fa;
-        }
-
-        .monitor-status.ok {
-            background: rgba(52, 211, 153, 0.2);
-            color: #34d399;
-        }
-
-        .monitor-status.changed {
-            background: rgba(245, 158, 11, 0.2);
-            color: #f59e0b;
-            animation: blink 0.5s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        /* AI Analysis Stage */
-        .ai-analysis-box {
-            background: rgba(0,0,0,0.3);
-            border-radius: 16px;
-            padding: 24px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .ai-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .ai-badge {
-            background: linear-gradient(135deg, #8b5cf6, #6366f1);
-            color: white;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .ai-company {
-            color: var(--gray-400);
-            font-size: 0.9rem;
-        }
-
-        .ai-content {
-            color: var(--gray-200);
-            font-size: 1rem;
-            line-height: 1.8;
-            min-height: 120px;
-        }
-
-        .ai-typing {
-            display: inline;
-        }
-
-        .cursor {
-            animation: cursorBlink 0.7s infinite;
-            color: var(--accent);
-        }
-
-        @keyframes cursorBlink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        /* Email Preview Stage */
-        .email-preview {
-            background: var(--white);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        }
-
-        .email-header {
-            background: var(--gray-100);
-            padding: 20px;
-            border-bottom: 1px solid var(--gray-200);
-        }
-
-        .email-to {
-            color: var(--gray-600);
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-        }
-
-        .email-subject {
-            color: var(--dark);
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
-
-        .email-body {
-            padding: 24px;
-            color: var(--gray-800);
-        }
-
-        .email-body p {
-            margin-bottom: 16px;
-            line-height: 1.7;
-        }
-
-        .change-box {
-            background: rgba(255, 71, 87, 0.1);
-            border-left: 4px solid var(--danger);
-            padding: 16px;
-            border-radius: 0 8px 8px 0;
-            margin: 20px 0;
-        }
-
-        .change-box h5 {
-            color: var(--danger);
-            margin-bottom: 8px;
-            font-size: 1rem;
-        }
-
-        .change-box p {
-            margin: 0;
-            color: var(--gray-800);
-        }
-
-        .action-items {
-            margin-top: 24px;
-        }
-
-        .action-items h5 {
-            color: var(--dark);
-            margin-bottom: 12px;
-        }
-
-        .action-item-demo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            background: var(--gray-100);
-            border-radius: 8px;
-            margin-bottom: 8px;
-        }
-
-        .priority {
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        .priority.high {
-            background: rgba(255, 71, 87, 0.2);
-            color: var(--danger);
-        }
-
-        .priority.medium {
-            background: rgba(255, 165, 2, 0.2);
-            color: var(--warning);
-        }
-
-        .demo-controls {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-top: 30px;
-        }
-
-        .demo-controls .btn-outline {
-            border-color: rgba(255,255,255,0.3);
-            color: var(--white);
-        }
-
-        .demo-controls .btn-outline:hover {
-            background: rgba(255,255,255,0.1);
-        }
-
         /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
-            .hero-grid {
-                grid-template-columns: 1fr;
-                gap: 60px;
-            }
-
-            .hero-visual {
-                order: -1;
-            }
-
-            .steps {
+            .steps-grid {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 32px;
             }
 
-            .step:not(:last-child)::after {
-                display: none;
-            }
-
-            .sources-grid {
+            .sources-list {
                 grid-template-columns: repeat(3, 1fr);
-            }
-
-            .demo-grid {
-                grid-template-columns: 1fr;
-                gap: 60px;
             }
 
             .footer-grid {
@@ -1653,68 +1092,52 @@
 
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: 40px;
+                font-size: 36px;
             }
 
             .section-title {
-                font-size: 36px;
+                font-size: 28px;
             }
 
             nav {
                 display: none;
             }
 
-            .monitoring-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .demo-animation-container {
-                padding: 20px;
+            .hero-stats {
+                flex-direction: column;
+                gap: 24px;
             }
 
             .problem-grid,
             .pricing-grid,
-            .testimonials-grid {
+            .testimonials-grid,
+            .steps-grid {
                 grid-template-columns: 1fr;
             }
 
-            .pricing-card.featured {
-                transform: none;
-            }
-
-            .pricing-card.featured:hover {
-                transform: translateY(-8px);
-            }
-
-            .steps {
-                grid-template-columns: 1fr;
-            }
-
+            .sources-list,
             .sources-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .hero-cta {
-                flex-direction: column;
-            }
-
+            .hero-cta,
             .cta-buttons {
                 flex-direction: column;
             }
 
             .footer-grid {
                 grid-template-columns: 1fr;
-                gap: 40px;
+                gap: 32px;
             }
 
             .footer-bottom {
                 flex-direction: column;
-                gap: 20px;
+                gap: 16px;
                 text-align: center;
             }
 
-            .floating-card {
-                display: none;
+            .trusted-logos {
+                gap: 32px;
             }
         }
     </style>
@@ -1723,337 +1146,311 @@
     <header>
         <div class="container">
             <a href="#" class="logo">
-                <div class="logo-icon">🐟</div>
-                <span class="logo-text">AquaRegWatch</span>
+                <div class="logo-mark">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                </div>
+                <span class="logo-text">AquaReg<span>Watch</span></span>
             </a>
             <nav>
-                <a href="#problem">Problemet</a>
+                <a href="#problem">Utfordringen</a>
                 <a href="#how">Slik fungerer det</a>
-                <a href="#live-demo">Demo</a>
+                <a href="#demo">Demo</a>
                 <a href="#pricing">Priser</a>
-                <a href="#cta" class="btn btn-primary">Start gratis</a>
+                <div class="nav-cta">
+                    <a href="#" class="btn btn-ghost">Logg inn</a>
+                    <a href="#cta" class="btn btn-primary">Kom i gang</a>
+                </div>
             </nav>
         </div>
     </header>
 
     <section class="hero">
         <div class="container">
-            <div class="hero-grid">
-                <div class="hero-content">
-                    <div class="hero-badge">Automatisk reguleringsovervåking</div>
-                    <h1>Vet du hva myndighetene <span>endret i går?</span></h1>
-                    <p class="hero-description">Mattilsynet og Fiskeridirektoratet publiserer kritiske endringer uten varsel. Vi overvåker 25+ kilder og varsler deg før det koster deg penger.</p>
-                    <div class="hero-cta">
-                        <a href="#cta" class="btn btn-primary btn-lg">Start 14 dagers gratis prøve</a>
-                        <a href="#how" class="btn btn-outline btn-lg">Se hvordan det fungerer</a>
-                    </div>
-                    <div class="hero-trust">
-                        <div class="hero-trust-avatars">
-                            <span>M</span>
-                            <span>L</span>
-                            <span>C</span>
-                            <span>+</span>
-                        </div>
-                        <span>Brukes av ledende norske oppdrettere</span>
-                    </div>
+            <div class="hero-content">
+                <div class="hero-badge">Brukes av ledende norske oppdrettere</div>
+                <h1>Regulatorisk overvåking for norsk havbruk</h1>
+                <p class="hero-description">Vi overvåker Mattilsynet, Fiskeridirektoratet og 20+ andre myndighetskilder. Du får automatisk varsel når regelverket endres - med AI-analyse og konkrete handlingspunkter.</p>
+                <div class="hero-cta">
+                    <a href="#cta" class="btn btn-primary btn-lg">Start 14 dagers prøveperiode</a>
+                    <a href="#demo" class="btn btn-outline btn-lg">Se demo</a>
                 </div>
-                <div class="hero-visual">
-                    <div class="hero-card">
-                        <div class="hero-card-header">
-                            <div>
-                                <span class="alert-badge critical">● KRITISK</span>
-                                <h3>Nye lakselusgrenser fra 1. mars</h3>
-                                <p class="hero-card-meta">Mattilsynet • For 2 timer siden</p>
-                            </div>
-                        </div>
-                        <div class="hero-card-content">
-                            <p>Grensen reduseres fra 0,5 til 0,25 voksne hunnlus per fisk i PO3, PO4 og PO5. Anlegg som overskrider grensen vil få pålegg om behandling innen 14 dager.</p>
-                        </div>
-                        <div class="hero-card-actions">
-                            <div class="action-item">
-                                <div class="icon">!</div>
-                                <span>Gjennomfør ekstra lusetelling denne uken</span>
-                            </div>
-                            <div class="action-item">
-                                <div class="icon">📋</div>
-                                <span>Oppdater interne rutiner innen 1. mars</span>
-                            </div>
-                        </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">25+</div>
+                        <div class="hero-stat-label">Kilder overvåket</div>
                     </div>
-                    <div class="floating-card card-1">
-                        <div class="stat">25+</div>
-                        <div class="label">Kilder overvåket</div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">&lt;1t</div>
+                        <div class="hero-stat-label">Varseltid</div>
                     </div>
-                    <div class="floating-card card-2">
-                        <div class="stat">&lt;1t</div>
-                        <div class="label">Varseltid</div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">50+</div>
+                        <div class="hero-stat-label">Aktive kunder</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="logos">
+    <section class="trusted">
         <div class="container">
-            <p class="logos-title">Vi overvåker alle relevante norske myndigheter</p>
-            <div class="logos-grid">
-                <span class="logo-placeholder">Fiskeridirektoratet</span>
-                <span class="logo-placeholder">Mattilsynet</span>
-                <span class="logo-placeholder">Miljødirektoratet</span>
-                <span class="logo-placeholder">Lovdata</span>
-                <span class="logo-placeholder">Regjeringen</span>
+            <p class="trusted-label">Brukt av oppdrettere over hele Norge</p>
+            <div class="trusted-logos">
+                <span class="trusted-logo">Nordlaks</span>
+                <span class="trusted-logo">Cermaq</span>
+                <span class="trusted-logo">SalMar</span>
+                <span class="trusted-logo">Grieg Seafood</span>
+                <span class="trusted-logo">Nova Sea</span>
             </div>
         </div>
     </section>
 
-    <section class="problem" id="problem">
+    <section class="section problem" id="problem">
         <div class="container">
-            <div class="problem-header">
-                <span class="section-label">Problemet</span>
-                <h2 class="section-title">Reguleringsendringer kommer uten varsel</h2>
-                <p class="section-description">Norske myndigheter er notorisk dårlige på å kommunisere endringer. Resultatet er bøter, produksjonsstopp og tapte muligheter.</p>
+            <div class="section-header">
+                <span class="section-label">Utfordringen</span>
+                <h2 class="section-title">Regulatoriske endringer kommer uten varsel</h2>
+                <p class="section-description">Norske myndigheter publiserer kritiske endringer på nettsider uten å varsle bransjen. Konsekvensen er bøter, produksjonsstopp og tapte muligheter.</p>
             </div>
             <div class="problem-grid">
                 <div class="problem-card">
-                    <div class="problem-icon">📋</div>
-                    <h3>Skjulte oppdateringer</h3>
-                    <p>Kritiske endringer legges ut på nettsider uten pressemelding. Du må sjekke 10+ nettsider manuelt - hver dag.</p>
-                    <div class="problem-stat">
-                        <div class="number">10+</div>
-                        <div class="label">Myndighetskilder å sjekke</div>
+                    <div class="problem-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                     </div>
+                    <h3>Fragmenterte kilder</h3>
+                    <p>Kritiske endringer publiseres på 10+ ulike nettsider uten koordinering. Manuell sjekk tar timer hver uke.</p>
                 </div>
                 <div class="problem-card">
-                    <div class="problem-icon">⏰</div>
+                    <div class="problem-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
                     <h3>Tapte frister</h3>
-                    <p>Nye høringer, søknadsfrister og compliance-krav oppdages for sent. Resultatet er bøter eller tapte muligheter.</p>
-                    <div class="problem-stat">
-                        <div class="number">47%</div>
-                        <div class="label">Oppdager endringer for sent*</div>
-                    </div>
+                    <p>Høringer, søknadsfrister og nye compliance-krav oppdages for sent. Resultatet er tapte muligheter og overtredelser.</p>
                 </div>
                 <div class="problem-card">
-                    <div class="problem-icon">💸</div>
-                    <h3>Kostbare konsekvenser</h3>
-                    <p>Lakselusbøter på over 1 million. Produksjonsstopp ved ILA-utbrudd. Tapte konsesjoner ved brudd.</p>
-                    <div class="problem-stat">
-                        <div class="number">1M+</div>
-                        <div class="label">Typisk bot ved brudd (NOK)</div>
+                    <div class="problem-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
+                    <h3>Kostbare konsekvenser</h3>
+                    <p>Lakselusbøter på over 1 million kroner. Produksjonsstopp ved sykdomsutbrudd. Tapte konsesjoner ved gjentatte brudd.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="how-it-works" id="how">
+    <section class="section how-it-works" id="how">
         <div class="container">
-            <div class="how-header">
+            <div class="section-header">
                 <span class="section-label">Slik fungerer det</span>
                 <h2 class="section-title">Fra endring til handling på under én time</h2>
-                <p class="section-description">Vi gjør det enkelt å holde seg oppdatert. Du trenger aldri å sjekke en myndighetsside igjen.</p>
+                <p class="section-description">Automatisk overvåking, AI-analyse og personaliserte varsler. Du handler før konkurrentene vet hva som skjer.</p>
             </div>
-            <div class="steps">
+            <div class="steps-grid">
                 <div class="step">
                     <div class="step-number">1</div>
-                    <h3>Vi skanner</h3>
-                    <p>Vårt system sjekker 25+ myndighetssider hver time, 24/7, og sammenligner med forrige versjon.</p>
+                    <h3>Kontinuerlig overvåking</h3>
+                    <p>Vi sjekker 25+ myndighetskilder hver time, 24/7/365.</p>
                 </div>
                 <div class="step">
                     <div class="step-number">2</div>
-                    <h3>AI analyserer</h3>
-                    <p>Når noe endres, bruker vi AI til å forstå hva som er nytt og hvem som påvirkes.</p>
+                    <h3>AI-analyse</h3>
+                    <p>Endringer analyseres og kategoriseres etter relevans for din virksomhet.</p>
                 </div>
                 <div class="step">
                     <div class="step-number">3</div>
-                    <h3>Du får varsel</h3>
-                    <p>Du mottar et klart og tydelig varsel på e-post eller Slack med oppsummering og handlingspunkter.</p>
+                    <h3>Personalisert varsel</h3>
+                    <p>Du mottar e-post med oppsummering, prioritet og konkrete handlingspunkter.</p>
                 </div>
                 <div class="step">
                     <div class="step-number">4</div>
                     <h3>Du handler</h3>
-                    <p>Med frister, prioritet og konkrete tiltak kan du handle før det blir et problem.</p>
+                    <p>Med frister og ansvarsfordeling kan du handle før det blir et problem.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- LIVE DEMO SECTION -->
-    <section class="live-demo" id="live-demo">
+    <section class="live-demo" id="demo">
         <div class="container">
-            <div class="live-demo-header">
+            <div class="section-header">
                 <span class="section-label">Se det i aksjon</span>
-                <h2 class="section-title">Live Demo</h2>
+                <h2 class="section-title">Live demonstrasjon</h2>
                 <p class="section-description">Se hvordan systemet oppdager endringer og genererer personaliserte varsler.</p>
             </div>
 
-            <div class="demo-animation-container">
-                <!-- Stage 1: Monitoring -->
-                <div id="demo-stage-1" class="demo-stage active">
-                    <h3 class="stage-title">Skanner myndighetskilder...</h3>
-                    <div class="monitoring-grid">
-                        <div class="monitor-card" data-source="fdir">
-                            <div class="monitor-icon">🐟</div>
-                            <div class="monitor-info">
-                                <h4>Fiskeridirektoratet</h4>
-                                <p>Nyheter og kunngjøringer</p>
-                            </div>
-                            <div class="monitor-status waiting">Venter...</div>
-                        </div>
-                        <div class="monitor-card" data-source="mattilsynet">
-                            <div class="monitor-icon">🏥</div>
-                            <div class="monitor-info">
-                                <h4>Mattilsynet</h4>
-                                <p>Fiskehelse og lakselus</p>
-                            </div>
-                            <div class="monitor-status waiting">Venter...</div>
-                        </div>
-                        <div class="monitor-card" data-source="lovdata">
-                            <div class="monitor-icon">⚖️</div>
-                            <div class="monitor-info">
-                                <h4>Lovdata</h4>
-                                <p>Forskriftsendringer</p>
-                            </div>
-                            <div class="monitor-status waiting">Venter...</div>
-                        </div>
-                        <div class="monitor-card" data-source="miljo">
-                            <div class="monitor-icon">🌿</div>
-                            <div class="monitor-info">
-                                <h4>Miljødirektoratet</h4>
-                                <p>Miljøkrav og utslipp</p>
-                            </div>
-                            <div class="monitor-status waiting">Venter...</div>
-                        </div>
-                        <div class="monitor-card" data-source="regjering">
-                            <div class="monitor-icon">🏛️</div>
-                            <div class="monitor-info">
-                                <h4>Regjeringen</h4>
-                                <p>Høringer og politikk</p>
-                            </div>
-                            <div class="monitor-status waiting">Venter...</div>
-                        </div>
-                        <div class="monitor-card" data-source="barents">
-                            <div class="monitor-icon">🗺️</div>
-                            <div class="monitor-info">
-                                <h4>BarentsWatch</h4>
-                                <p>Soner og kartdata</p>
-                            </div>
-                            <div class="monitor-status waiting">Venter...</div>
-                        </div>
-                    </div>
+            <div class="demo-container">
+                <div class="demo-header">
+                    <span class="demo-dot"></span>
+                    <span class="demo-dot"></span>
+                    <span class="demo-dot"></span>
                 </div>
-
-                <!-- Stage 2: AI Analysis -->
-                <div id="demo-stage-2" class="demo-stage">
-                    <h3 class="stage-title">🤖 AI analyserer endringen for din bedrift...</h3>
-                    <div class="ai-analysis-box">
-                        <div class="ai-header">
-                            <span class="ai-badge">Claude AI</span>
-                            <span class="ai-company">Analyserer for: Nordlaks AS</span>
-                        </div>
-                        <div class="ai-content">
-                            <div id="ai-typing" class="ai-typing"></div>
-                            <span class="cursor">|</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Stage 3: Email Alert -->
-                <div id="demo-stage-3" class="demo-stage">
-                    <h3 class="stage-title">📧 Personalisert varsel sendt!</h3>
-                    <div class="email-preview">
-                        <div class="email-header">
-                            <div class="email-to">Til: <strong>compliance@nordlaks.no</strong></div>
-                            <div class="email-subject">🚨 KRITISK: Nye lakselusgrenser påvirker 4 av dine lokaliteter</div>
-                        </div>
-                        <div class="email-body">
-                            <p><strong>Hei Nordlaks-teamet,</strong></p>
-                            <p>Vi har oppdaget en kritisk endring som påvirker deres operasjoner i PO9 (Vestfjorden):</p>
-                            <div class="change-box">
-                                <h5>🔴 Endring i lakselusforskriften</h5>
-                                <p>Mattilsynet har senket grensen for voksne hunnlus fra 0,5 til <strong>0,2 lus per fisk</strong> i produksjonsområde 9. Ikrafttredelse: 1. mars 2026.</p>
+                <div class="demo-content">
+                    <!-- Stage 1 -->
+                    <div id="stage-1" class="demo-stage active">
+                        <div class="stage-title">Skanner myndighetskilder...</div>
+                        <div class="sources-grid">
+                            <div class="source-item" data-id="fdir">
+                                <div class="source-icon">F</div>
+                                <div class="source-info">
+                                    <h4>Fiskeridirektoratet</h4>
+                                    <p>Nyheter</p>
+                                </div>
+                                <div class="source-status">Venter</div>
                             </div>
-                            <div class="action-items">
-                                <h5>Anbefalte tiltak:</h5>
-                                <div class="action-item-demo">
-                                    <span class="priority high">HØY</span>
-                                    <span>Gjennomfør ekstra lusetelling på Øksfjord og Myken innen 15. feb</span>
+                            <div class="source-item" data-id="matt">
+                                <div class="source-icon">M</div>
+                                <div class="source-info">
+                                    <h4>Mattilsynet</h4>
+                                    <p>Fiskehelse</p>
                                 </div>
-                                <div class="action-item-demo">
-                                    <span class="priority high">HØY</span>
-                                    <span>Forbered behandlingskapasitet - vurder rensefisk eller Thermolicer</span>
+                                <div class="source-status">Venter</div>
+                            </div>
+                            <div class="source-item" data-id="lov">
+                                <div class="source-icon">L</div>
+                                <div class="source-info">
+                                    <h4>Lovdata</h4>
+                                    <p>Forskrifter</p>
                                 </div>
-                                <div class="action-item-demo">
-                                    <span class="priority medium">MEDIUM</span>
-                                    <span>Oppdater interne rutiner og varslingssystemer innen 25. feb</span>
+                                <div class="source-status">Venter</div>
+                            </div>
+                            <div class="source-item" data-id="miljo">
+                                <div class="source-icon">M</div>
+                                <div class="source-info">
+                                    <h4>Miljødirektoratet</h4>
+                                    <p>Miljøkrav</p>
                                 </div>
+                                <div class="source-status">Venter</div>
+                            </div>
+                            <div class="source-item" data-id="reg">
+                                <div class="source-icon">R</div>
+                                <div class="source-info">
+                                    <h4>Regjeringen</h4>
+                                    <p>Høringer</p>
+                                </div>
+                                <div class="source-status">Venter</div>
+                            </div>
+                            <div class="source-item" data-id="bw">
+                                <div class="source-icon">B</div>
+                                <div class="source-info">
+                                    <h4>BarentsWatch</h4>
+                                    <p>Soner</p>
+                                </div>
+                                <div class="source-status">Venter</div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="demo-controls">
-                    <button id="demo-restart" class="btn btn-outline">🔄 Start på nytt</button>
-                    <button id="demo-skip" class="btn btn-primary">Se resultat →</button>
+                    <!-- Stage 2 -->
+                    <div id="stage-2" class="demo-stage">
+                        <div class="stage-title">AI analyserer endringen...</div>
+                        <div class="ai-box">
+                            <div class="ai-header">
+                                <span class="ai-badge">Claude AI</span>
+                                <span class="ai-target">Analyserer for: Nordlaks AS</span>
+                            </div>
+                            <div class="ai-text" id="ai-output"></div>
+                            <span class="ai-cursor"></span>
+                        </div>
+                    </div>
+
+                    <!-- Stage 3 -->
+                    <div id="stage-3" class="demo-stage">
+                        <div class="stage-title">Personalisert varsel generert</div>
+                        <div class="email-box">
+                            <div class="email-header">
+                                <div class="email-meta">Til: compliance@nordlaks.no</div>
+                                <div class="email-subject">KRITISK: Nye lakselusgrenser påvirker 4 av deres lokaliteter</div>
+                            </div>
+                            <div class="email-body">
+                                <p><strong>Hei,</strong></p>
+                                <p>Vi har oppdaget en kritisk endring som påvirker deres operasjoner i PO9 (Vestfjorden):</p>
+                                <div class="alert-box">
+                                    <h5>Endring i lakselusforskriften</h5>
+                                    <p>Mattilsynet har senket grensen for voksne hunnlus fra 0,5 til <strong>0,2 lus per fisk</strong> i produksjonsområde 9. Ikrafttredelse: 1. mars 2026.</p>
+                                </div>
+                                <div class="action-list">
+                                    <h5>Anbefalte tiltak:</h5>
+                                    <div class="action-row">
+                                        <span class="action-tag high">Høy</span>
+                                        Gjennomfør ekstra lusetelling på Øksfjord og Myken innen 15. feb
+                                    </div>
+                                    <div class="action-row">
+                                        <span class="action-tag high">Høy</span>
+                                        Forbered behandlingskapasitet - vurder rensefisk eller Thermolicer
+                                    </div>
+                                    <div class="action-row">
+                                        <span class="action-tag medium">Medium</span>
+                                        Oppdater interne rutiner og varslingssystemer innen 25. feb
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="demo-controls">
+                        <button id="btn-restart" class="btn">Start på nytt</button>
+                        <button id="btn-skip" class="btn btn-primary">Se resultat</button>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="sources">
+    <section class="section sources" id="sources">
         <div class="container">
-            <div class="sources-header">
+            <div class="section-header">
                 <span class="section-label">Kilder</span>
-                <h2 class="section-title">25+ kilder overvåket</h2>
-                <p class="section-description">Vi dekker alle relevante norske myndigheter for akvakultur - og legger til flere på forespørsel.</p>
+                <h2 class="section-title">25+ myndighetskilder</h2>
+                <p class="section-description">Vi dekker alle relevante norske myndigheter for havbruksnæringen.</p>
             </div>
-            <div class="sources-grid">
+            <div class="sources-list">
                 <div class="source-card">
-                    <div class="source-icon">🐟</div>
+                    <div class="source-card-icon">F</div>
                     <h4>Fiskeridirektoratet</h4>
-                    <p>MTB, tillatelser, trafikklys</p>
+                    <p>MTB, tillatelser</p>
                 </div>
                 <div class="source-card">
-                    <div class="source-icon">🏥</div>
+                    <div class="source-card-icon">M</div>
                     <h4>Mattilsynet</h4>
-                    <p>Lakselus, fiskehelse, ILA</p>
+                    <p>Fiskehelse, lakselus</p>
                 </div>
                 <div class="source-card">
-                    <div class="source-icon">🌿</div>
+                    <div class="source-card-icon">M</div>
                     <h4>Miljødirektoratet</h4>
                     <p>Utslipp, miljøkrav</p>
                 </div>
                 <div class="source-card">
-                    <div class="source-icon">⚖️</div>
+                    <div class="source-card-icon">L</div>
                     <h4>Lovdata</h4>
                     <p>Forskrifter, lover</p>
                 </div>
                 <div class="source-card">
-                    <div class="source-icon">🏛️</div>
+                    <div class="source-card-icon">R</div>
                     <h4>Regjeringen</h4>
                     <p>Høringer, politikk</p>
                 </div>
                 <div class="source-card">
-                    <div class="source-icon">🇪🇺</div>
+                    <div class="source-card-icon">E</div>
                     <h4>EUR-Lex</h4>
-                    <p>EU-reguleringer (EØS)</p>
+                    <p>EU-reguleringer</p>
                 </div>
                 <div class="source-card">
-                    <div class="source-icon">📍</div>
+                    <div class="source-card-icon">S</div>
                     <h4>Statsforvalterne</h4>
                     <p>6 kystfylker</p>
                 </div>
                 <div class="source-card">
-                    <div class="source-icon">🔬</div>
-                    <h4>Havforskningsinstituttet</h4>
+                    <div class="source-card-icon">H</div>
+                    <h4>Havforskningsinst.</h4>
                     <p>Forskning, råd</p>
                 </div>
                 <div class="source-card">
-                    <div class="source-icon">🗺️</div>
+                    <div class="source-card-icon">B</div>
                     <h4>BarentsWatch</h4>
                     <p>Soner, kartdata</p>
                 </div>
                 <div class="source-card">
-                    <div class="source-icon">➕</div>
+                    <div class="source-card-icon">+</div>
                     <h4>+ flere</h4>
                     <p>På forespørsel</p>
                 </div>
@@ -2061,83 +1458,12 @@
         </div>
     </section>
 
-    <section class="demo">
+    <section class="section pricing" id="pricing">
         <div class="container">
-            <div class="demo-grid">
-                <div class="demo-content">
-                    <span class="section-label">Varslene</span>
-                    <h2 class="section-title">Klare varsler med konkrete tiltak</h2>
-                    <p class="section-description">Ingen juridisk kaudervelsk. Du får en klar oppsummering på norsk og engelsk, med prioritet, frister og handlingspunkter.</p>
-                    <div class="demo-features">
-                        <div class="demo-feature">
-                            <div class="demo-feature-icon">🎯</div>
-                            <div>
-                                <h4>Prioritert og kategorisert</h4>
-                                <p>Kritisk, høy, medium eller lav - så du vet hva som haster.</p>
-                            </div>
-                        </div>
-                        <div class="demo-feature">
-                            <div class="demo-feature-icon">📝</div>
-                            <div>
-                                <h4>Handlingspunkter med frister</h4>
-                                <p>Konkrete tiltak du må gjøre, med tidsfrister og ansvarlig.</p>
-                            </div>
-                        </div>
-                        <div class="demo-feature">
-                            <div class="demo-feature-icon">🌍</div>
-                            <div>
-                                <h4>Norsk og engelsk</h4>
-                                <p>Perfekt for internasjonale team og utenlandske eiere.</p>
-                            </div>
-                        </div>
-                        <div class="demo-feature">
-                            <div class="demo-feature-icon">🔗</div>
-                            <div>
-                                <h4>Lenke til original kilde</h4>
-                                <p>Ett klikk til fullstendig tekst hos myndighetene.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="demo-visual">
-                    <div class="demo-browser">
-                        <div class="browser-header">
-                            <span class="browser-dot red"></span>
-                            <span class="browser-dot yellow"></span>
-                            <span class="browser-dot green"></span>
-                        </div>
-                        <div class="browser-content">
-                            <div class="alert-preview">
-                                <h4>🚨 Nye lakselusgrenser fra 1. mars</h4>
-                                <p>Grensen reduseres fra 0,5 til 0,25 voksne hunnlus per fisk i PO3, PO4 og PO5.</p>
-                                <div class="meta">
-                                    <span>📍 Mattilsynet</span>
-                                    <span>⏰ For 2 timer siden</span>
-                                    <span>⚠️ KRITISK</span>
-                                </div>
-                            </div>
-                            <div class="alert-preview high">
-                                <h4>📊 PO4 nedgradert til gult</h4>
-                                <p>Kapasiteten fryses på nåværende nivå. Ingen nye søknader før 2027.</p>
-                                <div class="meta">
-                                    <span>📍 Fiskeridirektoratet</span>
-                                    <span>⏰ For 8 timer siden</span>
-                                    <span>⚠️ HØY</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="pricing" id="pricing">
-        <div class="container">
-            <div class="pricing-header">
+            <div class="section-header">
                 <span class="section-label">Priser</span>
                 <h2 class="section-title">Enkel, transparent prising</h2>
-                <p class="section-description">Billigere enn én time med en compliance-advokat. Og vi jobber 24/7.</p>
+                <p class="section-description">Rimeligere enn én time med en compliance-advokat. Og vi jobber 24/7.</p>
             </div>
             <div class="pricing-grid">
                 <div class="pricing-card">
@@ -2147,31 +1473,30 @@
                         <span class="currency">kr </span><span class="amount">2 500</span><span class="period">/mnd</span>
                     </div>
                     <ul class="pricing-features">
-                        <li>10 hovedkilder overvåket</li>
+                        <li>10 hovedkilder</li>
                         <li>Daglig e-postdigest</li>
-                        <li>AI-oppsummering på norsk</li>
-                        <li>2 brukere inkludert</li>
+                        <li>AI-oppsummering</li>
+                        <li>2 brukere</li>
                         <li>E-postsupport</li>
                     </ul>
-                    <a href="#cta" class="btn btn-dark">Kom i gang</a>
+                    <a href="#cta" class="btn btn-outline">Kom i gang</a>
                 </div>
                 <div class="pricing-card featured">
-                    <div class="pricing-badge">Mest populær</div>
+                    <div class="pricing-badge">Anbefalt</div>
                     <h3>Profesjonell</h3>
                     <p class="description">For mellomstore selskaper</p>
                     <div class="pricing-price">
                         <span class="currency">kr </span><span class="amount">7 500</span><span class="period">/mnd</span>
                     </div>
                     <ul class="pricing-features">
-                        <li>25+ kilder overvåket</li>
-                        <li>Sanntidsvarsler (under 1 time)</li>
-                        <li>Slack og Teams-integrasjon</li>
-                        <li>Dashboard med søk og historikk</li>
+                        <li>25+ kilder</li>
+                        <li>Sanntidsvarsler (&lt;1 time)</li>
+                        <li>Slack/Teams-integrasjon</li>
+                        <li>Dashboard med historikk</li>
                         <li>Handlingspunkter med frister</li>
-                        <li>Norsk og engelsk</li>
-                        <li>10 brukere inkludert</li>
+                        <li>10 brukere</li>
                     </ul>
-                    <a href="#cta" class="btn btn-primary">Start gratis prøve</a>
+                    <a href="#cta" class="btn btn-primary">Start prøveperiode</a>
                 </div>
                 <div class="pricing-card">
                     <h3>Enterprise</h3>
@@ -2185,25 +1510,23 @@
                         <li>Egendefinerte kilder</li>
                         <li>PDF-rapporter for styret</li>
                         <li>Dedikert kundesuksess</li>
-                        <li>SLA med oppetidsgaranti</li>
                         <li>Ubegrenset brukere</li>
                     </ul>
-                    <a href="#cta" class="btn btn-dark">Kontakt salg</a>
+                    <a href="#cta" class="btn btn-outline">Kontakt salg</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="testimonials">
+    <section class="section testimonials">
         <div class="container">
-            <div class="testimonials-header">
+            <div class="section-header">
                 <span class="section-label">Tilbakemeldinger</span>
                 <h2 class="section-title">Hva kundene sier</h2>
-                <p class="section-description">Norske oppdrettere bruker AquaRegWatch for å holde seg compliant.</p>
             </div>
             <div class="testimonials-grid">
                 <div class="testimonial-card">
-                    <p>"Vi oppdaget en endring i lakselusforskriften 6 timer før konkurrentene. Det ga oss tid til å handle før det ble kaos."</p>
+                    <p>"Vi oppdaget en endring i lakselusforskriften 6 timer før konkurrentene. Det ga oss tid til å forberede oss ordentlig."</p>
                     <div class="testimonial-author">
                         <div class="testimonial-avatar">KL</div>
                         <div class="testimonial-info">
@@ -2213,7 +1536,7 @@
                     </div>
                 </div>
                 <div class="testimonial-card">
-                    <p>"Før brukte jeg 3 timer i uken på å sjekke myndighetsnettsider. Nå får jeg alt på e-post, ferdig oppsummert."</p>
+                    <p>"Før brukte jeg 3 timer i uken på å sjekke myndighetsnettsider. Nå får jeg alt på e-post, ferdig analysert."</p>
                     <div class="testimonial-author">
                         <div class="testimonial-avatar">OH</div>
                         <div class="testimonial-info">
@@ -2223,7 +1546,7 @@
                     </div>
                 </div>
                 <div class="testimonial-card">
-                    <p>"Handlingspunktene er gull verdt. Jeg vet nøyaktig hva jeg må gjøre og når - ingen tolkning nødvendig."</p>
+                    <p>"Handlingspunktene er uvurderlige. Jeg vet nøyaktig hva jeg må gjøre og når - ingen tolkning nødvendig."</p>
                     <div class="testimonial-author">
                         <div class="testimonial-avatar">MS</div>
                         <div class="testimonial-info">
@@ -2236,57 +1559,15 @@
         </div>
     </section>
 
-    <section class="faq" id="faq">
-        <div class="container">
-            <div class="faq-header">
-                <span class="section-label">FAQ</span>
-                <h2 class="section-title">Ofte stilte spørsmål</h2>
-            </div>
-            <div class="faq-grid">
-                <div class="faq-item">
-                    <button class="faq-question">Hvordan fungerer prøveperioden?</button>
-                    <div class="faq-answer">
-                        <p>Du får full tilgang i 14 dager uten å oppgi betalingsinformasjon. Etter prøveperioden kan du velge å fortsette eller avslutte - ingen forpliktelser.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question">Hvor raskt får jeg varsel om endringer?</button>
-                    <div class="faq-answer">
-                        <p>Vi sjekker alle kilder hver time. Fra en endring publiseres til du får varsel tar det typisk under 1 time. Kritiske endringer prioriteres.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question">Kan jeg legge til egne kilder?</button>
-                    <div class="faq-answer">
-                        <p>Ja! Med Enterprise-planen kan du be oss legge til egendefinerte kilder. Vi kan overvåke de fleste nettsider.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question">Støtter dere integrasjon med våre systemer?</button>
-                    <div class="faq-answer">
-                        <p>Vi har innebygd integrasjon med Slack og Microsoft Teams. Med Enterprise-planen får du også API-tilgang for å integrere med egne systemer.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question">Hva om en kilde endrer struktur på nettsiden sin?</button>
-                    <div class="faq-answer">
-                        <p>Vi overvåker kontinuerlig at våre scrapere fungerer. Hvis en nettside endrer struktur, oppdaterer vi systemet innen 24 timer.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="cta" id="cta">
         <div class="container">
             <div class="cta-content">
-                <h2>Klar til å aldri gå glipp av en endring igjen?</h2>
-                <p>Start din 14-dagers gratis prøveperiode i dag. Ingen kredittkort nødvendig.</p>
+                <h2>Klar til å holde deg oppdatert?</h2>
+                <p>Start din 14-dagers prøveperiode i dag. Ingen kredittkort nødvendig.</p>
                 <div class="cta-buttons">
-                    <a href="mailto:kontakt@aquaregwatch.no?subject=Gratis prøveperiode&body=Hei,%0A%0AJeg er interessert i å prøve AquaRegWatch.%0A%0ASelskap:%0AKontaktperson:%0ATelefon:%0A%0AMvh" class="btn btn-white btn-lg">Start gratis prøve</a>
-                    <a href="mailto:kontakt@aquaregwatch.no?subject=Demo av AquaRegWatch" class="btn btn-outline btn-lg">Book en demo</a>
+                    <a href="mailto:kontakt@aquaregwatch.no?subject=Prøveperiode" class="btn btn-white btn-lg">Start prøveperiode</a>
+                    <a href="mailto:kontakt@aquaregwatch.no?subject=Demo" class="btn btn-outline btn-lg">Book en demo</a>
                 </div>
-                <p class="cta-note">Eller ring oss direkte: <strong>+47 XXX XX XXX</strong></p>
             </div>
         </div>
     </section>
@@ -2296,193 +1577,154 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <a href="#" class="logo">
-                        <div class="logo-icon">🐟</div>
-                        <span class="logo-text">AquaRegWatch</span>
+                        <div class="logo-mark">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                        </div>
+                        <span class="logo-text">AquaReg<span>Watch</span></span>
                     </a>
-                    <p>AI-drevet overvåking av norske akvakulturreguleringer. Vi varsler deg før det koster deg penger.</p>
-                    <div class="footer-social">
-                        <a href="#">in</a>
-                        <a href="#">𝕏</a>
-                    </div>
+                    <p>Profesjonell overvåking av regulatoriske endringer for norsk havbruksnæring.</p>
                 </div>
                 <div class="footer-links">
                     <h4>Produkt</h4>
                     <a href="#how">Slik fungerer det</a>
                     <a href="#pricing">Priser</a>
-                    <a href="#faq">FAQ</a>
-                    <a href="#">API-dokumentasjon</a>
+                    <a href="#sources">Kilder</a>
                 </div>
                 <div class="footer-links">
-                    <h4>Kilder</h4>
-                    <a href="#">Fiskeridirektoratet</a>
-                    <a href="#">Mattilsynet</a>
-                    <a href="#">Miljødirektoratet</a>
-                    <a href="#">Alle kilder</a>
+                    <h4>Selskap</h4>
+                    <a href="#">Om oss</a>
+                    <a href="#">Karriere</a>
+                    <a href="#">Kontakt</a>
                 </div>
                 <div class="footer-links">
                     <h4>Kontakt</h4>
                     <a href="mailto:kontakt@aquaregwatch.no">kontakt@aquaregwatch.no</a>
-                    <a href="#">+47 XXX XX XXX</a>
-                    <a href="#">Oslo, Norge</a>
+                    <a href="#">+47 400 00 000</a>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>© 2026 AquaRegWatch Norway AS. Org.nr: XXX XXX XXX</p>
+                <p>&copy; 2026 AquaRegWatch AS. Org.nr: 930 000 000</p>
                 <div class="footer-legal">
                     <a href="#">Personvern</a>
                     <a href="#">Vilkår</a>
-                    <a href="#">Cookies</a>
                 </div>
             </div>
         </div>
     </footer>
 
     <script>
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
+        // Demo animation
+        const sourceOrder = ['fdir', 'matt', 'lov', 'miljo', 'reg', 'bw'];
+        const changedSource = 'matt';
+        let isRunning = false;
+        let timeouts = [];
 
-        // FAQ accordion
-        document.querySelectorAll('.faq-question').forEach(button => {
-            button.addEventListener('click', () => {
-                const item = button.parentElement;
-                item.classList.toggle('open');
-            });
-        });
+        const aiText = `Analyserer endring fra Mattilsynet...
 
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        // ===== LIVE DEMO ANIMATION =====
-        const sources = ['fdir', 'mattilsynet', 'lovdata', 'miljo', 'regjering', 'barents'];
-        const changedSource = 'mattilsynet';
-        let demoRunning = false;
-        let demoTimeout = null;
-
-        const aiText = `🔍 Analyserer endring fra Mattilsynet...
-
-📋 ENDRING OPPDAGET: Nye grenser for lakselus i PO9
-
-🎯 RELEVANS FOR NORDLAKS AS: KRITISK
+RELEVANS FOR NORDLAKS AS: KRITISK
 
 Denne endringen påvirker direkte deres operasjoner:
-• 4 av 7 lokaliteter ligger i berørt område
-• Ny grense: 0,2 lus/fisk (ned fra 0,5)
-• Deres nåværende snitt: 0,35 lus/fisk
+- 4 av 7 lokaliteter ligger i berørt område (PO9)
+- Ny grense: 0,2 lus/fisk (ned fra 0,5)
+- Deres nåværende snitt: 0,35 lus/fisk
 
-⚠️ RISIKO: Høy - krever umiddelbar handling
-📅 FRIST: Nye krav gjelder fra 1. mars 2026`;
+RISIKO: Høy - krever umiddelbar handling
+FRIST: Nye krav gjelder fra 1. mars 2026`;
 
-        function resetDemo() {
-            clearTimeout(demoTimeout);
-            demoRunning = false;
+        function clearTimeouts() {
+            timeouts.forEach(t => clearTimeout(t));
+            timeouts = [];
+        }
+
+        function reset() {
+            clearTimeouts();
+            isRunning = false;
             document.querySelectorAll('.demo-stage').forEach(s => s.classList.remove('active'));
-            document.getElementById('demo-stage-1').classList.add('active');
-            document.querySelectorAll('.monitor-card').forEach(card => {
-                card.classList.remove('scanning', 'checked', 'changed');
-                card.querySelector('.monitor-status').className = 'monitor-status waiting';
-                card.querySelector('.monitor-status').textContent = 'Venter...';
+            document.getElementById('stage-1').classList.add('active');
+            document.querySelectorAll('.source-item').forEach(item => {
+                item.classList.remove('scanning', 'ok', 'changed');
+                item.querySelector('.source-status').className = 'source-status';
+                item.querySelector('.source-status').textContent = 'Venter';
             });
-            document.getElementById('ai-typing').textContent = '';
+            document.getElementById('ai-output').textContent = '';
         }
 
         function runDemo() {
-            if (demoRunning) return;
-            demoRunning = true;
-            resetDemo();
-            document.getElementById('demo-stage-1').classList.add('active');
+            if (isRunning) return;
+            isRunning = true;
+            reset();
+            document.getElementById('stage-1').classList.add('active');
 
             let delay = 0;
-            sources.forEach((source, index) => {
-                // Start scanning
-                demoTimeout = setTimeout(() => {
-                    const card = document.querySelector(`[data-source="${source}"]`);
-                    card.classList.add('scanning');
-                    card.querySelector('.monitor-status').className = 'monitor-status scanning';
-                    card.querySelector('.monitor-status').textContent = 'Skanner...';
-                }, delay);
-                delay += 400;
+            sourceOrder.forEach((id, i) => {
+                timeouts.push(setTimeout(() => {
+                    const item = document.querySelector(`[data-id="${id}"]`);
+                    item.classList.add('scanning');
+                    item.querySelector('.source-status').className = 'source-status scanning';
+                    item.querySelector('.source-status').textContent = 'Skanner...';
+                }, delay));
+                delay += 300;
 
-                // Finish scanning
-                demoTimeout = setTimeout(() => {
-                    const card = document.querySelector(`[data-source="${source}"]`);
-                    card.classList.remove('scanning');
-                    if (source === changedSource) {
-                        card.classList.add('changed');
-                        card.querySelector('.monitor-status').className = 'monitor-status changed';
-                        card.querySelector('.monitor-status').textContent = '🚨 ENDRING!';
+                timeouts.push(setTimeout(() => {
+                    const item = document.querySelector(`[data-id="${id}"]`);
+                    item.classList.remove('scanning');
+                    if (id === changedSource) {
+                        item.classList.add('changed');
+                        item.querySelector('.source-status').className = 'source-status changed';
+                        item.querySelector('.source-status').textContent = 'ENDRING';
                     } else {
-                        card.classList.add('checked');
-                        card.querySelector('.monitor-status').className = 'monitor-status ok';
-                        card.querySelector('.monitor-status').textContent = '✓ Ingen endring';
+                        item.classList.add('ok');
+                        item.querySelector('.source-status').className = 'source-status ok';
+                        item.querySelector('.source-status').textContent = 'OK';
                     }
-                }, delay + 300);
-                delay += 400;
+                }, delay + 200));
+                delay += 300;
             });
 
-            // Move to stage 2
-            demoTimeout = setTimeout(() => {
-                document.getElementById('demo-stage-1').classList.remove('active');
-                document.getElementById('demo-stage-2').classList.add('active');
-                typeText(aiText, 0);
-            }, delay + 1000);
+            timeouts.push(setTimeout(() => {
+                document.getElementById('stage-1').classList.remove('active');
+                document.getElementById('stage-2').classList.add('active');
+                typeAI(0);
+            }, delay + 800));
         }
 
-        function typeText(text, index) {
-            if (index < text.length && demoRunning) {
-                document.getElementById('ai-typing').textContent += text.charAt(index);
-                demoTimeout = setTimeout(() => typeText(text, index + 1), 15);
-            } else if (demoRunning) {
-                // Move to stage 3
-                demoTimeout = setTimeout(() => {
-                    document.getElementById('demo-stage-2').classList.remove('active');
-                    document.getElementById('demo-stage-3').classList.add('active');
-                    demoRunning = false;
-                }, 1500);
+        function typeAI(i) {
+            if (i < aiText.length && isRunning) {
+                document.getElementById('ai-output').textContent += aiText[i];
+                timeouts.push(setTimeout(() => typeAI(i + 1), 12));
+            } else if (isRunning) {
+                timeouts.push(setTimeout(() => {
+                    document.getElementById('stage-2').classList.remove('active');
+                    document.getElementById('stage-3').classList.add('active');
+                    isRunning = false;
+                }, 1200));
             }
         }
 
         function skipToEnd() {
-            clearTimeout(demoTimeout);
-            demoRunning = false;
+            clearTimeouts();
+            isRunning = false;
             document.querySelectorAll('.demo-stage').forEach(s => s.classList.remove('active'));
-            document.getElementById('demo-stage-3').classList.add('active');
+            document.getElementById('stage-3').classList.add('active');
         }
 
-        document.getElementById('demo-restart').addEventListener('click', () => {
-            resetDemo();
+        document.getElementById('btn-restart').addEventListener('click', () => {
+            reset();
             setTimeout(runDemo, 100);
         });
 
-        document.getElementById('demo-skip').addEventListener('click', skipToEnd);
+        document.getElementById('btn-skip').addEventListener('click', skipToEnd);
 
-        // Auto-start demo when scrolled into view
-        const demoObserver = new IntersectionObserver((entries) => {
+        // Auto-start when visible
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting && !demoRunning) {
-                    setTimeout(runDemo, 500);
+                if (entry.isIntersecting && !isRunning) {
+                    setTimeout(runDemo, 400);
                 }
             });
-        }, { threshold: 0.3 });
+        }, { threshold: 0.4 });
 
-        const demoSection = document.querySelector('.live-demo');
-        if (demoSection) {
-            demoObserver.observe(demoSection);
-        }
+        observer.observe(document.querySelector('.live-demo'));
     </script>
 </body>
 </html>
