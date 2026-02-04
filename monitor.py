@@ -44,6 +44,7 @@ DATA_DIR.mkdir(exist_ok=True)
 SNAPSHOTS_FILE = DATA_DIR / "snapshots.json"
 CHANGES_LOG = DATA_DIR / "changes.json"
 FAILURES_FILE = DATA_DIR / "failures.json"
+CUSTOMERS_FILE = Path("customers.json")
 
 # Sources to monitor (verified working URLs)
 SOURCES = [
@@ -247,12 +248,122 @@ def load_changes() -> list:
     return load_json_file(CHANGES_LOG, [])
 
 
+def load_customers() -> list:
+    """Load customer profiles for personalized alerts."""
+    data = load_json_file(CUSTOMERS_FILE, {"customers": []})
+    return [c for c in data.get("customers", []) if c.get("active", False)]
+
+
 def save_change(change: dict):
     """Append change to log."""
     changes = load_changes()
     changes.append(change)
     changes = changes[-100:]  # Keep last 100
     save_json_file(CHANGES_LOG, changes)
+
+
+def summarize_change_for_customer(source: dict, old_content: str, new_content: str, customer: dict) -> dict:
+    """Use Claude to create a PERSONALIZED summary for a specific customer."""
+    api_key = os.getenv("ANTHROPIC_API_KEY")
+    if not api_key:
+        log.warning("No ANTHROPIC_API_KEY - skipping AI summary")
+        return {
+            "title": f"Endring oppdaget: {source['name']}",
+            "summary_no": "AI-oppsummering ikke tilgjengelig (mangler API-nøkkel)",
+            "summary_en": "AI summary not available (missing API key)",
+            "action_items": [],
+            "priority": "MEDIUM",
+            "relevance": "UKJENT"
+        }
+
+    try:
+        import anthropic
+        client = anthropic.Anthropic(api_key=api_key)
+
+        profile = customer.get("profile", {})
+        company = customer.get("company", "Kunde")
+
+        # Build customer context
+        customer_context = f"""
+KUNDEPROFIL - {company}:
+- Lisenstyper: {', '.join(profile.get('licenses', ['Ukjent']))}
+- Regioner: {', '.join(profile.get('regions', ['Ukjent']))}
+- Produksjonstype: {profile.get('production_type', 'Ukjent')}
+- MTB: {profile.get('mtb_tonnes', 'Ukjent')} tonn
+- Fokusområder: {', '.join(profile.get('concerns', []))}
+- Notater: {profile.get('notes', 'Ingen')}
+"""
+
+        old_excerpt = (old_content[:2500] if old_content else "(ingen tidligere innhold)")
+        new_excerpt = (new_content[:2500] if new_content else "(tomt)")
+
+        prompt = f"""Du er en ekspert på norske akvakulturreguleringer. Du gir PERSONALISERT rådgivning til oppdrettsbedrifter.
+
+{customer_context}
+
+REGULERINGSENDRING OPPDAGET:
+Kilde: {source['name']}
+URL: {source['url']}
+Kategori: {source['category']}
+
+TIDLIGERE INNHOLD:
+{old_excerpt}
+
+NYTT INNHOLD:
+{new_excerpt}
+
+Analyser denne endringen SPESIFIKT for {company}. Vurder:
+1. Er dette relevant for DERES lisenser og regioner?
+2. Hva betyr dette KONKRET for deres drift?
+3. Hva må DE gjøre, og når?
+
+Svar på JSON-format:
+{{
+    "title": "Kort tittel på endringen",
+    "relevance": "HØY/MEDIUM/LAV/INGEN",
+    "relevance_reason": "Kort forklaring på hvorfor dette er/ikke er relevant for {company}",
+    "summary_no": "2-3 setninger om hva dette betyr SPESIFIKT for {company}",
+    "summary_en": "2-3 sentences about what this means SPECIFICALLY for {company}",
+    "impacts": ["Konkret påvirkning 1", "Konkret påvirkning 2"],
+    "action_items": [
+        {{"action": "Konkret handling {company} må gjøre", "deadline": "Dato/frist", "priority": "Høy/Medium/Lav"}}
+    ],
+    "priority": "KRITISK/HØY/MEDIUM/LAV"
+}}
+
+Svar KUN med JSON."""
+
+        response = client.messages.create(
+            model="claude-sonnet-4-20250514",
+            max_tokens=1200,
+            messages=[{"role": "user", "content": prompt}]
+        )
+
+        text = response.content[0].text.strip()
+
+        if "```" in text:
+            match = re.search(r'```(?:json)?\s*([\s\S]*?)\s*```', text)
+            if match:
+                text = match.group(1)
+
+        try:
+            return json.loads(text)
+        except json.JSONDecodeError:
+            match = re.search(r'\{[\s\S]*\}', text)
+            if match:
+                return json.loads(match.group())
+            raise
+
+    except Exception as e:
+        log.error(f"Personalized AI summary failed for {customer.get('company')}: {e}")
+        return {
+            "title": f"Endring oppdaget: {source['name']}",
+            "summary_no": f"Automatisk oppsummering feilet: {str(e)[:100]}",
+            "summary_en": f"Automatic summary failed: {str(e)[:100]}",
+            "action_items": [],
+            "priority": "MEDIUM",
+            "relevance": "UKJENT"
+        }
 
 
 def summarize_change(source: dict, old_content: str, new_content: str) -> dict:
@@ -338,6 +449,151 @@ Svar KUN med JSON, ingen annen tekst."""
             "action_items": [],
             "priority": "MEDIUM"
         }
+
+
+def send_alert_to_customer(source: dict, summary: dict, customer: dict) -> bool:
+    """Send personalized email alert to a specific customer."""
+    to_email = customer.get("email")
+    company = customer.get("company", "Customer")
+
+    if not to_email:
+        log.warning(f"No email for customer {company}")
+        return False
+
+    # Skip if not relevant to this customer
+    relevance = summary.get("relevance", "MEDIUM")
+    if relevance == "INGEN":
+        log.info(f"  Skipping {company} - not relevant to them")
+        return False
+
+    priority_colors = {
+        'KRITISK': '#dc2626',
+        'HØY': '#ea580c',
+        'MEDIUM': '#ca8a04',
+        'LAV': '#16a34a'
+    }
+    priority = summary.get('priority', 'MEDIUM')
+    color = priority_colors.get(priority, '#ca8a04')
+
+    relevance_colors = {'HØY': '#16a34a', 'MEDIUM': '#ca8a04', 'LAV': '#9ca3af'}
+    rel_color = relevance_colors.get(relevance, '#ca8a04')
+
+    # Build personalized HTML
+    impacts_html = ""
+    if summary.get("impacts"):
+        impacts_html = "<ul style='margin: 10px 0; padding-left: 20px;'>"
+        for impact in summary.get("impacts", []):
+            impacts_html += f"<li style='margin: 5px 0;'>{impact}</li>"
+        impacts_html += "</ul>"
+
+    actions_html = ""
+    if summary.get("action_items"):
+        actions_html = "<div style='background: #fef3c7; padding: 16px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #f59e0b;'>"
+        actions_html += "<h4 style='margin: 0 0 10px; color: #92400e;'>⚡ Handlinger for " + company + "</h4>"
+        for item in summary.get("action_items", []):
+            actions_html += f"<p style='margin: 5px 0;'><strong>{item.get('action')}</strong><br>"
+            actions_html += f"<span style='color: #666;'>Frist: {item.get('deadline', 'Ikke spesifisert')} | Prioritet: {item.get('priority', 'Medium')}</span></p>"
+        actions_html += "</div>"
+
+    html_content = f"""
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <div style="background: #0066FF; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+            <h1 style="margin: 0; font-size: 20px;">🐟 AquaRegWatch Alert</h1>
+            <p style="margin: 5px 0 0; opacity: 0.9; font-size: 14px;">Personalisert for {company}</p>
+        </div>
+        <div style="padding: 24px; border: 1px solid #ddd; border-top: none; border-radius: 0 0 8px 8px;">
+            <div style="margin-bottom: 16px;">
+                <span style="background: {color}; color: white; padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-right: 8px;">
+                    {priority}
+                </span>
+                <span style="background: {rel_color}; color: white; padding: 4px 12px; border-radius: 4px; font-size: 12px;">
+                    Relevans: {relevance}
+                </span>
+            </div>
+
+            <h2 style="margin: 16px 0 8px;">{summary.get('title', 'Reguleringsendring')}</h2>
+            <p style="color: #666; margin: 0;">{source['name']} | {datetime.now().strftime('%d.%m.%Y %H:%M')}</p>
+
+            <div style="background: #f0fdf4; padding: 16px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #16a34a;">
+                <h4 style="margin: 0 0 8px; color: #166534;">📋 Hvorfor dette er relevant for {company}</h4>
+                <p style="margin: 0;">{summary.get('relevance_reason', 'Generell reguleringsendring')}</p>
+            </div>
+
+            <div style="background: #f8fafc; padding: 16px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #0066FF;">
+                <h4 style="margin: 0 0 8px; color: #1e40af;">🇳🇴 Hva dette betyr for dere</h4>
+                <p style="margin: 0; line-height: 1.6;">{summary.get('summary_no', 'N/A')}</p>
+                {impacts_html}
+            </div>
+
+            {actions_html}
+
+            <div style="background: #f8fafc; padding: 16px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #6b7280;">
+                <h4 style="margin: 0 0 8px; color: #374151;">🇬🇧 English Summary</h4>
+                <p style="margin: 0; line-height: 1.6;">{summary.get('summary_en', 'N/A')}</p>
+            </div>
+
+            <p style="margin-top: 24px;">
+                <a href="{source['url']}" style="background: #0066FF; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; display: inline-block;">
+                    Se kilde →
+                </a>
+            </p>
+
+            <hr style="margin: 24px 0; border: none; border-top: 1px solid #e5e7eb;">
+            <p style="color: #9ca3af; font-size: 12px; margin: 0;">
+                AquaRegWatch by TefiAqua | Personalisert reguleringsovervåking for {company}
+            </p>
+        </div>
+    </div>
+    """
+
+    subject = f"[{priority}] {summary.get('title', 'Reguleringsendring')} - {company}"
+
+    # Try Gmail
+    if os.getenv("GMAIL_ADDRESS") and os.getenv("GMAIL_APP_PASSWORD"):
+        try:
+            import smtplib
+            from email.mime.text import MIMEText
+            from email.mime.multipart import MIMEMultipart
+
+            gmail_user = os.getenv("GMAIL_ADDRESS")
+            gmail_pass = os.getenv("GMAIL_APP_PASSWORD")
+
+            msg = MIMEMultipart('alternative')
+            msg['Subject'] = subject
+            msg['From'] = gmail_user
+            msg['To'] = to_email
+            msg.attach(MIMEText(html_content, 'html'))
+
+            with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=30) as server:
+                server.login(gmail_user, gmail_pass)
+                server.sendmail(gmail_user, to_email, msg.as_string())
+
+            log.info(f"  ✉ Personalized alert sent to {company} ({to_email})")
+            return True
+        except Exception as e:
+            log.error(f"Gmail failed for {company}: {e}")
+
+    # Try SendGrid as fallback
+    if os.getenv("SENDGRID_API_KEY"):
+        try:
+            from sendgrid import SendGridAPIClient
+            from sendgrid.helpers.mail import Mail, Email, To, Content
+
+            message = Mail(
+                from_email=Email(os.getenv("EMAIL_FROM_ADDRESS", "alerts@tefiaqua.no")),
+                to_emails=To(to_email),
+                subject=subject,
+                html_content=Content("text/html", html_content)
+            )
+            sg = SendGridAPIClient(os.getenv("SENDGRID_API_KEY"))
+            response = sg.send(message)
+            log.info(f"  ✉ Personalized alert sent to {company} via SendGrid")
+            return True
+        except Exception as e:
+            log.error(f"SendGrid failed for {company}: {e}")
+
+    log.error(f"Failed to send alert to {company}")
+    return False
 
 
 def send_alert(source: dict, summary: dict) -> bool:
@@ -507,8 +763,34 @@ def run_monitor():
         elif content_hash != previous_hash:
             log.info(f"  🔔 CHANGE DETECTED!")
 
-            # Summarize with AI
-            summary = summarize_change(source, previous.get('content', ''), content)
+            # Load customers for personalized alerts
+            customers = load_customers()
+
+            if customers:
+                # Send PERSONALIZED alerts to each customer
+                log.info(f"  Sending personalized alerts to {len(customers)} customers...")
+                for customer in customers:
+                    company = customer.get('company', 'Unknown')
+                    log.info(f"    Analyzing for {company}...")
+
+                    # Generate personalized summary for this customer
+                    personalized_summary = summarize_change_for_customer(
+                        source, previous.get('content', ''), content, customer
+                    )
+
+                    # Send personalized alert
+                    send_alert_to_customer(source, personalized_summary, customer)
+
+                    # Small delay to avoid rate limits
+                    time.sleep(0.5)
+
+                # Also save a generic summary for records
+                summary = summarize_change(source, previous.get('content', ''), content)
+            else:
+                # No customers - use fallback alert email
+                log.info(f"  No customers configured, using ALERT_EMAIL fallback")
+                summary = summarize_change(source, previous.get('content', ''), content)
+                send_alert(source, summary)
 
             # Record change
             change = {
@@ -516,13 +798,11 @@ def run_monitor():
                 'source_name': source['name'],
                 'url': source['url'],
                 'detected_at': datetime.now().isoformat(),
-                'summary': summary
+                'summary': summary if 'summary' in dir() else {"title": "Change detected"},
+                'customers_notified': len(customers) if customers else 0
             }
             save_change(change)
             changes_found.append(change)
-
-            # Send alert
-            send_alert(source, summary)
 
             # Update snapshot
             snapshots[source_id] = {

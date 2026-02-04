@@ -1,0 +1,34 @@
+{
+  "customers": [
+    {
+      "id": "demo-customer",
+      "company": "Demo Aquaculture AS",
+      "email": "demo@example.com",
+      "plan": "professional",
+      "active": true,
+      "profile": {
+        "licenses": ["Laks", "Regnbueørret"],
+        "regions": ["Nordland", "Troms og Finnmark"],
+        "production_type": "Sjøbasert",
+        "mtb_tonnes": 3900,
+        "concerns": ["Lakselus", "Rømming", "Miljøovervåking", "Trafikklyssystemet"],
+        "notes": "Har 5 lokaliteter i produksjonsområde 9 og 10"
+      }
+    }
+  ],
+  "_template": {
+    "id": "unique-id",
+    "company": "Company Name AS",
+    "email": "alerts@company.no",
+    "plan": "starter|professional|enterprise",
+    "active": true,
+    "profile": {
+      "licenses": ["Laks", "Ørret", "Regnbueørret", "Torsk", "Andre arter"],
+      "regions": ["Nordland", "Troms og Finnmark", "Trøndelag", "Møre og Romsdal", "Vestland", "Rogaland"],
+      "production_type": "Sjøbasert|Landbasert|Begge",
+      "mtb_tonnes": 0,
+      "concerns": ["Lakselus", "Rømming", "Miljøovervåking", "Fiskehelse", "Tildelinger", "MTB", "Trafikklyssystemet"],
+      "notes": "Free text about their specific situation"
+    }
+  }
+}
