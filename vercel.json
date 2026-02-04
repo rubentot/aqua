@@ -2,9 +2,9 @@
   "buildCommand": null,
   "outputDirectory": ".",
   "rewrites": [
-    { "source": "/", "destination": "/investor_pitch.html" },
+    { "source": "/", "destination": "/landing_page.html" },
+    { "source": "/investors", "destination": "/investor_pitch.html" },
     { "source": "/pitch", "destination": "/investor_pitch.html" },
-    { "source": "/landing", "destination": "/landing_page.html" },
     { "source": "/onepager", "destination": "/investor_onepager.html" }
   ]
 }
