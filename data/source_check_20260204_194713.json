@@ -1,0 +1,53 @@
+{
+  "check_time": "2026-02-04T19:47:13.087545",
+  "total_sources": 5,
+  "sources_ok": 5,
+  "sources_failed": 0,
+  "results": [
+    {
+      "name": "Fiskeridirektoratet",
+      "url": "https://www.fiskeridir.no/Akvakultur",
+      "timestamp": "2026-02-04T19:47:09.451538",
+      "status": "ok",
+      "status_code": 200,
+      "response_time_ms": 1316.81,
+      "error": null
+    },
+    {
+      "name": "Mattilsynet",
+      "url": "https://www.mattilsynet.no/fisk_og_akvakultur/",
+      "timestamp": "2026-02-04T19:47:10.769155",
+      "status": "ok",
+      "status_code": 200,
+      "response_time_ms": 512.24,
+      "error": null
+    },
+    {
+      "name": "Regjeringen - Fiskeri",
+      "url": "https://www.regjeringen.no/no/tema/mat-fiske-og-landbruk/fiskeri-og-havbruk/",
+      "timestamp": "2026-02-04T19:47:11.282576",
+      "status": "ok",
+      "status_code": 200,
+      "response_time_ms": 1021.18,
+      "error": null
+    },
+    {
+      "name": "Lovdata - Akvakulturloven",
+      "url": "https://lovdata.no/dokument/NL/lov/2005-06-17-79",
+      "timestamp": "2026-02-04T19:47:12.304972",
+      "status": "ok",
+      "status_code": 200,
+      "response_time_ms": 355.75,
+      "error": null
+    },
+    {
+      "name": "Sjømat Norge",
+      "url": "https://sjomatnorge.no/",
+      "timestamp": "2026-02-04T19:47:12.661547",
+      "status": "ok",
+      "status_code": 200,
+      "response_time_ms": 424.88,
+      "error": null
+    }
+  ]
+}

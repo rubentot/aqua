@@ -1,0 +1,520 @@
+# Norwegian Aquaculture Regulatory Monitor Configuration
+# EXPANDED VERSION - 25+ Sources
+# ======================================================
+
+service:
+  name: "AquaRegWatch Norway"
+  version: "2.0.0"
+  language: "no"
+  timezone: "Europe/Oslo"
+
+# =============================================================================
+# ALL MONITORED SOURCES (25+)
+# =============================================================================
+sources:
+  # ---------------------------------------------------------------------------
+  # FISKERIDIREKTORATET (Norwegian Directorate of Fisheries)
+  # ---------------------------------------------------------------------------
+  - id: "fiskeridir_main"
+    name: "Fiskeridirektoratet - Akvakultur Hovedside"
+    url: "https://www.fiskeridir.no/Akvakultur"
+    category: "licenses_permits"
+    check_interval_hours: 1
+    priority: "high"
+    selectors:
+      content: "main, .content, article"
+
+  - id: "fiskeridir_mtb"
+    name: "Fiskeridirektoratet - MTB Register"
+    url: "https://www.fiskeridir.no/Akvakultur/Registre-og-skjema/MTB"
+    category: "biomass_limits"
+    check_interval_hours: 4
+    priority: "critical"
+    selectors:
+      content: "main, .content"
+
+  - id: "fiskeridir_news"
+    name: "Fiskeridirektoratet - Nyheter"
+    url: "https://www.fiskeridir.no/Akvakultur/Nyheter"
+    category: "news"
+    check_interval_hours: 1
+    priority: "high"
+    selectors:
+      content: ".news-list, .article-list, main"
+
+  - id: "fiskeridir_trafikklys"
+    name: "Fiskeridirektoratet - Trafikklyssystemet"
+    url: "https://www.fiskeridir.no/Akvakultur/Tema/Trafikklyssystemet"
+    category: "traffic_light"
+    check_interval_hours: 2
+    priority: "critical"
+    selectors:
+      content: "main, .content"
+
+  - id: "fiskeridir_tildelingsrunder"
+    name: "Fiskeridirektoratet - Tildelingsrunder"
+    url: "https://www.fiskeridir.no/Akvakultur/Tema/Tildelingsrunder"
+    category: "licenses_permits"
+    check_interval_hours: 6
+    priority: "high"
+    selectors:
+      content: "main, .content"
+
+  - id: "fiskeridir_lokaliteter"
+    name: "Fiskeridirektoratet - Lokalitetsregisteret"
+    url: "https://www.fiskeridir.no/Akvakultur/Registre-og-skjema/Akvakulturregisteret"
+    category: "licenses_permits"
+    check_interval_hours: 12
+    priority: "medium"
+    selectors:
+      content: "main, .content"
+
+  # ---------------------------------------------------------------------------
+  # MATTILSYNET (Norwegian Food Safety Authority)
+  # ---------------------------------------------------------------------------
+  - id: "mattilsynet_fish"
+    name: "Mattilsynet - Fisk og Akvakultur"
+    url: "https://www.mattilsynet.no/fisk_og_akvakultur/"
+    category: "fish_health"
+    check_interval_hours: 2
+    priority: "high"
+    selectors:
+      content: "main, .content, article"
+
+  - id: "mattilsynet_aqua"
+    name: "Mattilsynet - Akvakultur"
+    url: "https://www.mattilsynet.no/fisk_og_akvakultur/akvakultur/"
+    category: "regulations"
+    check_interval_hours: 2
+    priority: "high"
+    selectors:
+      content: "main, .content"
+
+  - id: "mattilsynet_lakselus"
+    name: "Mattilsynet - Lakselus"
+    url: "https://www.mattilsynet.no/fisk_og_akvakultur/akvakultur/lakselus/"
+    category: "sea_lice"
+    check_interval_hours: 1
+    priority: "critical"
+    selectors:
+      content: "main, .content"
+
+  - id: "mattilsynet_fiskehelse"
+    name: "Mattilsynet - Fiskehelse"
+    url: "https://www.mattilsynet.no/fisk_og_akvakultur/fiskehelse/"
+    category: "fish_health"
+    check_interval_hours: 2
+    priority: "high"
+    selectors:
+      content: "main, .content"
+
+  - id: "mattilsynet_sykdommer"
+    name: "Mattilsynet - Fiskesykdommer"
+    url: "https://www.mattilsynet.no/fisk_og_akvakultur/fiskehelse/fiskesykdommer/"
+    category: "diseases"
+    check_interval_hours: 2
+    priority: "critical"
+    selectors:
+      content: "main, .content"
+
+  # ---------------------------------------------------------------------------
+  # MILJØDIREKTORATET (Norwegian Environment Agency)
+  # ---------------------------------------------------------------------------
+  - id: "miljodirektoratet_aqua"
+    name: "Miljodirektoratet - Akvakultur"
+    url: "https://www.miljodirektoratet.no/tema/akvakultur/"
+    category: "environmental"
+    check_interval_hours: 4
+    priority: "high"
+    selectors:
+      content: "main, .content, article"
+
+  - id: "miljodirektoratet_utslipp"
+    name: "Miljodirektoratet - Utslipp"
+    url: "https://www.miljodirektoratet.no/tema/utslipp/"
+    category: "emissions"
+    check_interval_hours: 6
+    priority: "medium"
+    selectors:
+      content: "main, .content"
+
+  # ---------------------------------------------------------------------------
+  # LOVDATA (Norwegian Law Database)
+  # ---------------------------------------------------------------------------
+  - id: "lovdata_akvakultur"
+    name: "Lovdata - Akvakulturloven"
+    url: "https://lovdata.no/dokument/NL/lov/2005-06-17-79"
+    category: "legislation"
+    check_interval_hours: 24
+    priority: "critical"
+    selectors:
+      content: ".444, .444-444, main"
+
+  - id: "lovdata_search"
+    name: "Lovdata - Akvakultur Sok"
+    url: "https://lovdata.no/sok?q=akvakultur&telelov=telelov"
+    category: "legislation"
+    check_interval_hours: 12
+    priority: "critical"
+    selectors:
+      content: ".search-results, .results, main"
+
+  - id: "lovdata_forskrifter"
+    name: "Lovdata - Akvakultur Forskrifter"
+    url: "https://lovdata.no/sok?q=akvakultur&telelov=forskrift"
+    category: "regulations"
+    check_interval_hours: 6
+    priority: "critical"
+    selectors:
+      content: ".search-results, main"
+
+  # ---------------------------------------------------------------------------
+  # REGJERINGEN (Government of Norway)
+  # ---------------------------------------------------------------------------
+  - id: "regjeringen_nfd"
+    name: "Narings- og fiskeridepartementet"
+    url: "https://www.regjeringen.no/no/dep/nfd/id709/"
+    category: "ministry"
+    check_interval_hours: 4
+    priority: "medium"
+    selectors:
+      content: "main, .content, article"
+
+  - id: "regjeringen_fiskeri"
+    name: "Regjeringen - Fiskeri og Havbruk"
+    url: "https://www.regjeringen.no/no/tema/mat-fiske-og-landbruk/fiske-og-havbruk/id2000804/"
+    category: "policy"
+    check_interval_hours: 4
+    priority: "high"
+    selectors:
+      content: "main, .content"
+
+  - id: "regjeringen_horinger"
+    name: "Regjeringen - Horinger Fiskeri"
+    url: "https://www.regjeringen.no/no/dokument/hoyringar/id1763/?ownerid=709"
+    category: "consultations"
+    check_interval_hours: 6
+    priority: "high"
+    selectors:
+      content: "main, .content"
+
+  # ---------------------------------------------------------------------------
+  # HAVFORSKNINGSINSTITUTTET (Institute of Marine Research)
+  # ---------------------------------------------------------------------------
+  - id: "havforsk_akvakultur"
+    name: "Havforskningsinstituttet - Akvakultur"
+    url: "https://www.hi.no/hi/temasider/akvakultur"
+    category: "research"
+    check_interval_hours: 12
+    priority: "medium"
+    selectors:
+      content: "main, .content, article"
+
+  - id: "havforsk_lakselus"
+    name: "Havforskningsinstituttet - Lakselus"
+    url: "https://www.hi.no/hi/temasider/arter/lakselus"
+    category: "sea_lice"
+    check_interval_hours: 12
+    priority: "medium"
+    selectors:
+      content: "main, .content"
+
+  - id: "havforsk_radgivning"
+    name: "Havforskningsinstituttet - Radgivning"
+    url: "https://www.hi.no/hi/radgivning"
+    category: "research"
+    check_interval_hours: 24
+    priority: "medium"
+    selectors:
+      content: "main, .content"
+
+  # ---------------------------------------------------------------------------
+  # STATSFORVALTEREN (County Governors) - Key aquaculture counties
+  # ---------------------------------------------------------------------------
+  - id: "statsforvalter_nordland"
+    name: "Statsforvalteren i Nordland - Akvakultur"
+    url: "https://www.statsforvalteren.no/nordland/miljo-og-klima/akvakultur/"
+    category: "county_permits"
+    check_interval_hours: 6
+    priority: "medium"
+    selectors:
+      content: "main, .content"
+
+  - id: "statsforvalter_trondelag"
+    name: "Statsforvalteren i Trondelag - Akvakultur"
+    url: "https://www.statsforvalteren.no/trondelag/miljo-og-klima/akvakultur/"
+    category: "county_permits"
+    check_interval_hours: 6
+    priority: "medium"
+    selectors:
+      content: "main, .content"
+
+  - id: "statsforvalter_vestland"
+    name: "Statsforvalteren i Vestland - Akvakultur"
+    url: "https://www.statsforvalteren.no/vestland/miljo-og-klima/akvakultur/"
+    category: "county_permits"
+    check_interval_hours: 6
+    priority: "medium"
+    selectors:
+      content: "main, .content"
+
+  - id: "statsforvalter_rogaland"
+    name: "Statsforvalteren i Rogaland - Akvakultur"
+    url: "https://www.statsforvalteren.no/rogaland/miljo-og-klima/akvakultur/"
+    category: "county_permits"
+    check_interval_hours: 6
+    priority: "medium"
+    selectors:
+      content: "main, .content"
+
+  - id: "statsforvalter_more"
+    name: "Statsforvalteren i More og Romsdal - Akvakultur"
+    url: "https://www.statsforvalteren.no/more-og-romsdal/miljo-og-klima/akvakultur/"
+    category: "county_permits"
+    check_interval_hours: 6
+    priority: "medium"
+    selectors:
+      content: "main, .content"
+
+  - id: "statsforvalter_troms"
+    name: "Statsforvalteren i Troms og Finnmark - Akvakultur"
+    url: "https://www.statsforvalteren.no/troms-og-finnmark/miljo-og-klima/akvakultur/"
+    category: "county_permits"
+    check_interval_hours: 6
+    priority: "medium"
+    selectors:
+      content: "main, .content"
+
+  # ---------------------------------------------------------------------------
+  # INDUSTRY & EU
+  # ---------------------------------------------------------------------------
+  - id: "sjomat_norge"
+    name: "Sjomat Norge - Nyheter"
+    url: "https://sjomatnorge.no/aktuelt/"
+    category: "industry"
+    check_interval_hours: 4
+    priority: "low"
+    selectors:
+      content: "main, .content, article"
+
+  - id: "eurlex_aquaculture"
+    name: "EUR-Lex - Aquaculture"
+    url: "https://eur-lex.europa.eu/search.html?scope=EURLEX&text=aquaculture&type=quick"
+    category: "eu_regulations"
+    check_interval_hours: 24
+    priority: "medium"
+    selectors:
+      content: ".SearchResult, .results, main"
+
+  - id: "barentswatch"
+    name: "BarentsWatch - Akvakultur"
+    url: "https://www.barentswatch.no/fiskehelse/"
+    category: "monitoring"
+    check_interval_hours: 6
+    priority: "medium"
+    selectors:
+      content: "main, .content"
+
+# =============================================================================
+# CATEGORIES
+# =============================================================================
+categories:
+  licenses_permits:
+    name_no: "Konsesjoner og tillatelser"
+    name_en: "Licenses and Permits"
+    keywords: ["konsesjon", "tillatelse", "soknad", "tildeling", "lokalitet"]
+
+  biomass_limits:
+    name_no: "Biomassegrenser (MTB)"
+    name_en: "Maximum Allowed Biomass"
+    keywords: ["mtb", "biomasse", "kapasitet", "produksjonsomrade"]
+
+  traffic_light:
+    name_no: "Trafikklyssystemet"
+    name_en: "Traffic Light System"
+    keywords: ["trafikklys", "gronn", "gul", "rod", "produksjonsomrade", "PO"]
+
+  fish_health:
+    name_no: "Fiskehelse"
+    name_en: "Fish Health"
+    keywords: ["fiskehelse", "sykdom", "behandling", "vaksine", "dod"]
+
+  sea_lice:
+    name_no: "Lakselus"
+    name_en: "Sea Lice"
+    keywords: ["lakselus", "lus", "lusetelling", "behandling", "grense"]
+
+  diseases:
+    name_no: "Fiskesykdommer"
+    name_en: "Fish Diseases"
+    keywords: ["ila", "pd", "sykdom", "smitte", "utbrudd", "sone"]
+
+  environmental:
+    name_no: "Miljokrav"
+    name_en: "Environmental Requirements"
+    keywords: ["miljo", "utslipp", "bunntilstand", "organisk", "resipient"]
+
+  emissions:
+    name_no: "Utslipp"
+    name_en: "Emissions"
+    keywords: ["utslipp", "nitrogen", "fosfor", "organisk"]
+
+  regulations:
+    name_no: "Forskrifter"
+    name_en: "Regulations"
+    keywords: ["forskrift", "endring", "paragraf", "bestemmelse"]
+
+  legislation:
+    name_no: "Lovgivning"
+    name_en: "Legislation"
+    keywords: ["lov", "stortinget", "proposisjon", "innstilling"]
+
+  consultations:
+    name_no: "Horinger"
+    name_en: "Public Consultations"
+    keywords: ["horing", "horingsfrist", "innspill", "uttalelse"]
+
+  policy:
+    name_no: "Politikk og strategi"
+    name_en: "Policy"
+    keywords: ["strategi", "melding", "plan", "politikk"]
+
+  ministry:
+    name_no: "Departement"
+    name_en: "Ministry"
+    keywords: ["minister", "departement", "statsrad"]
+
+  research:
+    name_no: "Forskning"
+    name_en: "Research"
+    keywords: ["forskning", "studie", "rapport", "radgivning"]
+
+  county_permits:
+    name_no: "Fylkestillatelser"
+    name_en: "County Permits"
+    keywords: ["statsforvalter", "fylke", "tillatelse", "soknad"]
+
+  industry:
+    name_no: "Bransjenyheter"
+    name_en: "Industry News"
+    keywords: ["bransje", "marked", "pris", "eksport"]
+
+  eu_regulations:
+    name_no: "EU-regelverk (EOS)"
+    name_en: "EU Regulations (EEA)"
+    keywords: ["eu", "eos", "direktiv", "forordning"]
+
+  monitoring:
+    name_no: "Overvakning"
+    name_en: "Monitoring"
+    keywords: ["overvakning", "data", "statistikk", "kart"]
+
+# =============================================================================
+# AI CONFIGURATION
+# =============================================================================
+ai:
+  provider: "anthropic"
+  model: "claude-sonnet-4-20250514"
+  max_tokens: 2500
+  temperature: 0.2
+
+# =============================================================================
+# MONITORING SETTINGS
+# =============================================================================
+monitoring:
+  default_check_interval_hours: 4
+  max_retries: 3
+  retry_delay_seconds: 60
+  request_timeout_seconds: 30
+  user_agent: "AquaRegWatch/2.0 (Norwegian Aquaculture Regulatory Monitor; kontakt@aquaregwatch.no)"
+  rate_limit_requests_per_minute: 20
+
+# =============================================================================
+# CHANGE DETECTION
+# =============================================================================
+change_detection:
+  min_change_threshold_percent: 0.5
+  ignore_patterns:
+    - "\\d{1,2}\\.\\d{1,2}\\.\\d{4}"
+    - "\\d{4}-\\d{2}-\\d{2}"
+    - "kl\\.\\s*\\d{1,2}[:.:]\\d{2}"
+    - "Sist oppdatert"
+    - "Publisert"
+    - "cookie"
+    - "GDPR"
+
+# =============================================================================
+# DELIVERY SETTINGS
+# =============================================================================
+delivery:
+  email:
+    enabled: true
+    provider: "sendgrid"
+    from_address: "varsler@aquaregwatch.no"
+    from_name: "AquaRegWatch Norway"
+
+  slack:
+    enabled: true
+    default_channel: "#reguleringer"
+
+  digest:
+    daily_time: "07:00"
+    weekly_day: "monday"
+    timezone: "Europe/Oslo"
+
+# =============================================================================
+# PRICING TIERS
+# =============================================================================
+tiers:
+  basic:
+    price_nok: 2500
+    price_eur: 220
+    features:
+      - daily_email_digest
+      - all_sources
+      - norwegian_summaries
+    max_users: 2
+    support: "email"
+
+  professional:
+    price_nok: 7500
+    price_eur: 660
+    features:
+      - realtime_alerts
+      - slack_integration
+      - dashboard_access
+      - action_items
+      - deadline_tracking
+      - english_summaries
+    max_users: 10
+    support: "priority_email"
+
+  enterprise:
+    price_nok: 25000
+    price_eur: 2200
+    features:
+      - api_access
+      - custom_sources
+      - pdf_reports
+      - compliance_calendar
+      - dedicated_account_manager
+      - custom_integrations
+      - sla_guarantee
+    max_users: -1
+    support: "dedicated"
+
+# =============================================================================
+# DATABASE
+# =============================================================================
+database:
+  type: "sqlite"
+  path: "data/aquaregwatch.db"
+
+# =============================================================================
+# LOGGING
+# =============================================================================
+logging:
+  level: "INFO"
+  file: "data/logs/aquaregwatch.log"
+  max_size_mb: 100
+  backup_count: 10

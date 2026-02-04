@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaRegWatch Alert</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #1a5276, #2980b9);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .header p {
+            margin: 5px 0 0 0;
+            opacity: 0.9;
+        }
+        .priority-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-top: 15px;
+        }
+        .priority-critical { background: #e74c3c; }
+        .priority-high { background: #e67e22; }
+        .priority-medium { background: #f39c12; }
+        .priority-low { background: #27ae60; }
+        .content {
+            padding: 30px;
+        }
+        .section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #2980b9;
+        }
+        .section h2 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: #1a5276;
+        }
+        .section-no {
+            border-left-color: #c0392b;
+        }
+        .section-en {
+            border-left-color: #27ae60;
+        }
+        .action-items {
+            background: #fff3cd;
+            border-left-color: #ffc107;
+        }
+        .action-items ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .action-items li {
+            margin: 8px 0;
+        }
+        .penalties {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+        }
+        .deadlines {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+        .meta {
+            padding: 20px 30px;
+            background: #f0f0f0;
+            font-size: 14px;
+            color: #666;
+        }
+        .meta a {
+            color: #2980b9;
+            text-decoration: none;
+        }
+        .footer {
+            padding: 20px 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            border-top: 1px solid #eee;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #2980b9;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐟 AquaRegWatch Norway</h1>
+            <p>Regulatory Change Alert</p>
+            <span class="priority-badge priority-{{ priority }}">{{ priority }}</span>
+        </div>
+
+        <div class="content">
+            <h2 style="margin-top: 0;">{{ title }}</h2>
+
+            <div class="section section-no">
+                <h2>🇳🇴 Norsk Oppsummering</h2>
+                <p>{{ summary_no }}</p>
+            </div>
+
+            <div class="section section-en">
+                <h2>🇬🇧 English Summary</h2>
+                <p>{{ summary_en }}</p>
+            </div>
+
+            <div class="section">
+                <h2>📋 Hva har endret seg / What Changed</h2>
+                <p>{{ what_changed }}</p>
+            </div>
+
+            <div class="section">
+                <h2>👥 Hvem påvirkes / Who is Affected</h2>
+                <ul>
+                {% for party in who_affected %}
+                    <li>{{ party }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+
+            {% if action_items %}
+            <div class="section action-items">
+                <h2>🎯 Handlingspunkter / Action Items</h2>
+                <ul>
+                {% for item in action_items %}
+                    <li>
+                        <strong>{{ item.action }}</strong>
+                        {% if item.deadline %}
+                        <br><small>Frist / Deadline: {{ item.deadline }}</small>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if penalties %}
+            <div class="section penalties">
+                <h2>⚠️ Potensielle sanksjoner / Potential Penalties</h2>
+                <ul>
+                {% for penalty in penalties %}
+                    <li>{{ penalty }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if deadlines %}
+            <div class="section deadlines">
+                <h2>📅 Viktige frister / Important Deadlines</h2>
+                <ul>
+                {% for deadline in deadlines %}
+                    <li><strong>{{ deadline.date }}</strong>: {{ deadline.description }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <a href="{{ source_url }}" class="button">Se original kilde / View Source</a>
+        </div>
+
+        <div class="meta">
+            <strong>Kilde / Source:</strong> <a href="{{ source_url }}">{{ source_url }}</a><br>
+            <strong>Kategori / Category:</strong> {{ category }}<br>
+            <strong>Oppdaget / Detected:</strong> {{ detected_at }}
+        </div>
+
+        <div class="footer">
+            <p>
+                Dette er en automatisk generert varsling fra AquaRegWatch Norway.<br>
+                This is an automated alert from AquaRegWatch Norway.
+            </p>
+            <p>
+                <a href="#">Administrer varsler</a> | <a href="#">Avmeld</a><br>
+                <a href="#">Manage alerts</a> | <a href="#">Unsubscribe</a>
+            </p>
+            <p>© 2026 AquaRegWatch Norway</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+{
+  "check_time": "2026-02-04T19:46:46.282101",
+  "total_sources": 5,
+  "sources_ok": 3,
+  "sources_failed": 2,
+  "results": [
+    {
+      "name": "Fiskeridirektoratet",
+      "url": "https://www.fiskeridir.no/Akvakultur",
+      "timestamp": "2026-02-04T19:46:42.127045",
+      "status": "ok",
+      "status_code": 200,
+      "response_time_ms": 1574.5,
+      "error": null
+    },
+    {
+      "name": "Mattilsynet",
+      "url": "https://www.mattilsynet.no/fisk_og_akvakultur/",
+      "timestamp": "2026-02-04T19:46:43.703797",
+      "status": "ok",
+      "status_code": 200,
+      "response_time_ms": 608.39,
+      "error": null
+    },
+    {
+      "name": "Regjeringen - Fiskeri",
+      "url": "https://www.regjeringen.no/no/tema/mat-fiske-og-landbruk/fiskeri-og-havbruk/id1282/",
+      "timestamp": "2026-02-04T19:46:44.312989",
+      "status": "error",
+      "status_code": 404,
+      "response_time_ms": 657.36,
+      "error": "HTTP 404"
+    },
+    {
+      "name": "Lovdata - Akvakulturloven",
+      "url": "https://lovdata.no/dokument/NL/lov/2005-06-17-79",
+      "timestamp": "2026-02-04T19:46:44.971201",
+      "status": "ok",
+      "status_code": 200,
+      "response_time_ms": 401.63,
+      "error": null
+    },
+    {
+      "name": "Norsk Industri - Havbruk",
+      "url": "https://www.norskindustri.no/bransjer/sjomatindustrien/",
+      "timestamp": "2026-02-04T19:46:45.374024",
+      "status": "error",
+      "status_code": 404,
+      "response_time_ms": 906.57,
+      "error": "HTTP 404"
+    }
+  ]
+}

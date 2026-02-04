@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaMonitor - Investor One-Pager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 11pt;
+            line-height: 1.4;
+            color: #1a1a1a;
+            padding: 40px;
+            max-width: 210mm;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid #0066cc;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 28pt;
+            font-weight: 700;
+            color: #0066cc;
+            margin-bottom: 5px;
+        }
+
+        .tagline {
+            font-size: 12pt;
+            color: #555;
+            font-style: italic;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .section {
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            font-size: 12pt;
+            font-weight: 700;
+            color: #0066cc;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            padding-left: 15px;
+            position: relative;
+            margin-bottom: 6px;
+        }
+
+        li::before {
+            content: "•";
+            color: #0066cc;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .market-stat {
+            font-size: 20pt;
+            font-weight: 700;
+            color: #0066cc;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .market-stat span {
+            font-size: 10pt;
+            color: #555;
+            display: block;
+            font-weight: 400;
+        }
+
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10pt;
+        }
+
+        .pricing-table th,
+        .pricing-table td {
+            padding: 6px 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .pricing-table th {
+            background: #f5f5f5;
+            font-weight: 600;
+        }
+
+        .revenue-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10pt;
+            margin-top: 5px;
+        }
+
+        .revenue-table th,
+        .revenue-table td {
+            padding: 5px 8px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .revenue-table th {
+            background: #0066cc;
+            color: white;
+            font-weight: 600;
+        }
+
+        .revenue-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 10pt;
+            font-weight: 600;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        footer {
+            grid-column: 1 / -1;
+            text-align: center;
+            border-top: 2px solid #0066cc;
+            padding-top: 15px;
+            margin-top: 10px;
+        }
+
+        .contact-info {
+            font-size: 10pt;
+            color: #555;
+        }
+
+        .contact-info strong {
+            color: #1a1a1a;
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 15mm;
+            }
+
+            body {
+                padding: 0;
+                font-size: 10pt;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            header {
+                padding-bottom: 12px;
+                margin-bottom: 15px;
+            }
+
+            h1 {
+                font-size: 24pt;
+            }
+
+            .content {
+                gap: 15px;
+            }
+
+            .section {
+                margin-bottom: 12px;
+            }
+
+            h2 {
+                font-size: 11pt;
+                margin-bottom: 8px;
+            }
+
+            .market-stat {
+                font-size: 18pt;
+                margin: 8px 0;
+            }
+
+            .pricing-table th,
+            .pricing-table td,
+            .revenue-table th,
+            .revenue-table td {
+                padding: 4px 6px;
+                font-size: 9pt;
+            }
+
+            footer {
+                padding-top: 12px;
+                margin-top: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>AquaMonitor</h1>
+        <p class="tagline">Real-time water quality monitoring for sustainable aquaculture</p>
+    </header>
+
+    <div class="content">
+        <div class="section">
+            <h2>The Problem</h2>
+            <ul>
+                <li>Fish farmers rely on manual, infrequent water testing leading to delayed response to quality issues</li>
+                <li>Poor water quality causes fish mortality, disease outbreaks, and reduced growth rates</li>
+                <li>Existing monitoring solutions are expensive and require specialized technical expertise</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Our Solution</h2>
+            <ul>
+                <li>Affordable IoT sensors providing continuous, real-time monitoring of critical water parameters</li>
+                <li>Intelligent alerts and predictive analytics to prevent problems before they occur</li>
+                <li>Simple, intuitive dashboard accessible from any device - no technical expertise required</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Market Opportunity</h2>
+            <div class="market-stat">
+                200+
+                <span>Aquaculture companies in Norway</span>
+            </div>
+            <ul>
+                <li>Norway is the world's largest salmon producer</li>
+                <li>Industry increasingly focused on sustainability and technology adoption</li>
+                <li>Regulatory pressure driving need for better monitoring</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Business Model</h2>
+            <table class="pricing-table">
+                <tr>
+                    <th>Tier</th>
+                    <th>Price/month</th>
+                    <th>Features</th>
+                </tr>
+                <tr>
+                    <td><strong>Starter</strong></td>
+                    <td>2,500 NOK</td>
+                    <td>5 sensors, basic alerts</td>
+                </tr>
+                <tr>
+                    <td><strong>Professional</strong></td>
+                    <td>7,500 NOK</td>
+                    <td>20 sensors, analytics, API</td>
+                </tr>
+                <tr>
+                    <td><strong>Enterprise</strong></td>
+                    <td>15,000 NOK</td>
+                    <td>Unlimited, custom integrations</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section full-width">
+            <h2>Revenue Projections (Annual Recurring Revenue)</h2>
+            <table class="revenue-table">
+                <tr>
+                    <th>Customers</th>
+                    <th>10</th>
+                    <th>25</th>
+                    <th>50</th>
+                    <th>100</th>
+                </tr>
+                <tr>
+                    <td><strong>Conservative (avg 5k/mo)</strong></td>
+                    <td>600k NOK</td>
+                    <td>1.5M NOK</td>
+                    <td>3M NOK</td>
+                    <td>6M NOK</td>
+                </tr>
+                <tr>
+                    <td><strong>Optimistic (avg 8k/mo)</strong></td>
+                    <td>960k NOK</td>
+                    <td>2.4M NOK</td>
+                    <td>4.8M NOK</td>
+                    <td>9.6M NOK</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Current Status</h2>
+            <p><span class="status-badge">MVP Complete</span></p>
+            <ul style="margin-top: 10px;">
+                <li>Fully functional monitoring platform built</li>
+                <li>Sensor integration tested and validated</li>
+                <li>Ready for beta customers Q1 2026</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Use of Funds</h2>
+            <ul>
+                <li><strong>40%</strong> - Product development & hardware</li>
+                <li><strong>35%</strong> - Sales & customer acquisition</li>
+                <li><strong>25%</strong> - Operations & team expansion</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p class="contact-info">
+                <strong>Contact:</strong> [Your Name] |
+                <strong>Email:</strong> contact@aquamonitor.no |
+                <strong>Phone:</strong> +47 XXX XX XXX
+            </p>
+            <p class="contact-info" style="margin-top: 5px;">
+                <strong>Website:</strong> www.aquamonitor.no |
+                <strong>Location:</strong> Bergen, Norway
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

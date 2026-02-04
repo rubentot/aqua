@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaRegWatch Norway</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --secondary: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --background: #0f172a;
+            --surface: #1e293b;
+            --surface-light: #334155;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #475569;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--background) 0%, var(--surface) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Layout */
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, var(--surface) 0%, var(--background) 100%);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .logo {
+            text-align: center;
+            padding: 1rem 0 2rem 0;
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .nav {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .nav-item {
+            padding: 0.875rem 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .nav-item:hover {
+            background: var(--surface-light);
+            color: var(--text);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .nav-icon {
+            font-size: 1.25rem;
+        }
+
+        .status-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .status-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 10px var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem 3rem;
+            max-width: 1400px;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 2rem 0 3rem 0;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--success) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .metric-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .metric-change {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            color: var(--success);
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Cards */
+        .card {
+            background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .card-action {
+            padding: 0.5rem 1rem;
+            background: var(--surface-light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .card-action:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* Alert Cards */
+        .alert-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .alert-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 1.25rem;
+            border-left: 4px solid;
+            transition: transform 0.2s ease;
+        }
+
+        .alert-card:hover {
+            transform: translateX(4px);
+        }
+
+        .alert-critical { border-left-color: var(--danger); }
+        .alert-high { border-left-color: var(--warning); }
+        .alert-medium { border-left-color: #eab308; }
+        .alert-low { border-left-color: var(--success); }
+
+        .alert-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .alert-title {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .alert-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-critical { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+        .badge-high { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
+        .badge-medium { background: rgba(234, 179, 8, 0.2); color: #fde047; }
+        .badge-low { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
+
+        .alert-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .alert-summary {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Source List */
+        .source-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .source-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+        }
+
+        .source-item:last-child {
+            border-bottom: none;
+        }
+
+        .source-name {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .source-time {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            height: 200px;
+            margin-bottom: 1rem;
+        }
+
+        /* Timeline */
+        .timeline-card {
+            margin-top: 2rem;
+        }
+
+        .timeline-chart {
+            height: 200px;
+        }
+
+        /* Page Sections */
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        /* Sources Page */
+        .sources-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .source-card {
+            background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .source-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .source-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .source-card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .source-card-url {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            word-break: break-all;
+        }
+
+        .source-card-meta {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Button */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4);
+        }
+
+        /* Settings Cards */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">🐟</div>
+                <h1>AquaRegWatch</h1>
+                <p>Norway Edition</p>
+            </div>
+
+            <ul class="nav">
+                <li class="nav-item active" onclick="showPage('dashboard')">
+                    <span class="nav-icon">🏠</span>
+                    Dashboard
+                </li>
+                <li class="nav-item" onclick="showPage('changes')">
+                    <span class="nav-icon">📰</span>
+                    Changes
+                </li>
+                <li class="nav-item" onclick="showPage('sources')">
+                    <span class="nav-icon">🌐</span>
+                    Sources
+                </li>
+                <li class="nav-item" onclick="showPage('clients')">
+                    <span class="nav-icon">👥</span>
+                    Clients
+                </li>
+                <li class="nav-item" onclick="showPage('settings')">
+                    <span class="nav-icon">⚙️</span>
+                    Settings
+                </li>
+            </ul>
+
+            <div class="status-section">
+                <h3>System Status</h3>
+                <div class="status-item">
+                    <span class="status-dot"></span>
+                    Service Active
+                </div>
+                <div class="status-item" style="color: var(--text-muted);">
+                    Demo Mode
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Dashboard Page -->
+            <div id="page-dashboard" class="page-section active">
+                <div class="hero">
+                    <h1>🐟 AquaRegWatch</h1>
+                    <p>Real-time monitoring of Norwegian aquaculture regulations</p>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">3</div>
+                        <div class="metric-label">Changes Today</div>
+                        <div class="metric-change">+3 new</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">12</div>
+                        <div class="metric-label">This Week</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">10</div>
+                        <div class="metric-label">Active Sources</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">5</div>
+                        <div class="metric-label">Subscribers</div>
+                    </div>
+                </div>
+
+                <div class="content-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">📰 Latest Regulatory Changes</h2>
+                            <button class="card-action">View All</button>
+                        </div>
+                        <div class="alert-list">
+                            <div class="alert-card alert-critical">
+                                <div class="alert-header">
+                                    <span class="alert-title">🚨 Mattilsynet - Lakselus</span>
+                                    <span class="alert-badge badge-critical">Critical</span>
+                                </div>
+                                <div class="alert-meta">2 hours ago • 15.2% changed</div>
+                                <div class="alert-summary">
+                                    Ny forskrift: Lakselusgrensen reduseres fra 0.5 til 0.25 voksne hunnlus per fisk.
+                                    Gjelder fra 1. mars 2026. Brudd kan medføre bot opptil 1 million NOK.
+                                </div>
+                            </div>
+                            <div class="alert-card alert-high">
+                                <div class="alert-header">
+                                    <span class="alert-title">🔴 Fiskeridirektoratet - MTB</span>
+                                    <span class="alert-badge badge-high">High</span>
+                                </div>
+                                <div class="alert-meta">5 hours ago • 8.7% changed</div>
+                                <div class="alert-summary">
+                                    Oppdaterte regler for maksimalt tillatt biomasse (MTB) i produksjonsområde 4.
+                                    Nye søknadsfrister for kapasitetsjustering.
+                                </div>
+                            </div>
+                            <div class="alert-card alert-medium">
+                                <div class="alert-header">
+                                    <span class="alert-title">🟡 Miljødirektoratet - Utslipp</span>
+                                    <span class="alert-badge badge-medium">Medium</span>
+                                </div>
+                                <div class="alert-meta">1 day ago • 4.3% changed</div>
+                                <div class="alert-summary">
+                                    Nye retningslinjer for rapportering av organisk belastning fra oppdrettsanlegg.
+                                    Frist for implementering: 1. juni 2026.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="card" style="margin-bottom: 1.5rem;">
+                            <div class="card-header">
+                                <h2 class="card-title">📊 By Priority</h2>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="priorityChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">🌐 Source Status</h2>
+                            </div>
+                            <div class="source-list">
+                                <div class="source-item">
+                                    <span class="source-name">
+                                        <span class="status-dot"></span>
+                                        Fiskeridirektoratet
+                                    </span>
+                                    <span class="source-time">2m ago</span>
+                                </div>
+                                <div class="source-item">
+                                    <span class="source-name">
+                                        <span class="status-dot"></span>
+                                        Mattilsynet
+                                    </span>
+                                    <span class="source-time">15m ago</span>
+                                </div>
+                                <div class="source-item">
+                                    <span class="source-name">
+                                        <span class="status-dot"></span>
+                                        Miljødirektoratet
+                                    </span>
+                                    <span class="source-time">1h ago</span>
+                                </div>
+                                <div class="source-item">
+                                    <span class="source-name">
+                                        <span class="status-dot"></span>
+                                        Lovdata
+                                    </span>
+                                    <span class="source-time">3h ago</span>
+                                </div>
+                                <div class="source-item">
+                                    <span class="source-name">
+                                        <span class="status-dot"></span>
+                                        Regjeringen
+                                    </span>
+                                    <span class="source-time">4h ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card timeline-card">
+                    <div class="card-header">
+                        <h2 class="card-title">📈 Activity Timeline (Last 30 Days)</h2>
+                    </div>
+                    <div class="timeline-chart">
+                        <canvas id="timelineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Changes Page -->
+            <div id="page-changes" class="page-section">
+                <h1 style="margin-bottom: 0.5rem;">📰 Regulatory Changes</h1>
+                <p style="color: var(--text-muted); margin-bottom: 2rem;">All detected changes in Norwegian aquaculture regulations</p>
+
+                <div class="alert-list" style="gap: 1.5rem;">
+                    <div class="alert-card alert-critical" style="padding: 1.5rem;">
+                        <div class="alert-header">
+                            <span class="alert-title">🚨 Ny lakselusgrense fra mars 2026</span>
+                            <span class="alert-badge badge-critical">Critical</span>
+                        </div>
+                        <div class="alert-meta">Mattilsynet • 2 hours ago • fish_health</div>
+                        <div class="alert-summary" style="margin-bottom: 1rem;">
+                            <strong>🇳🇴 Norsk:</strong> Mattilsynet har vedtatt nye, strengere grenser for lakselus.
+                            Grensen reduseres fra 0.5 til 0.25 voksne hunnlus per fisk, med virkning fra 1. mars 2026.
+                        </div>
+                        <div class="alert-summary" style="margin-bottom: 1rem;">
+                            <strong>🇬🇧 English:</strong> The Norwegian Food Safety Authority has adopted stricter
+                            sea lice limits. The threshold is reduced from 0.5 to 0.25 adult female lice per fish,
+                            effective March 1, 2026.
+                        </div>
+                        <div style="background: rgba(245, 158, 11, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                            <strong>🎯 Action Items:</strong>
+                            <ul style="margin: 0.5rem 0 0 1.5rem; color: #fcd34d;">
+                                <li>Oppdater lusetellingsrutiner — <em>Deadline: 2026-02-15</em></li>
+                                <li>Søk dispensasjon hvis nødvendig — <em>Deadline: 2026-03-15</em></li>
+                                <li>Vurder behandlingskapasitet</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="alert-card alert-high" style="padding: 1.5rem;">
+                        <div class="alert-header">
+                            <span class="alert-title">🔴 MTB-justeringer i PO4</span>
+                            <span class="alert-badge badge-high">High</span>
+                        </div>
+                        <div class="alert-meta">Fiskeridirektoratet • 5 hours ago • biomass_limits</div>
+                        <div class="alert-summary">
+                            <strong>🇳🇴 Norsk:</strong> Nye regler for maksimalt tillatt biomasse i produksjonsområde 4
+                            (Nordhordland til Stadt). Kapasiteten kan økes med 3% for anlegg med god miljøstatus.
+                        </div>
+                    </div>
+
+                    <div class="alert-card alert-medium" style="padding: 1.5rem;">
+                        <div class="alert-header">
+                            <span class="alert-title">🟡 Nye utslippsrapporteringskrav</span>
+                            <span class="alert-badge badge-medium">Medium</span>
+                        </div>
+                        <div class="alert-meta">Miljødirektoratet • 1 day ago • environmental</div>
+                        <div class="alert-summary">
+                            <strong>🇳🇴 Norsk:</strong> Oppdaterte krav til rapportering av organisk belastning og
+                            næringssalter fra oppdrettsanlegg. Digital innrapportering blir obligatorisk.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sources Page -->
+            <div id="page-sources" class="page-section">
+                <h1 style="margin-bottom: 0.5rem;">🌐 Monitored Sources</h1>
+                <p style="color: var(--text-muted); margin-bottom: 2rem;">Norwegian government websites being monitored for regulatory changes</p>
+
+                <div class="metrics-grid" style="margin-bottom: 2rem;">
+                    <div class="metric-card">
+                        <div class="metric-value">10</div>
+                        <div class="metric-label">Total Sources</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">10</div>
+                        <div class="metric-label">Active</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">6</div>
+                        <div class="metric-label">Categories</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">4.5h</div>
+                        <div class="metric-label">Avg Check Interval</div>
+                    </div>
+                </div>
+
+                <div class="sources-grid">
+                    <div class="source-card">
+                        <div class="source-card-header">
+                            <span class="source-card-title">🟢 Fiskeridirektoratet - Akvakultur</span>
+                            <span class="alert-badge badge-high">High</span>
+                        </div>
+                        <div class="source-card-url">https://www.fiskeridir.no/Akvakultur</div>
+                        <div class="source-card-meta">
+                            <span>📁 licenses_permits</span>
+                            <span>⏱️ Every 1h</span>
+                            <span>🔄 Last: 2m ago</span>
+                        </div>
+                    </div>
+
+                    <div class="source-card">
+                        <div class="source-card-header">
+                            <span class="source-card-title">🟢 Fiskeridirektoratet - MTB</span>
+                            <span class="alert-badge badge-high">High</span>
+                        </div>
+                        <div class="source-card-url">https://www.fiskeridir.no/Akvakultur/Registre-og-skjema/MTB</div>
+                        <div class="source-card-meta">
+                            <span>📁 biomass_limits</span>
+                            <span>⏱️ Every 6h</span>
+                            <span>🔄 Last: 5h ago</span>
+                        </div>
+                    </div>
+
+                    <div class="source-card">
+                        <div class="source-card-header">
+                            <span class="source-card-title">🟢 Mattilsynet - Fisk og Akvakultur</span>
+                            <span class="alert-badge badge-high">High</span>
+                        </div>
+                        <div class="source-card-url">https://www.mattilsynet.no/fisk_og_akvakultur/</div>
+                        <div class="source-card-meta">
+                            <span>📁 fish_health</span>
+                            <span>⏱️ Every 2h</span>
+                            <span>🔄 Last: 15m ago</span>
+                        </div>
+                    </div>
+
+                    <div class="source-card">
+                        <div class="source-card-header">
+                            <span class="source-card-title">🟢 Miljødirektoratet - Akvakultur</span>
+                            <span class="alert-badge badge-medium">Medium</span>
+                        </div>
+                        <div class="source-card-url">https://www.miljodirektoratet.no/tema/akvakultur/</div>
+                        <div class="source-card-meta">
+                            <span>📁 environmental</span>
+                            <span>⏱️ Every 4h</span>
+                            <span>🔄 Last: 1h ago</span>
+                        </div>
+                    </div>
+
+                    <div class="source-card">
+                        <div class="source-card-header">
+                            <span class="source-card-title">🟢 Lovdata - Akvakultur</span>
+                            <span class="alert-badge badge-critical">Critical</span>
+                        </div>
+                        <div class="source-card-url">https://lovdata.no/sok?q=akvakultur</div>
+                        <div class="source-card-meta">
+                            <span>📁 legislation</span>
+                            <span>⏱️ Every 12h</span>
+                            <span>🔄 Last: 3h ago</span>
+                        </div>
+                    </div>
+
+                    <div class="source-card">
+                        <div class="source-card-header">
+                            <span class="source-card-title">🟢 EUR-Lex - Aquaculture</span>
+                            <span class="alert-badge badge-medium">Medium</span>
+                        </div>
+                        <div class="source-card-url">https://eur-lex.europa.eu/</div>
+                        <div class="source-card-meta">
+                            <span>📁 eu_regulations</span>
+                            <span>⏱️ Every 24h</span>
+                            <span>🔄 Last: 12h ago</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clients Page -->
+            <div id="page-clients" class="page-section">
+                <h1 style="margin-bottom: 0.5rem;">👥 Client Management</h1>
+                <p style="color: var(--text-muted); margin-bottom: 2rem;">Manage subscribers and their notification preferences</p>
+
+                <div class="metrics-grid" style="margin-bottom: 2rem;">
+                    <div class="metric-card">
+                        <div class="metric-value">5</div>
+                        <div class="metric-label">Total Clients</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">5</div>
+                        <div class="metric-label">Active</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">3</div>
+                        <div class="metric-label">Pro/Enterprise</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" style="font-size: 1.8rem;">85,000</div>
+                        <div class="metric-label">Monthly Revenue (NOK)</div>
+                    </div>
+                </div>
+
+                <div class="sources-grid">
+                    <div class="source-card">
+                        <div class="source-card-header">
+                            <span class="source-card-title">🟢 SalMar ASA</span>
+                            <span class="alert-badge" style="background: rgba(139, 92, 246, 0.2); color: #a78bfa;">Enterprise</span>
+                        </div>
+                        <div class="source-card-url">compliance@salmar.no</div>
+                        <div class="source-card-meta">
+                            <span>📧 Email</span>
+                            <span>💬 Slack</span>
+                        </div>
+                    </div>
+
+                    <div class="source-card">
+                        <div class="source-card-header">
+                            <span class="source-card-title">🟢 Lerøy Seafood Group</span>
+                            <span class="alert-badge" style="background: rgba(14, 165, 233, 0.2); color: #7dd3fc;">Pro</span>
+                        </div>
+                        <div class="source-card-url">regulations@leroy.no</div>
+                        <div class="source-card-meta">
+                            <span>📧 Email</span>
+                            <span>💬 Slack</span>
+                        </div>
+                    </div>
+
+                    <div class="source-card">
+                        <div class="source-card-header">
+                            <span class="source-card-title">🟢 Mowi ASA</span>
+                            <span class="alert-badge" style="background: rgba(14, 165, 233, 0.2); color: #7dd3fc;">Pro</span>
+                        </div>
+                        <div class="source-card-url">legal@mowi.com</div>
+                        <div class="source-card-meta">
+                            <span>📧 Email</span>
+                        </div>
+                    </div>
+
+                    <div class="source-card">
+                        <div class="source-card-header">
+                            <span class="source-card-title">🟢 Nordlaks AS</span>
+                            <span class="alert-badge" style="background: rgba(100, 116, 139, 0.2); color: #94a3b8;">Basic</span>
+                        </div>
+                        <div class="source-card-url">post@nordlaks.no</div>
+                        <div class="source-card-meta">
+                            <span>📧 Email</span>
+                        </div>
+                    </div>
+
+                    <div class="source-card">
+                        <div class="source-card-header">
+                            <span class="source-card-title">🟢 Cermaq Norway AS</span>
+                            <span class="alert-badge" style="background: rgba(100, 116, 139, 0.2); color: #94a3b8;">Basic</span>
+                        </div>
+                        <div class="source-card-url">info@cermaq.no</div>
+                        <div class="source-card-meta">
+                            <span>📧 Email</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="page-settings" class="page-section">
+                <h1 style="margin-bottom: 0.5rem;">⚙️ Settings</h1>
+                <p style="color: var(--text-muted); margin-bottom: 2rem;">Configure your AquaRegWatch instance</p>
+
+                <h2 style="margin-bottom: 1rem;">🔑 API Keys Status</h2>
+                <div class="settings-grid" style="margin-bottom: 2rem;">
+                    <div class="card">
+                        <h3 style="margin-bottom: 0.5rem;">AI Provider</h3>
+                        <p style="color: var(--success);">✅ Anthropic Claude configured</p>
+                    </div>
+                    <div class="card">
+                        <h3 style="margin-bottom: 0.5rem;">Email Provider</h3>
+                        <p style="color: var(--success);">✅ SendGrid configured</p>
+                    </div>
+                    <div class="card">
+                        <h3 style="margin-bottom: 0.5rem;">Slack Integration</h3>
+                        <p style="color: var(--success);">✅ Webhook configured</p>
+                    </div>
+                    <div class="card">
+                        <h3 style="margin-bottom: 0.5rem;">OpenAI (Backup)</h3>
+                        <p style="color: var(--text-muted);">⚪ Not configured (optional)</p>
+                    </div>
+                </div>
+
+                <h2 style="margin-bottom: 1rem;">🚀 Quick Actions</h2>
+                <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                    <button class="btn" onclick="alert('This is a demo. Install Python to run the actual monitoring.')">
+                        🔄 Run Full Check
+                    </button>
+                    <button class="btn" onclick="alert('This is a demo. Install Python for email functionality.')">
+                        📧 Send Test Email
+                    </button>
+                    <button class="btn" onclick="alert('This is a demo. Install Python to run tests.')">
+                        🧪 Run Tests
+                    </button>
+                </div>
+
+                <h2 style="margin-bottom: 1rem;">📦 Installation</h2>
+                <div class="card">
+                    <p style="margin-bottom: 1rem;">To use the full monitoring service, install Python and run:</p>
+                    <pre style="background: var(--background); padding: 1rem; border-radius: 8px; overflow-x: auto; color: var(--primary);">
+cd C:\Users\Ruben\aquaculture-monitor
+python -m pip install -r requirements.txt
+python main.py --setup
+python main.py --dashboard</pre>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Navigation
+        function showPage(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page-section').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show selected page
+            document.getElementById('page-' + pageName).classList.add('active');
+
+            // Update nav
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+        }
+
+        // Priority Chart
+        const priorityCtx = document.getElementById('priorityChart').getContext('2d');
+        new Chart(priorityCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Critical', 'High', 'Medium', 'Low'],
+                datasets: [{
+                    data: [2, 4, 8, 3],
+                    backgroundColor: ['#ef4444', '#f59e0b', '#eab308', '#10b981'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#94a3b8',
+                            padding: 15
+                        }
+                    }
+                }
+            }
+        });
+
+        // Timeline Chart
+        const timelineCtx = document.getElementById('timelineChart').getContext('2d');
+        const dates = [];
+        const values = [];
+        for (let i = 29; i >= 0; i--) {
+            const date = new Date();
+            date.setDate(date.getDate() - i);
+            dates.push(date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }));
+            values.push(Math.floor(Math.random() * 5) + 1);
+        }
+
+        new Chart(timelineCtx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Changes',
+                    data: values,
+                    borderColor: '#0ea5e9',
+                    backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#0ea5e9'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#94a3b8',
+                            maxTicksLimit: 10
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: 'rgba(71, 85, 105, 0.3)'
+                        },
+                        ticks: {
+                            color: '#94a3b8'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
