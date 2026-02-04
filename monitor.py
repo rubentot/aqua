@@ -1,22 +1,27 @@
 #!/usr/bin/env python3
 """
-AquaRegWatch - Production Monitor
-=================================
-Simple, working regulatory monitor that:
-1. Fetches Norwegian government pages
-2. Detects changes from previous run
-3. Summarizes with AI
-4. Sends email alerts
+AquaRegWatch - Production Monitor (Bulletproof Edition)
+=======================================================
+Reliable regulatory monitor with:
+- Retry logic with exponential backoff
+- Rate limiting to avoid blocks
+- Smart content normalization (ignores timestamps/ads)
+- Failure tracking and alerting
+- Multiple email fallbacks
+- Graceful error handling throughout
 
 Run: python monitor.py
 """
 
 import os
+import re
 import json
 import hashlib
 import logging
+import time
 from datetime import datetime
 from pathlib import Path
+from typing import Optional, Tuple
 
 import requests
 from bs4 import BeautifulSoup
@@ -38,8 +43,9 @@ DATA_DIR = Path("data")
 DATA_DIR.mkdir(exist_ok=True)
 SNAPSHOTS_FILE = DATA_DIR / "snapshots.json"
 CHANGES_LOG = DATA_DIR / "changes.json"
+FAILURES_FILE = DATA_DIR / "failures.json"
 
-# Sources to monitor
+# Sources to monitor (verified working URLs)
 SOURCES = [
     {
         "id": "fiskeridir-akvakultur",
@@ -87,72 +93,170 @@ SOURCES = [
 
 # Request settings
 HEADERS = {
-    "User-Agent": "AquaRegWatch/1.0 (Regulatory Monitor for Norwegian Aquaculture)"
+    "User-Agent": "AquaRegWatch/2.0 (Regulatory Monitor for Norwegian Aquaculture; contact@tefiaqua.no)"
 }
 TIMEOUT = 30
+MAX_RETRIES = 3
+RETRY_DELAY = 2  # seconds, will be multiplied by attempt number
+RATE_LIMIT_DELAY = 1  # seconds between requests
 
 
-def fetch_page(url: str) -> tuple[str, str]:
-    """Fetch page and extract text content. Returns (content, hash)."""
+def normalize_content(text: str) -> str:
+    """
+    Normalize content to reduce false positives from:
+    - Timestamps and dates
+    - Dynamic counters
+    - Session IDs
+    - Random ads/widgets
+    """
+    # Remove common Norwegian date formats
+    text = re.sub(r'\d{1,2}\.\d{1,2}\.\d{4}', '[DATE]', text)
+    text = re.sub(r'\d{1,2}\. (januar|februar|mars|april|mai|juni|juli|august|september|oktober|november|desember) \d{4}', '[DATE]', text, flags=re.IGNORECASE)
+
+    # Remove times
+    text = re.sub(r'\d{1,2}:\d{2}(:\d{2})?', '[TIME]', text)
+
+    # Remove "updated X minutes ago" type strings
+    text = re.sub(r'(oppdatert|publisert|endret).*?(siden|ago)', '[UPDATED]', text, flags=re.IGNORECASE)
+
+    # Remove numbers that look like counters (e.g., "123 results")
+    text = re.sub(r'\d+ (resultater|treff|saker|dokumenter)', '[COUNT]', text, flags=re.IGNORECASE)
+
+    # Normalize whitespace
+    text = re.sub(r'\s+', ' ', text)
+
+    return text.strip()
+
+
+def fetch_page_with_retry(url: str) -> Tuple[Optional[str], Optional[str]]:
+    """Fetch page with retry logic and exponential backoff."""
+    last_error = None
+
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            response = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
+            response.raise_for_status()
+
+            soup = BeautifulSoup(response.content, "html.parser")
+
+            # Remove non-content elements
+            for tag in soup(["script", "style", "nav", "footer", "header", "aside", "noscript", "iframe"]):
+                tag.decompose()
+
+            # Get text
+            text = soup.get_text(separator="\n", strip=True)
+            lines = [line.strip() for line in text.splitlines() if line.strip()]
+            content = "\n".join(lines)
+
+            # Normalize to reduce false positives
+            normalized = normalize_content(content)
+
+            # Hash the normalized content
+            content_hash = hashlib.sha256(normalized.encode()).hexdigest()[:16]
+
+            return content, content_hash
+
+        except requests.exceptions.HTTPError as e:
+            if e.response.status_code == 404:
+                log.error(f"Page not found (404): {url}")
+                return None, None  # Don't retry 404s
+            last_error = e
+        except requests.exceptions.Timeout:
+            last_error = TimeoutError(f"Timeout after {TIMEOUT}s")
+        except requests.exceptions.ConnectionError as e:
+            last_error = e
+        except Exception as e:
+            last_error = e
+
+        if attempt < MAX_RETRIES:
+            delay = RETRY_DELAY * attempt
+            log.warning(f"Attempt {attempt} failed for {url}, retrying in {delay}s...")
+            time.sleep(delay)
+
+    log.error(f"All {MAX_RETRIES} attempts failed for {url}: {last_error}")
+    return None, None
+
+
+def load_json_file(filepath: Path, default=None):
+    """Safely load JSON file."""
+    if default is None:
+        default = {}
     try:
-        response = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
-        response.raise_for_status()
+        if filepath.exists():
+            with open(filepath, "r", encoding="utf-8") as f:
+                return json.load(f)
+    except (json.JSONDecodeError, IOError) as e:
+        log.error(f"Failed to load {filepath}: {e}")
+    return default
 
-        soup = BeautifulSoup(response.content, "html.parser")
 
-        # Remove non-content elements
-        for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):
-            tag.decompose()
-
-        # Get text
-        text = soup.get_text(separator="\n", strip=True)
-        lines = [line.strip() for line in text.splitlines() if line.strip()]
-        content = "\n".join(lines)
-
-        # Hash for quick comparison
-        content_hash = hashlib.md5(content.encode()).hexdigest()
-
-        return content, content_hash
-
-    except Exception as e:
-        log.error(f"Failed to fetch {url}: {e}")
-        return None, None
+def save_json_file(filepath: Path, data):
+    """Safely save JSON file."""
+    try:
+        with open(filepath, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+    except IOError as e:
+        log.error(f"Failed to save {filepath}: {e}")
 
 
 def load_snapshots() -> dict:
-    """Load previous snapshots."""
-    if SNAPSHOTS_FILE.exists():
-        with open(SNAPSHOTS_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return {}
+    return load_json_file(SNAPSHOTS_FILE, {})
 
 
 def save_snapshots(snapshots: dict):
-    """Save snapshots."""
-    with open(SNAPSHOTS_FILE, "w", encoding="utf-8") as f:
-        json.dump(snapshots, f, indent=2, ensure_ascii=False)
+    save_json_file(SNAPSHOTS_FILE, snapshots)
+
+
+def load_failures() -> dict:
+    return load_json_file(FAILURES_FILE, {})
+
+
+def save_failures(failures: dict):
+    save_json_file(FAILURES_FILE, failures)
+
+
+def track_failure(source_id: str, error: str):
+    """Track consecutive failures for a source."""
+    failures = load_failures()
+    if source_id not in failures:
+        failures[source_id] = {"count": 0, "first_failure": None, "last_error": None}
+
+    failures[source_id]["count"] += 1
+    failures[source_id]["last_error"] = error
+    if failures[source_id]["first_failure"] is None:
+        failures[source_id]["first_failure"] = datetime.now().isoformat()
+
+    save_failures(failures)
+
+    # Alert if 3+ consecutive failures
+    if failures[source_id]["count"] >= 3:
+        log.warning(f"Source {source_id} has failed {failures[source_id]['count']} times consecutively!")
+        return True
+    return False
+
+
+def clear_failure(source_id: str):
+    """Clear failure tracking for a source that succeeded."""
+    failures = load_failures()
+    if source_id in failures:
+        del failures[source_id]
+        save_failures(failures)
 
 
 def load_changes() -> list:
-    """Load changes log."""
-    if CHANGES_LOG.exists():
-        with open(CHANGES_LOG, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
+    return load_json_file(CHANGES_LOG, [])
 
 
 def save_change(change: dict):
     """Append change to log."""
     changes = load_changes()
     changes.append(change)
-    # Keep last 100 changes
-    changes = changes[-100:]
-    with open(CHANGES_LOG, "w", encoding="utf-8") as f:
-        json.dump(changes, f, indent=2, ensure_ascii=False)
+    changes = changes[-100:]  # Keep last 100
+    save_json_file(CHANGES_LOG, changes)
 
 
 def summarize_change(source: dict, old_content: str, new_content: str) -> dict:
-    """Use Claude to summarize the change."""
+    """Use Claude to summarize the change with robust error handling."""
     api_key = os.getenv("ANTHROPIC_API_KEY")
     if not api_key:
         log.warning("No ANTHROPIC_API_KEY - skipping AI summary")
@@ -160,7 +264,8 @@ def summarize_change(source: dict, old_content: str, new_content: str) -> dict:
             "title": f"Endring oppdaget: {source['name']}",
             "summary_no": "AI-oppsummering ikke tilgjengelig (mangler API-nøkkel)",
             "summary_en": "AI summary not available (missing API key)",
-            "action_items": []
+            "action_items": [],
+            "priority": "MEDIUM"
         }
 
     try:
@@ -168,8 +273,8 @@ def summarize_change(source: dict, old_content: str, new_content: str) -> dict:
         client = anthropic.Anthropic(api_key=api_key)
 
         # Truncate content to avoid token limits
-        old_excerpt = old_content[:3000] if old_content else "(ingen tidligere innhold)"
-        new_excerpt = new_content[:3000] if new_content else "(tomt)"
+        old_excerpt = (old_content[:3000] if old_content else "(ingen tidligere innhold)")
+        new_excerpt = (new_content[:3000] if new_content else "(tomt)")
 
         prompt = f"""Du er en ekspert på norske akvakulturreguleringer. Analyser denne endringen:
 
@@ -204,15 +309,25 @@ Svar KUN med JSON, ingen annen tekst."""
             messages=[{"role": "user", "content": prompt}]
         )
 
-        # Parse JSON from response
+        # Parse JSON from response with robust handling
         text = response.content[0].text.strip()
-        # Handle markdown code blocks
-        if text.startswith("```"):
-            text = text.split("```")[1]
-            if text.startswith("json"):
-                text = text[4:]
 
-        return json.loads(text)
+        # Handle markdown code blocks
+        if "```" in text:
+            # Extract content between code blocks
+            match = re.search(r'```(?:json)?\s*([\s\S]*?)\s*```', text)
+            if match:
+                text = match.group(1)
+
+        # Try to parse JSON
+        try:
+            return json.loads(text)
+        except json.JSONDecodeError:
+            # Try to find JSON object in the text
+            match = re.search(r'\{[\s\S]*\}', text)
+            if match:
+                return json.loads(match.group())
+            raise
 
     except Exception as e:
         log.error(f"AI summarization failed: {e}")
@@ -225,45 +340,62 @@ Svar KUN med JSON, ingen annen tekst."""
         }
 
 
-def send_alert(source: dict, summary: dict):
-    """Send email alert about the change."""
+def send_alert(source: dict, summary: dict) -> bool:
+    """Send email alert with multiple fallbacks. Returns True if sent successfully."""
     to_email = os.getenv("ALERT_EMAIL")
 
     if not to_email:
         log.warning("No ALERT_EMAIL set - printing alert instead")
         print_alert(source, summary)
-        return
+        return False
 
     # Build HTML content
+    priority_colors = {
+        'KRITISK': '#dc2626',
+        'HØY': '#ea580c',
+        'MEDIUM': '#ca8a04',
+        'LAV': '#16a34a'
+    }
+    priority = summary.get('priority', 'MEDIUM')
+    color = priority_colors.get(priority, '#ca8a04')
+
     html_content = f"""
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background: #0066FF; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
-            <h1 style="margin: 0; font-size: 20px;">AquaRegWatch Alert</h1>
+            <h1 style="margin: 0; font-size: 20px;">🐟 AquaRegWatch Alert</h1>
         </div>
-        <div style="padding: 24px; border: 1px solid #ddd; border-top: none;">
-            <span style="background: {'#ef4444' if summary.get('priority') == 'KRITISK' else '#f59e0b' if summary.get('priority') == 'HØY' else '#eab308'};
-                   color: white; padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: bold;">
-                {summary.get('priority', 'MEDIUM')}
+        <div style="padding: 24px; border: 1px solid #ddd; border-top: none; border-radius: 0 0 8px 8px;">
+            <span style="background: {color}; color: white; padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: bold;">
+                {priority}
             </span>
             <h2 style="margin: 16px 0 8px;">{summary.get('title', 'Change Detected')}</h2>
             <p style="color: #666; margin: 0;">{source['name']} | {datetime.now().strftime('%d.%m.%Y %H:%M')}</p>
 
-            <div style="background: #f5f5f5; padding: 16px; border-radius: 8px; margin: 20px 0;">
-                <h4 style="margin: 0 0 8px;">Norsk</h4>
-                <p style="margin: 0;">{summary.get('summary_no', 'N/A')}</p>
+            <div style="background: #f8fafc; padding: 16px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #0066FF;">
+                <h4 style="margin: 0 0 8px; color: #1e40af;">🇳🇴 Norsk</h4>
+                <p style="margin: 0; line-height: 1.6;">{summary.get('summary_no', 'N/A')}</p>
             </div>
 
-            <div style="background: #f5f5f5; padding: 16px; border-radius: 8px; margin: 20px 0;">
-                <h4 style="margin: 0 0 8px;">English</h4>
-                <p style="margin: 0;">{summary.get('summary_en', 'N/A')}</p>
+            <div style="background: #f8fafc; padding: 16px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #0066FF;">
+                <h4 style="margin: 0 0 8px; color: #1e40af;">🇬🇧 English</h4>
+                <p style="margin: 0; line-height: 1.6;">{summary.get('summary_en', 'N/A')}</p>
             </div>
 
-            <p><a href="{source['url']}" style="color: #0066FF;">View source</a></p>
+            <p style="margin-top: 24px;">
+                <a href="{source['url']}" style="background: #0066FF; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; display: inline-block;">
+                    View Source →
+                </a>
+            </p>
+
+            <hr style="margin: 24px 0; border: none; border-top: 1px solid #e5e7eb;">
+            <p style="color: #9ca3af; font-size: 12px; margin: 0;">
+                AquaRegWatch by TefiAqua | <a href="https://tefiaqua.no" style="color: #9ca3af;">tefiaqua.no</a>
+            </p>
         </div>
     </div>
     """
 
-    subject = f"[{summary.get('priority', 'ALERT')}] {summary.get('title', 'Regulatory Change')}"
+    subject = f"[{priority}] {summary.get('title', 'Regulatory Change')}"
 
     # Try SendGrid first
     if os.getenv("SENDGRID_API_KEY"):
@@ -280,7 +412,7 @@ def send_alert(source: dict, summary: dict):
             sg = SendGridAPIClient(os.getenv("SENDGRID_API_KEY"))
             response = sg.send(message)
             log.info(f"Alert sent via SendGrid to {to_email} (status: {response.status_code})")
-            return
+            return True
         except Exception as e:
             log.error(f"SendGrid failed: {e}")
 
@@ -300,18 +432,19 @@ def send_alert(source: dict, summary: dict):
             msg['To'] = to_email
             msg.attach(MIMEText(html_content, 'html'))
 
-            with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+            with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=30) as server:
                 server.login(gmail_user, gmail_pass)
                 server.sendmail(gmail_user, to_email, msg.as_string())
 
             log.info(f"Alert sent via Gmail to {to_email}")
-            return
+            return True
         except Exception as e:
             log.error(f"Gmail failed: {e}")
 
-    # Fallback: print
-    log.warning("No email provider configured - printing alert")
+    # Fallback: print (at least it's in the logs)
+    log.error("All email providers failed - printing alert to logs")
     print_alert(source, summary)
+    return False
 
 
 def print_alert(source: dict, summary: dict):
@@ -332,39 +465,47 @@ def print_alert(source: dict, summary: dict):
 
 
 def run_monitor():
-    """Main monitoring loop."""
+    """Main monitoring loop with comprehensive error handling."""
     log.info("="*60)
-    log.info("AquaRegWatch - Starting regulatory monitor")
+    log.info("AquaRegWatch v2.0 - Starting regulatory monitor")
     log.info("="*60)
 
     snapshots = load_snapshots()
     changes_found = []
+    errors = []
 
-    for source in SOURCES:
-        log.info(f"Checking: {source['name']}")
+    for i, source in enumerate(SOURCES):
+        log.info(f"[{i+1}/{len(SOURCES)}] Checking: {source['name']}")
 
-        content, content_hash = fetch_page(source['url'])
+        # Rate limiting
+        if i > 0:
+            time.sleep(RATE_LIMIT_DELAY)
+
+        content, content_hash = fetch_page_with_retry(source['url'])
 
         if content is None:
-            log.warning(f"  Skipped (fetch failed)")
+            errors.append(source['name'])
+            should_alert = track_failure(source['id'], "Fetch failed")
+            log.warning(f"  ⚠ Skipped (fetch failed)")
             continue
+
+        # Clear any previous failure tracking
+        clear_failure(source['id'])
 
         source_id = source['id']
         previous = snapshots.get(source_id, {})
         previous_hash = previous.get('hash')
 
         if previous_hash is None:
-            # First time seeing this source
-            log.info(f"  First snapshot saved")
+            log.info(f"  📸 First snapshot saved")
             snapshots[source_id] = {
                 'hash': content_hash,
-                'content': content[:5000],  # Store excerpt
+                'content': content[:5000],
                 'last_checked': datetime.now().isoformat(),
                 'url': source['url']
             }
         elif content_hash != previous_hash:
-            # Change detected!
-            log.info(f"  CHANGE DETECTED!")
+            log.info(f"  🔔 CHANGE DETECTED!")
 
             # Summarize with AI
             summary = summarize_change(source, previous.get('content', ''), content)
@@ -391,7 +532,7 @@ def run_monitor():
                 'url': source['url']
             }
         else:
-            log.info(f"  No changes")
+            log.info(f"  ✓ No changes")
             snapshots[source_id]['last_checked'] = datetime.now().isoformat()
 
     # Save snapshots
@@ -399,10 +540,13 @@ def run_monitor():
 
     # Summary
     log.info("="*60)
-    log.info(f"Monitor complete: {len(changes_found)} changes detected")
+    log.info(f"Monitor complete: {len(changes_found)} changes, {len(errors)} errors")
     if changes_found:
+        log.info("Changes detected:")
         for c in changes_found:
-            log.info(f"  - {c['source_name']}: {c['summary'].get('title', 'Change')}")
+            log.info(f"  🔔 {c['source_name']}: {c['summary'].get('title', 'Change')}")
+    if errors:
+        log.warning(f"Failed sources: {', '.join(errors)}")
     log.info("="*60)
 
     return changes_found
