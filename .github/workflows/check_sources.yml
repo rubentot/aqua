@@ -47,6 +47,14 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git add data/
-          git diff --staged --quiet || (git commit -m "Update snapshots [automated]" && git pull --rebase && git push)
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update snapshots [automated]"
+            # Fetch and merge, preferring our changes for data/ files
+            git fetch origin main
+            git merge origin/main -X ours --no-edit || true
+            git push
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
