@@ -21,6 +21,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Pull latest changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git pull origin main --rebase=false || true
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -43,18 +51,22 @@ jobs:
 
       - name: Commit snapshot updates
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git add data/
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
             git commit -m "Update snapshots [automated]"
-            # Fetch and merge, preferring our changes for data/ files
-            git fetch origin main
-            git merge origin/main -X ours --no-edit || true
-            git push
+            # Simple push - we pulled latest at start so should be clean
+            git push || {
+              # If push fails, force update data/ (it's auto-generated)
+              echo "Push failed, forcing update..."
+              git fetch origin main
+              git reset --soft origin/main
+              git add data/
+              git commit -m "Update snapshots [automated]"
+              git push
+            }
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
