@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AquaRegWatch | Regulatorisk overvåking for havbruk</title>
+    <title>TefiAqua | Regulatorisk overvåking for havbruk</title>
     <meta name="description" content="Profesjonell overvåking av regulatoriske endringer for norsk havbruksnæring. Automatiske varsler når Mattilsynet, Fiskeridirektoratet eller andre myndigheter oppdaterer regelverket.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1149,7 +1149,7 @@
                 <div class="logo-mark">
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
                 </div>
-                <span class="logo-text">AquaReg<span>Watch</span></span>
+                <span class="logo-text">Tefi<span>Aqua</span></span>
             </a>
             <nav>
                 <a href="#problem">Utfordringen</a>
@@ -1345,7 +1345,7 @@
                         <div class="stage-title">AI analyserer endringen...</div>
                         <div class="ai-box">
                             <div class="ai-header">
-                                <span class="ai-badge">Claude AI</span>
+                                <span class="ai-badge">AI</span>
                                 <span class="ai-target">Analyserer for: Nordlaks AS</span>
                             </div>
                             <div class="ai-text" id="ai-output"></div>
@@ -1565,8 +1565,8 @@
                 <h2>Klar til å holde deg oppdatert?</h2>
                 <p>Start din 14-dagers prøveperiode i dag. Ingen kredittkort nødvendig.</p>
                 <div class="cta-buttons">
-                    <a href="mailto:kontakt@aquaregwatch.no?subject=Prøveperiode" class="btn btn-white btn-lg">Start prøveperiode</a>
-                    <a href="mailto:kontakt@aquaregwatch.no?subject=Demo" class="btn btn-outline btn-lg">Book en demo</a>
+                    <a href="mailto:kontakt@tefiaqua.no?subject=Prøveperiode" class="btn btn-white btn-lg">Start prøveperiode</a>
+                    <a href="mailto:kontakt@tefiaqua.no?subject=Demo" class="btn btn-outline btn-lg">Book en demo</a>
                 </div>
             </div>
         </div>
@@ -1580,7 +1580,7 @@
                         <div class="logo-mark">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
                         </div>
-                        <span class="logo-text">AquaReg<span>Watch</span></span>
+                        <span class="logo-text">Tefi<span>Aqua</span></span>
                     </a>
                     <p>Profesjonell overvåking av regulatoriske endringer for norsk havbruksnæring.</p>
                 </div>
@@ -1598,12 +1598,12 @@
                 </div>
                 <div class="footer-links">
                     <h4>Kontakt</h4>
-                    <a href="mailto:kontakt@aquaregwatch.no">kontakt@aquaregwatch.no</a>
+                    <a href="mailto:kontakt@tefiaqua.no">kontakt@tefiaqua.no</a>
                     <a href="#">+47 400 00 000</a>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 AquaRegWatch AS. Org.nr: 930 000 000</p>
+                <p>&copy; 2026 TefiAqua AS. Org.nr: 930 000 000</p>
                 <div class="footer-legal">
                     <a href="#">Personvern</a>
                     <a href="#">Vilkår</a>
@@ -1696,7 +1696,11 @@ FRIST: Nye krav gjelder fra 1. mars 2026`;
                 timeouts.push(setTimeout(() => {
                     document.getElementById('stage-2').classList.remove('active');
                     document.getElementById('stage-3').classList.add('active');
-                    isRunning = false;
+                    // Loop after showing result for 4 seconds
+                    timeouts.push(setTimeout(() => {
+                        reset();
+                        setTimeout(runDemo, 500);
+                    }, 4000));
                 }, 1200));
             }
         }
