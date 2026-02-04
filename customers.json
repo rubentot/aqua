@@ -1,18 +1,18 @@
 {
   "customers": [
     {
-      "id": "demo-customer",
-      "company": "Demo Aquaculture AS",
-      "email": "demo@example.com",
-      "plan": "professional",
+      "id": "tefiaqua-demo",
+      "company": "TefiAqua Demo AS",
+      "email": "ruben_totterman@hotmail.com",
+      "plan": "enterprise",
       "active": true,
       "profile": {
         "licenses": ["Laks", "Regnbueørret"],
         "regions": ["Nordland", "Troms og Finnmark"],
         "production_type": "Sjøbasert",
-        "mtb_tonnes": 3900,
-        "concerns": ["Lakselus", "Rømming", "Miljøovervåking", "Trafikklyssystemet"],
-        "notes": "Har 5 lokaliteter i produksjonsområde 9 og 10"
+        "mtb_tonnes": 5200,
+        "concerns": ["Lakselus", "Rømming", "Miljøovervåking", "Trafikklyssystemet", "MTB", "Tildelinger"],
+        "notes": "Opererer 7 lokaliteter i produksjonsområde 9 (Vestfjorden) og 10 (Andøya). Fokus på bærekraftig vekst og nye tildelingsrunder."
       }
     }
   ],
