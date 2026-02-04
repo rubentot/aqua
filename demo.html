@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaRegWatch Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a365d 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .demo-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #60a5fa, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .demo-header p {
+            color: #94a3b8;
+            font-size: 1.2rem;
+        }
+
+        /* Animation stages */
+        .stage {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .stage.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Stage 1: Monitoring */
+        .monitoring-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .source-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .source-card.scanning {
+            border-color: #60a5fa;
+            box-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+        }
+
+        .source-card.checked {
+            border-color: #34d399;
+        }
+
+        .source-card.changed {
+            border-color: #f59e0b;
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .source-card h3 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .source-card .status {
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        .status-icon {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #475569;
+        }
+
+        .status-icon.scanning {
+            background: #60a5fa;
+            animation: blink 0.5s infinite;
+        }
+
+        .status-icon.checked {
+            background: #34d399;
+        }
+
+        .status-icon.changed {
+            background: #f59e0b;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Stage 2: AI Analysis */
+        .ai-container {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .change-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 2px solid #f59e0b;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 400px;
+        }
+
+        .change-box h3 {
+            color: #f59e0b;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .change-content {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            max-height: 150px;
+            overflow: hidden;
+        }
+
+        .arrow-animation {
+            font-size: 3rem;
+            color: #60a5fa;
+            animation: arrowPulse 1s infinite;
+        }
+
+        @keyframes arrowPulse {
+            0%, 100% { transform: translateX(0); opacity: 1; }
+            50% { transform: translateX(10px); opacity: 0.5; }
+        }
+
+        .ai-box {
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.2), rgba(52, 211, 153, 0.2));
+            border: 2px solid #60a5fa;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 400px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 40%,
+                rgba(255,255,255,0.1) 50%,
+                transparent 60%
+            );
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .ai-box h3 {
+            color: #60a5fa;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .ai-thinking {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .ai-thinking span {
+            width: 10px;
+            height: 10px;
+            background: #60a5fa;
+            border-radius: 50%;
+            animation: bounce 1s infinite;
+        }
+
+        .ai-thinking span:nth-child(2) { animation-delay: 0.2s; }
+        .ai-thinking span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .ai-output {
+            position: relative;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .ai-output .typing {
+            border-right: 2px solid #60a5fa;
+            animation: typing 0.5s infinite;
+        }
+
+        /* Stage 3: Email */
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .email-preview {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            color: #1a1a1a;
+        }
+
+        .email-header {
+            background: #0066FF;
+            color: white;
+            padding: 20px;
+        }
+
+        .email-header h2 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .email-header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .email-body {
+            padding: 25px;
+        }
+
+        .email-badges {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge.priority {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge.relevance {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .email-section {
+            background: #f8fafc;
+            border-left: 4px solid #0066FF;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 15px;
+        }
+
+        .email-section h4 {
+            color: #1e40af;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .email-section p {
+            color: #475569;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .email-actions {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .email-actions h4 {
+            color: #92400e;
+            margin-bottom: 10px;
+        }
+
+        .action-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            font-size: 0.85rem;
+        }
+
+        .action-item:last-child {
+            border: none;
+        }
+
+        .action-item .priority-tag {
+            background: #dc2626;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        .action-item .priority-tag.medium {
+            background: #f59e0b;
+        }
+
+        /* Progress bar */
+        .progress-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.8);
+            padding: 20px;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #64748b;
+            transition: all 0.3s;
+        }
+
+        .progress-step.active {
+            color: #60a5fa;
+        }
+
+        .progress-step.completed {
+            color: #34d399;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .progress-step.active .step-number {
+            background: #60a5fa;
+            color: white;
+        }
+
+        .progress-step.completed .step-number {
+            background: #34d399;
+            color: white;
+        }
+
+        /* Controls */
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .control-btn.primary {
+            background: #0066FF;
+            border-color: #0066FF;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button class="control-btn" onclick="restartDemo()">↺ Start på nytt</button>
+        <button class="control-btn primary" onclick="skipToEnd()">Se resultat →</button>
+    </div>
+
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>🐟 AquaRegWatch Demo</h1>
+            <p>Se hvordan vi overvåker og varsler om reguleringsendringer</p>
+        </div>
+
+        <!-- Stage 1: Monitoring -->
+        <div class="stage active" id="stage1">
+            <h2 style="text-align: center; margin-bottom: 30px; color: #94a3b8;">
+                Steg 1: Overvåker norske myndigheter 24/7
+            </h2>
+            <div class="monitoring-grid">
+                <div class="source-card" id="source1">
+                    <h3><span class="status-icon"></span> Fiskeridirektoratet</h3>
+                    <p class="status">Venter...</p>
+                </div>
+                <div class="source-card" id="source2">
+                    <h3><span class="status-icon"></span> Mattilsynet</h3>
+                    <p class="status">Venter...</p>
+                </div>
+                <div class="source-card" id="source3">
+                    <h3><span class="status-icon"></span> Lovdata</h3>
+                    <p class="status">Venter...</p>
+                </div>
+                <div class="source-card" id="source4">
+                    <h3><span class="status-icon"></span> Regjeringen</h3>
+                    <p class="status">Venter...</p>
+                </div>
+                <div class="source-card" id="source5">
+                    <h3><span class="status-icon"></span> Sjømat Norge</h3>
+                    <p class="status">Venter...</p>
+                </div>
+                <div class="source-card" id="source6">
+                    <h3><span class="status-icon"></span> Miljødirektoratet</h3>
+                    <p class="status">Venter...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage 2: AI Analysis -->
+        <div class="stage" id="stage2">
+            <h2 style="text-align: center; margin-bottom: 30px; color: #94a3b8;">
+                Steg 2: AI analyserer endringen
+            </h2>
+            <div class="ai-container">
+                <div class="change-box">
+                    <h3>⚠️ Endring oppdaget</h3>
+                    <p style="margin-bottom: 15px; color: #fbbf24;">Fiskeridirektoratet - Tildelinger</p>
+                    <div class="change-content">
+                        + Nye krav til MTB-rapportering<br>
+                        + Frist: 15. mars 2026<br>
+                        + Gjelder produksjonsområde 8-10<br>
+                        - Fjernet: Gammel § 4.2<br>
+                        + Ny: Miljøovervåkingskrav
+                    </div>
+                </div>
+
+                <div class="arrow-animation">→</div>
+
+                <div class="ai-box">
+                    <h3>🤖 Claude AI Analyserer</h3>
+                    <div class="ai-thinking">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="ai-output" id="aiOutput">
+                        <span class="typing"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage 3: Email -->
+        <div class="stage" id="stage3">
+            <h2 style="text-align: center; margin-bottom: 30px; color: #94a3b8;">
+                Steg 3: Personalisert varsel sendes
+            </h2>
+            <div class="email-container">
+                <div class="email-preview">
+                    <div class="email-header">
+                        <h2>🐟 AquaRegWatch Alert</h2>
+                        <p>Personalisert for Nordlaks AS</p>
+                    </div>
+                    <div class="email-body">
+                        <div class="email-badges">
+                            <span class="badge priority">HØY PRIORITET</span>
+                            <span class="badge relevance">Relevans: HØY</span>
+                        </div>
+
+                        <h3 style="margin-bottom: 20px;">Nye MTB-rapporteringskrav for Nordland</h3>
+
+                        <div class="email-section">
+                            <h4>📋 Hvorfor dette er relevant for Nordlaks AS</h4>
+                            <p>Dere opererer lakseoppdrett i Nordland med 5,200 tonn MTB fordelt på 7 lokaliteter i produksjonsområde 9 og 10. De nye rapporteringskravene gjelder direkte for deres drift.</p>
+                        </div>
+
+                        <div class="email-section">
+                            <h4>🇳🇴 Hva dette betyr for dere</h4>
+                            <p>Fra 15. mars må alle aktører i produksjonsområde 8-10 levere utvidet miljørapport månedlig. Dette erstatter tidligere kvartalsvis rapportering. Manglende rapportering kan medføre gebyr på 50.000 NOK.</p>
+                        </div>
+
+                        <div class="email-actions">
+                            <h4>⚡ Handlinger for Nordlaks AS</h4>
+                            <div class="action-item">
+                                <span>Oppdater rapporteringsrutiner</span>
+                                <span class="priority-tag">HØY</span>
+                            </div>
+                            <div class="action-item">
+                                <span>Informer driftsansvarlige på alle 7 lokaliteter</span>
+                                <span class="priority-tag">HØY</span>
+                            </div>
+                            <div class="action-item">
+                                <span>Sjekk at miljøovervåkingsutstyr er kalibrert</span>
+                                <span class="priority-tag medium">MEDIUM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-steps">
+            <div class="progress-step active" id="step1">
+                <span class="step-number">1</span>
+                <span>Overvåking</span>
+            </div>
+            <div class="progress-step" id="step2">
+                <span class="step-number">2</span>
+                <span>AI Analyse</span>
+            </div>
+            <div class="progress-step" id="step3">
+                <span class="step-number">3</span>
+                <span>Varsel</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStage = 1;
+        let animationTimeout;
+
+        const sources = [
+            { id: 'source1', name: 'Fiskeridirektoratet', hasChange: true },
+            { id: 'source2', name: 'Mattilsynet', hasChange: false },
+            { id: 'source3', name: 'Lovdata', hasChange: false },
+            { id: 'source4', name: 'Regjeringen', hasChange: false },
+            { id: 'source5', name: 'Sjømat Norge', hasChange: false },
+            { id: 'source6', name: 'Miljødirektoratet', hasChange: false },
+        ];
+
+        const aiText = `Analyserer for Nordlaks AS...
+
+✓ Lakseoppdrett i Nordland
+✓ 5,200 tonn MTB
+✓ 7 lokaliteter i område 9-10
+
+KONKLUSJON:
+Høy relevans - direkte påvirkning
+på deres drift. Anbefaler umiddelbar
+gjennomgang av rapporteringsrutiner.`;
+
+        function startDemo() {
+            currentStage = 1;
+            showStage(1);
+            animateSources();
+        }
+
+        function showStage(stage) {
+            document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+            document.getElementById(`stage${stage}`).classList.add('active');
+
+            document.querySelectorAll('.progress-step').forEach((s, i) => {
+                s.classList.remove('active', 'completed');
+                if (i + 1 < stage) s.classList.add('completed');
+                if (i + 1 === stage) s.classList.add('active');
+            });
+        }
+
+        function animateSources() {
+            let index = 0;
+
+            function scanNext() {
+                if (index >= sources.length) {
+                    setTimeout(() => {
+                        currentStage = 2;
+                        showStage(2);
+                        animateAI();
+                    }, 1000);
+                    return;
+                }
+
+                const source = sources[index];
+                const card = document.getElementById(source.id);
+                const icon = card.querySelector('.status-icon');
+                const status = card.querySelector('.status');
+
+                // Scanning
+                card.classList.add('scanning');
+                icon.classList.add('scanning');
+                status.textContent = 'Sjekker...';
+
+                animationTimeout = setTimeout(() => {
+                    card.classList.remove('scanning');
+                    icon.classList.remove('scanning');
+
+                    if (source.hasChange) {
+                        card.classList.add('changed');
+                        icon.classList.add('changed');
+                        status.textContent = '⚠️ ENDRING OPPDAGET!';
+                    } else {
+                        card.classList.add('checked');
+                        icon.classList.add('checked');
+                        status.textContent = '✓ Ingen endringer';
+                    }
+
+                    index++;
+                    setTimeout(scanNext, 500);
+                }, 800);
+            }
+
+            scanNext();
+        }
+
+        function animateAI() {
+            const output = document.getElementById('aiOutput');
+            let charIndex = 0;
+
+            function typeNext() {
+                if (charIndex < aiText.length) {
+                    output.innerHTML = aiText.substring(0, charIndex + 1).replace(/\n/g, '<br>') + '<span class="typing"></span>';
+                    charIndex++;
+                    animationTimeout = setTimeout(typeNext, 30);
+                } else {
+                    output.innerHTML = aiText.replace(/\n/g, '<br>');
+                    setTimeout(() => {
+                        currentStage = 3;
+                        showStage(3);
+                    }, 1500);
+                }
+            }
+
+            typeNext();
+        }
+
+        function restartDemo() {
+            clearTimeout(animationTimeout);
+            document.querySelectorAll('.source-card').forEach(card => {
+                card.classList.remove('scanning', 'checked', 'changed');
+                card.querySelector('.status-icon').classList.remove('scanning', 'checked', 'changed');
+                card.querySelector('.status').textContent = 'Venter...';
+            });
+            document.getElementById('aiOutput').innerHTML = '<span class="typing"></span>';
+            startDemo();
+        }
+
+        function skipToEnd() {
+            clearTimeout(animationTimeout);
+            currentStage = 3;
+            showStage(3);
+            document.querySelectorAll('.progress-step').forEach((s, i) => {
+                s.classList.remove('active');
+                s.classList.add('completed');
+            });
+            document.getElementById('step3').classList.remove('completed');
+            document.getElementById('step3').classList.add('active');
+        }
+
+        // Start on load
+        window.onload = () => {
+            setTimeout(startDemo, 500);
+        };
+    </script>
+</body>
+</html>

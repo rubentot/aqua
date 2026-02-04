@@ -5,6 +5,7 @@
     { "source": "/", "destination": "/landing_page.html" },
     { "source": "/investors", "destination": "/investor_pitch.html" },
     { "source": "/pitch", "destination": "/investor_pitch.html" },
-    { "source": "/onepager", "destination": "/investor_onepager.html" }
+    { "source": "/onepager", "destination": "/investor_onepager.html" },
+    { "source": "/demo", "destination": "/demo.html" }
   ]
 }
