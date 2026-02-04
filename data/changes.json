@@ -10,5 +10,103 @@
       "summary_en": "AI summary not available (missing API key)",
       "action_items": []
     }
+  },
+  {
+    "source_id": "fiskeridir-akvakultur",
+    "source_name": "Fiskeridirektoratet - Akvakultur",
+    "url": "https://www.fiskeridir.no/Akvakultur",
+    "detected_at": "2026-02-04T22:09:01.648543",
+    "summary": {
+      "title": "Endring oppdaget: Fiskeridirektoratet - Akvakultur",
+      "summary_no": "Automatisk oppsummering feilet: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your cred",
+      "summary_en": "Automatic summary failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your cred",
+      "action_items": [],
+      "priority": "MEDIUM"
+    },
+    "customers_notified": 1
+  },
+  {
+    "source_id": "fiskeridir-tildelinger",
+    "source_name": "Fiskeridirektoratet - Tildelinger",
+    "url": "https://www.fiskeridir.no/Akvakultur/Tildeling-og-tillatelser",
+    "detected_at": "2026-02-04T22:09:06.852931",
+    "summary": {
+      "title": "Endring oppdaget: Fiskeridirektoratet - Tildelinger",
+      "summary_no": "Automatisk oppsummering feilet: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your cred",
+      "summary_en": "Automatic summary failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your cred",
+      "action_items": [],
+      "priority": "MEDIUM"
+    },
+    "customers_notified": 1
+  },
+  {
+    "source_id": "mattilsynet-fisk",
+    "source_name": "Mattilsynet - Fisk og akvakultur",
+    "url": "https://www.mattilsynet.no/fisk_og_akvakultur/",
+    "detected_at": "2026-02-04T22:09:15.816562",
+    "summary": {
+      "title": "Endring oppdaget: Mattilsynet - Fisk og akvakultur",
+      "summary_no": "Automatisk oppsummering feilet: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your cred",
+      "summary_en": "Automatic summary failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your cred",
+      "action_items": [],
+      "priority": "MEDIUM"
+    },
+    "customers_notified": 1
+  },
+  {
+    "source_id": "mattilsynet-lakselus",
+    "source_name": "Mattilsynet - Lakselus",
+    "url": "https://www.mattilsynet.no/fisk_og_akvakultur/akvakultur/lakselus/",
+    "detected_at": "2026-02-04T22:09:19.735139",
+    "summary": {
+      "title": "Endring oppdaget: Mattilsynet - Lakselus",
+      "summary_no": "Automatisk oppsummering feilet: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your cred",
+      "summary_en": "Automatic summary failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your cred",
+      "action_items": [],
+      "priority": "MEDIUM"
+    },
+    "customers_notified": 1
+  },
+  {
+    "source_id": "lovdata-akvakultur",
+    "source_name": "Lovdata - Akvakulturloven",
+    "url": "https://lovdata.no/dokument/NL/lov/2005-06-17-79",
+    "detected_at": "2026-02-04T22:09:23.859582",
+    "summary": {
+      "title": "Endring oppdaget: Lovdata - Akvakulturloven",
+      "summary_no": "Automatisk oppsummering feilet: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your cred",
+      "summary_en": "Automatic summary failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your cred",
+      "action_items": [],
+      "priority": "MEDIUM"
+    },
+    "customers_notified": 1
+  },
+  {
+    "source_id": "regjeringen-fiskeri",
+    "source_name": "Regjeringen - Fiskeri og havbruk",
+    "url": "https://www.regjeringen.no/no/tema/mat-fiske-og-landbruk/fiskeri-og-havbruk/",
+    "detected_at": "2026-02-04T22:09:27.884900",
+    "summary": {
+      "title": "Endring oppdaget: Regjeringen - Fiskeri og havbruk",
+      "summary_no": "Automatisk oppsummering feilet: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your cred",
+      "summary_en": "Automatic summary failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your cred",
+      "action_items": [],
+      "priority": "MEDIUM"
+    },
+    "customers_notified": 1
+  },
+  {
+    "source_id": "sjomatnorge",
+    "source_name": "Sjømat Norge",
+    "url": "https://sjomatnorge.no/",
+    "detected_at": "2026-02-04T22:09:32.174428",
+    "summary": {
+      "title": "Endring oppdaget: Sjømat Norge",
+      "summary_no": "Automatisk oppsummering feilet: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your cred",
+      "summary_en": "Automatic summary failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your cred",
+      "action_items": [],
+      "priority": "MEDIUM"
+    },
+    "customers_notified": 1
   }
 ]
