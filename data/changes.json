@@ -108,5 +108,19 @@
       "priority": "MEDIUM"
     },
     "customers_notified": 1
+  },
+  {
+    "source_id": "fiskeridir-akvakultur",
+    "source_name": "Fiskeridirektoratet - Akvakultur",
+    "url": "https://www.fiskeridir.no/Akvakultur",
+    "detected_at": "2026-02-04T22:40:47.311010",
+    "summary": {
+      "title": "Endring oppdaget: Fiskeridirektoratet - Akvakultur",
+      "summary_no": "Automatisk oppsummering feilet: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your cred",
+      "summary_en": "Automatic summary failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your cred",
+      "action_items": [],
+      "priority": "MEDIUM"
+    },
+    "customers_notified": 1
   }
 ]
