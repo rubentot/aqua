@@ -1,47 +1,47 @@
-# AquaRegWatch Norway - Source Checker Workflow
-# FREE hosting solution using GitHub Actions (2000 minutes/month free tier)
-# Hourly source availability checks
+# AquaRegWatch - Automated Regulatory Monitor
+# Runs every hour, FREE on GitHub Actions (2000 min/month)
 
-name: Check Sources
+name: Monitor Regulations
 
 on:
   schedule:
-    # Run every hour
+    # Every hour
     - cron: '0 * * * *'
   workflow_dispatch:
-    # Allow manual triggering from GitHub Actions UI
+    # Manual trigger from GitHub UI
 
 jobs:
-  check-sources:
+  monitor:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
-      - name: Run source check
-        run: python check_sources.py
+      - name: Run monitor
+        run: python monitor.py
         env:
-          # Add any required environment variables here
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
+          EMAIL_FROM_ADDRESS: ${{ secrets.EMAIL_FROM_ADDRESS }}
 
-      - name: Upload check results
-        uses: actions/upload-artifact@v4
-        with:
-          name: source-check-${{ github.run_number }}
-          path: data/source_check_*.json
-          retention-days: 7
-        if: always()
-        continue-on-error: true
+      - name: Commit snapshot updates
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/
+          git diff --staged --quiet || git commit -m "Update snapshots [automated]"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
