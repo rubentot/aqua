@@ -521,11 +521,7 @@ def send_alert_to_customer(source: dict, summary: dict, customer: dict) -> bool:
         log.warning(f"No email for customer {company}")
         return False
 
-    # Skip if not relevant to this customer
     relevance = summary.get("relevance", "MEDIUM")
-    if relevance == "INGEN":
-        log.info(f"  Skipping {company} - not relevant to them")
-        return False
 
     priority_colors = {
         'KRITISK': '#dc2626',
