@@ -46,8 +46,9 @@ CHANGES_LOG = DATA_DIR / "changes.json"
 FAILURES_FILE = DATA_DIR / "failures.json"
 CUSTOMERS_FILE = Path("customers.json")
 
-# Sources to monitor (verified working URLs)
+# Sources to monitor (verified working URLs - Feb 2026)
 SOURCES = [
+    # --- Fiskeridirektoratet ---
     {
         "id": "fiskeridir-akvakultur",
         "name": "Fiskeridirektoratet - Akvakultur",
@@ -55,29 +56,38 @@ SOURCES = [
         "category": "licenses"
     },
     {
-        "id": "fiskeridir-tildelinger",
-        "name": "Fiskeridirektoratet - Tildelinger",
-        "url": "https://www.fiskeridir.no/Akvakultur/Tildeling-og-tillatelser",
+        "id": "fiskeridir-trafikklys",
+        "name": "Fiskeridirektoratet - Trafikklyssystemet",
+        "url": "https://www.fiskeridir.no/akvakultur/hva-er-trafikklyssystemet",
+        "category": "traffic_light"
+    },
+    {
+        "id": "fiskeridir-kapasitet",
+        "name": "Fiskeridirektoratet - Kapasitetsjustering",
+        "url": "https://www.fiskeridir.no/akvakultur/kapasitetsjustering",
+        "category": "biomass"
+    },
+    {
+        "id": "fiskeridir-lokaliteter",
+        "name": "Fiskeridirektoratet - Akvakulturregisteret",
+        "url": "https://www.fiskeridir.no/registre/akvakulturregisteret",
         "category": "licenses"
     },
+    # --- Mattilsynet ---
     {
         "id": "mattilsynet-fisk",
         "name": "Mattilsynet - Fisk og akvakultur",
         "url": "https://www.mattilsynet.no/fisk_og_akvakultur/",
         "category": "health"
     },
-    {
-        "id": "mattilsynet-lakselus",
-        "name": "Mattilsynet - Lakselus",
-        "url": "https://www.mattilsynet.no/fisk_og_akvakultur/akvakultur/lakselus/",
-        "category": "sea_lice"
-    },
+    # --- Lovdata ---
     {
         "id": "lovdata-akvakultur",
         "name": "Lovdata - Akvakulturloven",
         "url": "https://lovdata.no/dokument/NL/lov/2005-06-17-79",
         "category": "legislation"
     },
+    # --- Regjeringen ---
     {
         "id": "regjeringen-fiskeri",
         "name": "Regjeringen - Fiskeri og havbruk",
@@ -85,10 +95,61 @@ SOURCES = [
         "category": "policy"
     },
     {
+        "id": "regjeringen-nfd",
+        "name": "Nærings- og fiskeridepartementet",
+        "url": "https://www.regjeringen.no/no/dep/nfd/id709/",
+        "category": "ministry"
+    },
+    {
+        "id": "regjeringen-horinger",
+        "name": "Regjeringen - Høringer fiskeri",
+        "url": "https://www.regjeringen.no/no/dokument/hoyringar/id1763/?ownerid=709",
+        "category": "consultations"
+    },
+    # --- Havforskningsinstituttet ---
+    {
+        "id": "havforsk-akvakultur",
+        "name": "Havforskningsinstituttet - Akvakultur",
+        "url": "https://www.hi.no/hi/temasider/akvakultur",
+        "category": "research"
+    },
+    {
+        "id": "havforsk-lakselus",
+        "name": "Havforskningsinstituttet - Lakselus",
+        "url": "https://www.hi.no/hi/temasider/arter/lakselus",
+        "category": "sea_lice"
+    },
+    # --- Industry & monitoring ---
+    {
         "id": "sjomatnorge",
         "name": "Sjømat Norge",
         "url": "https://sjomatnorge.no/",
         "category": "industry"
+    },
+    {
+        "id": "barentswatch",
+        "name": "BarentsWatch - Fiskehelse",
+        "url": "https://www.barentswatch.no/fiskehelse/",
+        "category": "monitoring"
+    },
+    # --- Statsforvalteren (key aquaculture counties) ---
+    {
+        "id": "statsforvalter-nordland",
+        "name": "Statsforvalteren Nordland - Akvakultur",
+        "url": "https://www.statsforvalteren.no/nordland/miljo-og-klima/akvakultur/",
+        "category": "county_permits"
+    },
+    {
+        "id": "statsforvalter-trondelag",
+        "name": "Statsforvalteren Trøndelag - Akvakultur",
+        "url": "https://www.statsforvalteren.no/trondelag/miljo-og-klima/akvakultur/",
+        "category": "county_permits"
+    },
+    {
+        "id": "statsforvalter-vestland",
+        "name": "Statsforvalteren Vestland - Akvakultur",
+        "url": "https://www.statsforvalteren.no/vestland/miljo-og-klima/akvakultur/",
+        "category": "county_permits"
     },
 ]
 
@@ -99,7 +160,7 @@ HEADERS = {
 TIMEOUT = 30
 MAX_RETRIES = 3
 RETRY_DELAY = 2  # seconds, will be multiplied by attempt number
-RATE_LIMIT_DELAY = 1  # seconds between requests
+RATE_LIMIT_DELAY = 1.5  # seconds between requests
 
 
 def normalize_content(text: str) -> str:
