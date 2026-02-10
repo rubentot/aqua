@@ -138,5 +138,32 @@
       "priority": "LAV"
     },
     "customers_notified": 1
+  },
+  {
+    "source_id": "regjeringen-nfd",
+    "source_name": "Nærings- og fiskeridepartementet",
+    "url": "https://www.regjeringen.no/no/dep/nfd/id709/",
+    "detected_at": "2026-02-10T07:30:13.233044",
+    "summary": {
+      "title": "Oppdatering av nyhetsside med ny geologikonferanse-nyhet",
+      "title_en": "News page update with new geology conference announcement",
+      "summary_no": "Departementets nyhetsside er oppdatert med en ny nyhet om at næringsministeren skal delta på Geologikonferansen 2026 i Trondheim. En eldre presseinvitasjon om Arctic Frontiers er fjernet fra listen over siste nyheter.",
+      "summary_en": "The department's news page has been updated with a new item about the Minister of Trade and Industry attending the Geology Conference 2026 in Trondheim. An older press invitation about Arctic Frontiers has been removed from the latest news list.",
+      "who_affected": [
+        "Geologibransjen",
+        "Gruveselskaper",
+        "Forskningsinstitusjoner",
+        "Konferansedeltakere"
+      ],
+      "action_items": [
+        {
+          "action": "Følg med på detaljer fra geologikonferansen for eventuelle nye reguleringer",
+          "deadline": "Februar-mars 2026",
+          "priority": "Lav"
+        }
+      ],
+      "priority": "LAV"
+    },
+    "customers_notified": 1
   }
 ]
