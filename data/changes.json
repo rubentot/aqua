@@ -165,5 +165,32 @@
       "priority": "LAV"
     },
     "customers_notified": 1
+  },
+  {
+    "source_id": "regjeringen-nfd",
+    "source_name": "Nærings- og fiskeridepartementet",
+    "url": "https://www.regjeringen.no/no/dep/nfd/id709/",
+    "detected_at": "2026-02-10T11:24:27.072265",
+    "summary": {
+      "title": "Ny innspillsrunde for stortingsmelding om romvirksomhet",
+      "title_en": "New consultation round for space industry white paper",
+      "summary_no": "NFD har åpnet for innspill til ny stortingsmelding om romvirksomhet, datert 10.02.2026. Dette er del av regjeringens arbeid med å løfte norsk romvirksomhet til nye høyder som annonsert i desember 2025.",
+      "summary_en": "The Ministry has opened for input to a new white paper on space activities, dated 10.02.2026. This is part of the government's work to elevate Norwegian space industry to new heights as announced in December 2025.",
+      "who_affected": [
+        "Romfartsindustri",
+        "Teknologiselskaper",
+        "Forskningsinstitusjoner",
+        "Satellittoperatører"
+      ],
+      "action_items": [
+        {
+          "action": "Send innspill til stortingsmelding om romvirksomhet",
+          "deadline": "Ikke spesifisert",
+          "priority": "Medium"
+        }
+      ],
+      "priority": "LAV"
+    },
+    "customers_notified": 1
   }
 ]
