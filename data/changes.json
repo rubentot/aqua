@@ -282,5 +282,21 @@
       "priority": "HØY"
     },
     "customers_notified": 1
+  },
+  {
+    "source_id": "regjeringen-horinger",
+    "source_name": "Regjeringen - Høringer fiskeri",
+    "url": "https://www.regjeringen.no/no/dokument/hoyringar/id1763/?ownerid=709",
+    "detected_at": "2026-02-11T22:13:05.356812",
+    "summary": {
+      "title": "Ingen endringer i høringsoversikt",
+      "title_en": "No changes in consultation overview",
+      "summary_no": "Det er ingen synlige endringer mellom tidligere og nytt innhold på høringssiden. Begge versjoner viser identisk innhold med samme høringer og tidsfrister.",
+      "summary_en": "There are no visible changes between the previous and new content on the consultation page. Both versions show identical content with the same consultations and deadlines.",
+      "who_affected": [],
+      "action_items": [],
+      "priority": "LAV"
+    },
+    "customers_notified": 1
   }
 ]
