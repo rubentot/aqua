@@ -218,5 +218,37 @@
       "priority": "LAV"
     },
     "customers_notified": 1
+  },
+  {
+    "source_id": "regjeringen-nfd",
+    "source_name": "Nærings- og fiskeridepartementet",
+    "url": "https://www.regjeringen.no/no/dep/nfd/id709/",
+    "detected_at": "2026-02-11T09:23:52.645245",
+    "summary": {
+      "title": "Ny nyhet om cruiseavgift og fjernet fritidsbåtregler",
+      "title_en": "New cruise tax news and removed recreational boat regulations",
+      "summary_no": "Regjeringen har startet arbeidet med å få på plass en cruiseavgift, som nå fremheves som ny hovednyhet. Samtidig er nyheten om skjerpede krav til fritidsbåtførere fjernet fra nettsiden.",
+      "summary_en": "The government has started work on implementing a cruise tax, now highlighted as a main news item. Meanwhile, the news about stricter requirements for recreational boat operators has been removed from the website.",
+      "who_affected": [
+        "Cruiseoperatører",
+        "Havner",
+        "Reiselivsnæringen",
+        "Fritidsbåtførere"
+      ],
+      "action_items": [
+        {
+          "action": "Følge utviklingen av cruiseavgift",
+          "deadline": "Løpende",
+          "priority": "Medium"
+        },
+        {
+          "action": "Undersøke status for fritidsbåtregler",
+          "deadline": "Snart",
+          "priority": "Lav"
+        }
+      ],
+      "priority": "MEDIUM"
+    },
+    "customers_notified": 1
   }
 ]
