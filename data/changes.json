@@ -250,5 +250,37 @@
       "priority": "MEDIUM"
     },
     "customers_notified": 1
+  },
+  {
+    "source_id": "regjeringen-nfd",
+    "source_name": "Nærings- og fiskeridepartementet",
+    "url": "https://www.regjeringen.no/no/dep/nfd/id709/",
+    "detected_at": "2026-02-11T13:36:42.945480",
+    "summary": {
+      "title": "Ny pressemelding om skjerpet innsats mot skyggeflåten",
+      "title_en": "New press release on enhanced efforts against shadow fleet",
+      "summary_no": "Nærings- og fiskeridepartementet har publisert en ny pressemelding om at regjeringen viderefører skjerpet innsats mot skyggeflåten. Dette er tillegg til eksisterende nyheter på departementets nettside og signaliserer fortsatt fokus på å bekjempe ulovlig fiskeriaktivitet.",
+      "summary_en": "The Ministry of Trade, Industry and Fisheries has published a new press release stating that the government continues enhanced efforts against the shadow fleet. This addition to existing news on the ministry's website signals continued focus on combating illegal fishing activities.",
+      "who_affected": [
+        "Fiskeindustrien",
+        "Akvakulturaktører",
+        "Havmyndigheter",
+        "Utenlandske fiskefartøy"
+      ],
+      "action_items": [
+        {
+          "action": "Følge opp pressemelding for detaljer om tiltak",
+          "deadline": "Umiddelbart",
+          "priority": "Høy"
+        },
+        {
+          "action": "Vurdere konsekvenser for egne operasjoner",
+          "deadline": "1-2 uker",
+          "priority": "Medium"
+        }
+      ],
+      "priority": "HØY"
+    },
+    "customers_notified": 1
   }
 ]
