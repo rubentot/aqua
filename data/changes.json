@@ -192,5 +192,31 @@
       "priority": "LAV"
     },
     "customers_notified": 1
+  },
+  {
+    "source_id": "regjeringen-nfd",
+    "source_name": "Nærings- og fiskeridepartementet",
+    "url": "https://www.regjeringen.no/no/dep/nfd/id709/",
+    "detected_at": "2026-02-11T08:20:49.305167",
+    "summary": {
+      "title": "Oppkallelse av Geologikonferansen 2026",
+      "title_en": "Naming of Geology Conference 2026",
+      "summary_no": "Geologikonferansen 2026 i Trondheim har fått det offisielle navnet 'Fundament'. Dette er en mindre administrativ endring som presiserer konferansens identitet.",
+      "summary_en": "The Geology Conference 2026 in Trondheim has been officially named 'Fundament'. This is a minor administrative change that clarifies the conference's identity.",
+      "who_affected": [
+        "Konferansedeltakere",
+        "Geologibransjen",
+        "Akademiske institusjoner"
+      ],
+      "action_items": [
+        {
+          "action": "Oppdatere markedsføringsmateriale med nytt konferansenavn",
+          "deadline": "Snarest",
+          "priority": "Lav"
+        }
+      ],
+      "priority": "LAV"
+    },
+    "customers_notified": 1
   }
 ]
