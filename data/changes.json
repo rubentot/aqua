@@ -298,5 +298,37 @@
       "priority": "LAV"
     },
     "customers_notified": 1
+  },
+  {
+    "source_id": "regjeringen-nfd",
+    "source_name": "Nærings- og fiskeridepartementet",
+    "url": "https://www.regjeringen.no/no/dep/nfd/id709/",
+    "detected_at": "2026-02-12T13:36:14.454131",
+    "summary": {
+      "title": "Ny nyhet om endringer i anskaffelsesloven publisert",
+      "title_en": "New announcement about amendments to procurement law published",
+      "summary_no": "Nærings- og fiskeridepartementet har publisert en ny nyhet om at endringer i anskaffelsesloven er vedtatt i Stortinget 12. februar 2026. Dette erstatter tidligere informasjon om innspillsmøte om cruiseavgift som toppnyhet på departementets nettside.",
+      "summary_en": "The Ministry of Trade, Industry and Fisheries has published a new announcement that amendments to the procurement law have been adopted by Parliament on February 12, 2026. This replaces previous information about cruise tax consultation meetings as the top news on the ministry's website.",
+      "who_affected": [
+        "Offentlige anskaffere",
+        "Leverandører til offentlig sektor",
+        "Kommuner og fylkeskommuner",
+        "Statlige virksomheter"
+      ],
+      "action_items": [
+        {
+          "action": "Følge opp detaljer om endringene i anskaffelsesloven",
+          "deadline": "Snarest",
+          "priority": "Medium"
+        },
+        {
+          "action": "Vurdere om endringene påvirker pågående eller planlagte anskaffelser",
+          "deadline": "Innen 1 måned",
+          "priority": "Medium"
+        }
+      ],
+      "priority": "MEDIUM"
+    },
+    "customers_notified": 1
   }
 ]
