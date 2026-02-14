@@ -330,5 +330,36 @@
       "priority": "MEDIUM"
     },
     "customers_notified": 1
+  },
+  {
+    "source_id": "sjomatnorge",
+    "source_name": "Sjømat Norge",
+    "url": "https://sjomatnorge.no/",
+    "detected_at": "2026-02-14T01:39:22.320598",
+    "summary": {
+      "title": "Nye arrangementer i Sjømat Norges kalender",
+      "title_en": "New events added to Sjømat Norge's calendar",
+      "summary_no": "Sjømat Norge har lagt til nye arrangementer i sin kalender, inkludert fjernet et februararrangement og lagt til et nytt medlemsmøte for Havbruk nord i juni. Dette indikerer økt aktivitet og engasjement i havbrukssektoren nordpå.",
+      "summary_en": "Sjømat Norge has updated their event calendar, removing a February event and adding a new member meeting for Havbruk nord in June. This indicates increased activity and engagement in the northern aquaculture sector.",
+      "who_affected": [
+        "Havbruksselskaper i Nord-Norge",
+        "Medlemmer av Sjømat Norge",
+        "Havbruk Nord-regionen"
+      ],
+      "action_items": [
+        {
+          "action": "Vurder deltakelse på Medlemsmøte Havbruk nord",
+          "deadline": "2-3. juni 2026",
+          "priority": "Medium"
+        },
+        {
+          "action": "Registrer interesse for nye arrangementer",
+          "deadline": "Snarest",
+          "priority": "Lav"
+        }
+      ],
+      "priority": "LAV"
+    },
+    "customers_notified": 1
   }
 ]
