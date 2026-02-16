@@ -411,5 +411,36 @@
       "priority": "LAV"
     },
     "customers_notified": 1
+  },
+  {
+    "source_id": "mattilsynet-fisk",
+    "source_name": "Mattilsynet - Fisk og akvakultur",
+    "url": "https://www.mattilsynet.no/fisk_og_akvakultur/",
+    "detected_at": "2026-02-16T14:23:27.804265",
+    "summary": {
+      "title": "Økologisk akvakultur lagt til som eget tema",
+      "title_en": "Organic aquaculture added as separate topic",
+      "summary_no": "Mattilsynet har lagt til 'Økologisk akvakultur' som et eget tema under produksjon og dyrevelferd i akvakultur. Dette signaliserer økt fokus på økologisk fiskeoppdrett og kan indikere kommende regelverksutvikling på området.",
+      "summary_en": "The Norwegian Food Safety Authority has added 'Organic aquaculture' as a separate topic under production and animal welfare in aquaculture. This signals increased focus on organic fish farming and may indicate upcoming regulatory developments in this area.",
+      "who_affected": [
+        "Økologiske oppdrettere",
+        "Oppdrettere som vurderer økologisk sertifisering",
+        "Sertifiseringsorganer"
+      ],
+      "action_items": [
+        {
+          "action": "Følge med på ny veiledning for økologisk akvakultur",
+          "deadline": "Løpende",
+          "priority": "Medium"
+        },
+        {
+          "action": "Vurdere om bedriften bør se på økologisk sertifisering",
+          "deadline": "Ved neste strategigjennomgang",
+          "priority": "Lav"
+        }
+      ],
+      "priority": "LAV"
+    },
+    "customers_notified": 1
   }
 ]
