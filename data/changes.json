@@ -387,5 +387,29 @@
       "priority": "LAV"
     },
     "customers_notified": 1
+  },
+  {
+    "source_id": "mattilsynet-fisk",
+    "source_name": "Mattilsynet - Fisk og akvakultur",
+    "url": "https://www.mattilsynet.no/fisk_og_akvakultur/",
+    "detected_at": "2026-02-16T13:33:51.069355",
+    "summary": {
+      "title": "Mindre redaksjonell endring på Mattilsynets fisk og akvakultur-side",
+      "title_en": "Minor editorial change on Norwegian Food Safety Authority's fish and aquaculture page",
+      "summary_no": "Det er gjort en mindre tekstendring i skjemaer-seksjonen hvor 'Skjemaer' er endret til 'Skjemaer inne fisk og akvakultur'. Samtidig er informasjonen om omorganisering av tilsynsdivisjon akvakultur fjernet fra siden.",
+      "summary_en": "A minor text change has been made in the forms section where 'Skjemaer' was changed to 'Skjemaer inne fisk og akvakultur'. Additionally, information about reorganization of the aquaculture supervision division has been removed from the page.",
+      "who_affected": [
+        "Brukere som søker etter skjemaer på Mattilsynets nettside"
+      ],
+      "action_items": [
+        {
+          "action": "Ingen handling nødvendig - kun redaksjonell endring",
+          "deadline": "N/A",
+          "priority": "Lav"
+        }
+      ],
+      "priority": "LAV"
+    },
+    "customers_notified": 1
   }
 ]
