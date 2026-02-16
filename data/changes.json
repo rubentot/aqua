@@ -361,5 +361,31 @@
       "priority": "LAV"
     },
     "customers_notified": 1
+  },
+  {
+    "source_id": "sjomatnorge",
+    "source_name": "Sjømat Norge",
+    "url": "https://sjomatnorge.no/",
+    "detected_at": "2026-02-16T08:20:50.695263",
+    "summary": {
+      "title": "Nytt styre valgt i Havbruk Vest",
+      "title_en": "New board elected in Havbruk Vest",
+      "summary_no": "Havbruk Vest har valgt nytt arbeidsutvalg (AU) på sitt årsmøte. Dette er en organisatorisk endring som påvirker den regionale ledelsen av havbruksinteresser på Vestlandet.",
+      "summary_en": "Havbruk Vest has elected a new working committee at their annual meeting. This is an organizational change affecting regional leadership of aquaculture interests on the West Coast.",
+      "who_affected": [
+        "Medlemmer av Havbruk Vest",
+        "Havbruksselskaper på Vestlandet",
+        "Regionale havbruksinteresser"
+      ],
+      "action_items": [
+        {
+          "action": "Følge opp nye styrevedtak og prioriteringer",
+          "deadline": "Løpende",
+          "priority": "Medium"
+        }
+      ],
+      "priority": "LAV"
+    },
+    "customers_notified": 1
   }
 ]
