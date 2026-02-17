@@ -473,5 +473,24 @@
       "priority": "LAV"
     },
     "customers_notified": 1
+  },
+  {
+    "source_id": "sjomatnorge",
+    "source_name": "Sjømat Norge",
+    "url": "https://sjomatnorge.no/",
+    "detected_at": "2026-02-17T09:23:25.007930",
+    "summary": {
+      "title": "Mindre endringer i tagging av høringsuttalelser",
+      "title_en": "Minor changes in hearing statement tagging",
+      "summary_no": "Det har skjedd mindre endringer i hvordan høringsuttalelser kategoriseres og tagges på Sjømat Norge sine nettsider. Endringen påvirker ikke innholdet i høringsuttalelsene, men kun presentasjonen av metadata.",
+      "summary_en": "Minor changes have occurred in how hearing statements are categorized and tagged on Sjømat Norge's website. The change does not affect the content of the hearing statements, only the presentation of metadata.",
+      "who_affected": [
+        "Sjømat Norge",
+        "Nettsidens brukere"
+      ],
+      "action_items": [],
+      "priority": "LAV"
+    },
+    "customers_notified": 1
   }
 ]
