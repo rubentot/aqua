@@ -442,5 +442,36 @@
       "priority": "LAV"
     },
     "customers_notified": 1
+  },
+  {
+    "source_id": "fiskeridir-akvakultur",
+    "source_name": "Fiskeridirektoratet - Akvakultur",
+    "url": "https://www.fiskeridir.no/Akvakultur",
+    "detected_at": "2026-02-17T08:20:20.227470",
+    "summary": {
+      "title": "Endring i terminologi for driftsplaner",
+      "title_en": "Change in operational plan terminology",
+      "summary_no": "Fiskeridirektoratet har endret terminologien fra 'Driftsplanar for akvakulturverksemd' til 'Driftsplan for akvakulturanlegg i sjø'. Dette presiserer at driftsplaner gjelder spesifikt for sjøbaserte akvakulturanlegg og skiller dem tydeligere fra landbaserte anlegg.",
+      "summary_en": "The Norwegian Directorate of Fisheries has changed the terminology from 'Operational plans for aquaculture operations' to 'Operational plan for sea-based aquaculture facilities'. This clarifies that operational plans apply specifically to sea-based aquaculture facilities and distinguishes them more clearly from land-based facilities.",
+      "who_affected": [
+        "Akvakulturselskaper med sjøbaserte anlegg",
+        "Myndigheter som behandler driftsplaner",
+        "Konsulenter og rådgivere"
+      ],
+      "action_items": [
+        {
+          "action": "Gjennomgå eksisterende driftsplaner for å sikre korrekt terminologi",
+          "deadline": "Ved neste oppdatering",
+          "priority": "Lav"
+        },
+        {
+          "action": "Oppdatere interne rutiner og dokumenter med ny terminologi",
+          "deadline": "Innen 30 dager",
+          "priority": "Lav"
+        }
+      ],
+      "priority": "LAV"
+    },
+    "customers_notified": 1
   }
 ]
